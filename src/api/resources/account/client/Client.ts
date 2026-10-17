@@ -4,6 +4,7 @@ import type { BaseClientOptions, BaseRequestOptions } from "../../../../BaseClie
 import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "../../../../BaseClient.js";
 import { mergeHeaders } from "../../../../core/headers.js";
 import * as core from "../../../../core/index.js";
+import { mergeAdditionalBodyParameters } from "../../../../core/requestBody.js";
 import * as environments from "../../../../environments.js";
 import { handleNonStatusCodeError } from "../../../../errors/handleNonStatusCodeError.js";
 import * as errors from "../../../../errors/index.js";
@@ -15,9 +16,6 @@ export declare namespace AccountClient {
     export interface RequestOptions extends BaseRequestOptions {}
 }
 
-/**
- * The API key's team: credits and the billing period.
- */
 export class AccountClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<AccountClient.Options>;
 
@@ -26,20 +24,22 @@ export class AccountClient {
     }
 
     /**
-     * Credits left on the API key's team, the credits included in the
-     * plan, and the current billing period. Granted credits count toward
-     * `remainingCredits` and not `planCredits`.
+     * Fetch a single brand or creator by id. The `type` field tells you
+     * which one you got: `BRAND` or `CREATOR`, and the creator-only fields
+     * (`gender`, `ageRange`, ...) are present only on `CREATOR`.
      *
      * Limited to 120 requests per minute per user.
-     * This call is free and does not use credits. It still responds when
-     * the team is out of credits.
+     * Costs 2,000 microdollars ($0.0020) per account returned, charged against your plan's monthly credits.
+     * An id that matches nothing returns 404 and is free.
      *
+     * @param {spyglass.GetAccountRequest} request
      * @param {AccountClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link spyglass.BadRequestError}
      * @throws {@link spyglass.UnauthorizedError}
      * @throws {@link spyglass.PaymentRequiredError}
      * @throws {@link spyglass.ForbiddenError}
+     * @throws {@link spyglass.NotFoundError}
      * @throws {@link spyglass.MethodNotAllowedError}
      * @throws {@link spyglass.TooManyRequestsError}
      * @throws {@link spyglass.InternalServerError}
@@ -47,17 +47,22 @@ export class AccountClient {
      * @throws {@link errors.SpyglassTimeoutError}
      *
      * @example
-     *     await client.account.getCreditUsage()
+     *     await client.account.get({
+     *         id: "id"
+     *     })
      */
-    public getCreditUsage(
+    public get(
+        request: spyglass.GetAccountRequest,
         requestOptions?: AccountClient.RequestOptions,
-    ): core.HttpResponsePromise<spyglass.GetCreditUsageResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__getCreditUsage(requestOptions));
+    ): core.HttpResponsePromise<spyglass.GetAccountResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
     }
 
-    private async __getCreditUsage(
+    private async __get(
+        request: spyglass.GetAccountRequest,
         requestOptions?: AccountClient.RequestOptions,
-    ): Promise<core.WithRawResponse<spyglass.GetCreditUsageResponse>> {
+    ): Promise<core.WithRawResponse<spyglass.GetAccountResponse>> {
+        const { id } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -69,7 +74,7 @@ export class AccountClient {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.SpyglassEnvironment.Default,
-                "team/credit-usage",
+                `account/${core.url.encodePathParam(id, errors.SpyglassError)}`,
             ),
             method: "GET",
             headers: _headers,
@@ -81,7 +86,7 @@ export class AccountClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as spyglass.GetCreditUsageResponse, rawResponse: _response.rawResponse };
+            return { data: _response.body as spyglass.GetAccountResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -100,6 +105,8 @@ export class AccountClient {
                     );
                 case 403:
                     throw new spyglass.ForbiddenError(_response.error.body as spyglass.Error_, _response.rawResponse);
+                case 404:
+                    throw new spyglass.NotFoundError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 405:
                     throw new spyglass.MethodNotAllowedError(
                         _response.error.body as spyglass.Error_,
@@ -124,6 +131,461 @@ export class AccountClient {
             }
         }
 
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/team/credit-usage");
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/account/{id}");
+    }
+
+    /**
+     * Return clustered creative themes for an account. `MEDIA_MIX` returns a
+     * breakdown by media type; the other types return weekly buckets plus
+     * ranked totals, highest first.
+     *
+     * `maxDaysBack` filters both the weekly bucket series and ranked
+     * `totals` to creatives that started within the requested window.
+     *
+     * Limited to 120 requests per minute per user.
+     * Costs 1,000 microdollars ($0.0010) per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
+     *
+     * @param {spyglass.InsightsAccountRequest} request
+     * @param {AccountClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link spyglass.BadRequestError}
+     * @throws {@link spyglass.UnauthorizedError}
+     * @throws {@link spyglass.PaymentRequiredError}
+     * @throws {@link spyglass.ForbiddenError}
+     * @throws {@link spyglass.NotFoundError}
+     * @throws {@link spyglass.MethodNotAllowedError}
+     * @throws {@link spyglass.TooManyRequestsError}
+     * @throws {@link spyglass.InternalServerError}
+     * @throws {@link errors.SpyglassError}
+     * @throws {@link errors.SpyglassTimeoutError}
+     *
+     * @example
+     *     await client.account.insights({
+     *         id: "id",
+     *         type: "HOOK"
+     *     })
+     */
+    public insights(
+        request: spyglass.InsightsAccountRequest,
+        requestOptions?: AccountClient.RequestOptions,
+    ): core.HttpResponsePromise<spyglass.InsightsAccountResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__insights(request, requestOptions));
+    }
+
+    private async __insights(
+        request: spyglass.InsightsAccountRequest,
+        requestOptions?: AccountClient.RequestOptions,
+    ): Promise<core.WithRawResponse<spyglass.InsightsAccountResponse>> {
+        const { id, type: type_, maxDaysBack, limit } = request;
+        const _queryParams: Record<string, unknown> = {
+            type: type_,
+            maxDaysBack,
+            limit,
+        };
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.SpyglassEnvironment.Default,
+                `account/${core.url.encodePathParam(id, errors.SpyglassError)}/insights`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url
+                .queryBuilder()
+                .addMany(_queryParams)
+                .mergeAdditional(requestOptions?.queryParams)
+                .build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as spyglass.InsightsAccountResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new spyglass.BadRequestError(_response.error.body as spyglass.Error_, _response.rawResponse);
+                case 401:
+                    throw new spyglass.UnauthorizedError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 402:
+                    throw new spyglass.PaymentRequiredError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 403:
+                    throw new spyglass.ForbiddenError(_response.error.body as spyglass.Error_, _response.rawResponse);
+                case 404:
+                    throw new spyglass.NotFoundError(_response.error.body as spyglass.Error_, _response.rawResponse);
+                case 405:
+                    throw new spyglass.MethodNotAllowedError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 429:
+                    throw new spyglass.TooManyRequestsError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 500:
+                    throw new spyglass.InternalServerError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.SpyglassError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/account/{id}/insights");
+    }
+
+    /**
+     * Return the landing-page URLs an account sends ad traffic to, ranked by
+     * how often they appear across its ads.
+     *
+     * Limited to 120 requests per minute per user.
+     * Costs 5,000 microdollars ($0.0050) per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
+     *
+     * @param {spyglass.LandingPagesAccountRequest} request
+     * @param {AccountClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link spyglass.BadRequestError}
+     * @throws {@link spyglass.UnauthorizedError}
+     * @throws {@link spyglass.PaymentRequiredError}
+     * @throws {@link spyglass.ForbiddenError}
+     * @throws {@link spyglass.NotFoundError}
+     * @throws {@link spyglass.MethodNotAllowedError}
+     * @throws {@link spyglass.TooManyRequestsError}
+     * @throws {@link spyglass.InternalServerError}
+     * @throws {@link errors.SpyglassError}
+     * @throws {@link errors.SpyglassTimeoutError}
+     *
+     * @example
+     *     await client.account.landingPages({
+     *         id: "id"
+     *     })
+     */
+    public landingPages(
+        request: spyglass.LandingPagesAccountRequest,
+        requestOptions?: AccountClient.RequestOptions,
+    ): core.HttpResponsePromise<spyglass.LandingPagesAccountResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__landingPages(request, requestOptions));
+    }
+
+    private async __landingPages(
+        request: spyglass.LandingPagesAccountRequest,
+        requestOptions?: AccountClient.RequestOptions,
+    ): Promise<core.WithRawResponse<spyglass.LandingPagesAccountResponse>> {
+        const { id, showInactive, limit } = request;
+        const _queryParams: Record<string, unknown> = {
+            showInactive: showInactive != null ? showInactive : undefined,
+            limit,
+        };
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.SpyglassEnvironment.Default,
+                `account/${core.url.encodePathParam(id, errors.SpyglassError)}/landing-pages`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url
+                .queryBuilder()
+                .addMany(_queryParams)
+                .mergeAdditional(requestOptions?.queryParams)
+                .build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as spyglass.LandingPagesAccountResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new spyglass.BadRequestError(_response.error.body as spyglass.Error_, _response.rawResponse);
+                case 401:
+                    throw new spyglass.UnauthorizedError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 402:
+                    throw new spyglass.PaymentRequiredError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 403:
+                    throw new spyglass.ForbiddenError(_response.error.body as spyglass.Error_, _response.rawResponse);
+                case 404:
+                    throw new spyglass.NotFoundError(_response.error.body as spyglass.Error_, _response.rawResponse);
+                case 405:
+                    throw new spyglass.MethodNotAllowedError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 429:
+                    throw new spyglass.TooManyRequestsError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 500:
+                    throw new spyglass.InternalServerError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.SpyglassError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/account/{id}/landing-pages");
+    }
+
+    /**
+     * Look up a brand by website URL, or start indexing it if we do not
+     * have it yet. Pass a single `websiteUrl`. Instagram and TikTok
+     * profile URLs are accepted and resolved as creators.
+     *
+     * This endpoint does not consume credits. An existing brand returns
+     * `status: "already_exists"`. A new brand is created and sync is
+     * queued, returning `status: "indexing"` and the new `brandId`.
+     *
+     * Limited to 50 requests per minute per user.
+     * This call is free.
+     *
+     * @param {spyglass.IndexAccountRequest} request
+     * @param {AccountClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link spyglass.BadRequestError}
+     * @throws {@link spyglass.UnauthorizedError}
+     * @throws {@link spyglass.ForbiddenError}
+     * @throws {@link spyglass.MethodNotAllowedError}
+     * @throws {@link spyglass.ContentTooLargeError}
+     * @throws {@link spyglass.TooManyRequestsError}
+     * @throws {@link spyglass.InternalServerError}
+     * @throws {@link errors.SpyglassError}
+     * @throws {@link errors.SpyglassTimeoutError}
+     *
+     * @example
+     *     await client.account.index({
+     *         websiteUrl: "https://www.nike.com"
+     *     })
+     */
+    public index(
+        request: spyglass.IndexAccountRequest,
+        requestOptions?: AccountClient.RequestOptions,
+    ): core.HttpResponsePromise<spyglass.IndexAccountResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__index(request, requestOptions));
+    }
+
+    private async __index(
+        request: spyglass.IndexAccountRequest,
+        requestOptions?: AccountClient.RequestOptions,
+    ): Promise<core.WithRawResponse<spyglass.IndexAccountResponse>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.SpyglassEnvironment.Default,
+                "account/index",
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            requestType: "json",
+            body: mergeAdditionalBodyParameters(request, requestOptions?.additionalBodyParameters),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as spyglass.IndexAccountResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new spyglass.BadRequestError(_response.error.body as spyglass.Error_, _response.rawResponse);
+                case 401:
+                    throw new spyglass.UnauthorizedError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 403:
+                    throw new spyglass.ForbiddenError(_response.error.body as spyglass.Error_, _response.rawResponse);
+                case 405:
+                    throw new spyglass.MethodNotAllowedError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 413:
+                    throw new spyglass.ContentTooLargeError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 429:
+                    throw new spyglass.TooManyRequestsError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 500:
+                    throw new spyglass.InternalServerError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.SpyglassError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/account/index");
+    }
+
+    /**
+     * Poll whether a brand finished indexing after POST /account/index.
+     *
+     * Limited to 300 requests per minute per user.
+     * This call is free.
+     *
+     * @param {spyglass.IndexStatusAccountRequest} request
+     * @param {AccountClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link spyglass.BadRequestError}
+     * @throws {@link spyglass.UnauthorizedError}
+     * @throws {@link spyglass.ForbiddenError}
+     * @throws {@link spyglass.NotFoundError}
+     * @throws {@link spyglass.MethodNotAllowedError}
+     * @throws {@link spyglass.TooManyRequestsError}
+     * @throws {@link spyglass.InternalServerError}
+     * @throws {@link errors.SpyglassError}
+     * @throws {@link errors.SpyglassTimeoutError}
+     *
+     * @example
+     *     await client.account.indexStatus({
+     *         id: "id"
+     *     })
+     */
+    public indexStatus(
+        request: spyglass.IndexStatusAccountRequest,
+        requestOptions?: AccountClient.RequestOptions,
+    ): core.HttpResponsePromise<spyglass.IndexStatusAccountResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__indexStatus(request, requestOptions));
+    }
+
+    private async __indexStatus(
+        request: spyglass.IndexStatusAccountRequest,
+        requestOptions?: AccountClient.RequestOptions,
+    ): Promise<core.WithRawResponse<spyglass.IndexStatusAccountResponse>> {
+        const { id } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.SpyglassEnvironment.Default,
+                `account/${core.url.encodePathParam(id, errors.SpyglassError)}/index-status`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as spyglass.IndexStatusAccountResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new spyglass.BadRequestError(_response.error.body as spyglass.Error_, _response.rawResponse);
+                case 401:
+                    throw new spyglass.UnauthorizedError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 403:
+                    throw new spyglass.ForbiddenError(_response.error.body as spyglass.Error_, _response.rawResponse);
+                case 404:
+                    throw new spyglass.NotFoundError(_response.error.body as spyglass.Error_, _response.rawResponse);
+                case 405:
+                    throw new spyglass.MethodNotAllowedError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 429:
+                    throw new spyglass.TooManyRequestsError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 500:
+                    throw new spyglass.InternalServerError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.SpyglassError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/account/{id}/index-status");
     }
 }

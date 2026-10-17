@@ -7,20 +7,20 @@
  *         limit: 20
  *     }
  */
-export interface GetMediaRequest {
+export interface SearchMediaRequest {
     /** Brand id given as a platform string or uuid */
-    brandId?: GetMediaRequest.BrandId;
+    brandId?: SearchMediaRequest.BrandId;
     query?: string;
-    channel?: GetMediaRequest.Channel.Item[];
-    format?: GetMediaRequest.Format.Item[];
-    duration?: GetMediaRequest.Duration.Item[];
-    status?: GetMediaRequest.Status;
-    categories?: GetMediaRequest.Categories.Item[];
+    channel?: SearchMediaRequest.Channel.Item[];
+    format?: SearchMediaRequest.Format.Item[];
+    duration?: SearchMediaRequest.Duration.Item[];
+    status?: SearchMediaRequest.Status;
+    categories?: SearchMediaRequest.Categories.Item[];
     taxonomy?: string[];
-    funnelStage?: GetMediaRequest.FunnelStage.Item[];
-    language?: GetMediaRequest.Language.Item[];
+    funnelStage?: SearchMediaRequest.FunnelStage.Item[];
+    language?: SearchMediaRequest.Language.Item[];
     location?: string[];
-    datePreset?: GetMediaRequest.DatePreset;
+    datePreset?: SearchMediaRequest.DatePreset;
     startDate?: string;
     endDate?: string;
     minDaysRun?: number;
@@ -28,16 +28,16 @@ export interface GetMediaRequest {
     minViewCount?: number;
     maxViewCount?: number;
     landingPage?: string;
-    landingPageMatch?: GetMediaRequest.LandingPageMatch;
+    landingPageMatch?: SearchMediaRequest.LandingPageMatch;
     lowImpressions?: boolean;
     partnershipAd?: boolean;
     crossposted?: boolean;
-    sortBy?: GetMediaRequest.SortBy;
+    sortBy?: SearchMediaRequest.SortBy;
     limit?: number;
     offset?: number;
 }
 
-export namespace GetMediaRequest {
+export namespace SearchMediaRequest {
     /**
      * Brand id given as a platform string or uuid
      */

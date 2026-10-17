@@ -5,12 +5,14 @@ import type * as spyglass from "../../../../index.js";
 /**
  * @example
  *     {
- *         id: "id"
+ *         id: "id",
+ *         type: "HOOK"
  *     }
  */
-export interface GetBrandLandingPagesRequest {
+export interface InsightsAccountRequest {
     /** Brand or creator id returned by POST /brands or POST /creators. */
     id: string;
-    showInactive?: spyglass.GetBrandLandingPagesRequestShowInactive;
+    type: spyglass.InsightsAccountRequestType;
+    maxDaysBack?: number;
     limit?: number;
 }

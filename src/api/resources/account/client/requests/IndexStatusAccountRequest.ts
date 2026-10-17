@@ -6,7 +6,7 @@
  *         id: "id"
  *     }
  */
-export interface IndexBrandStatusRequest {
+export interface IndexStatusAccountRequest {
     /** Brand or creator id returned by POST /brands or POST /creators. */
     id: string;
 }

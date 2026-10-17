@@ -6,6 +6,6 @@
  *         websiteUrl: "https://www.nike.com"
  *     }
  */
-export interface IndexBrandRequest {
+export interface IndexAccountRequest {
     websiteUrl: string;
 }

@@ -4,8 +4,8 @@ import * as spyglass from "../../src/api/index";
 import { Spyglass } from "../../src/Client";
 import { mockServerPool } from "../mock-server/MockServerPool";
 
-describe("SearchClient", () => {
-    test("brands (1)", async () => {
+describe("Spyglass", () => {
+    test("searchBrands (1)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = { names: ["Nike"], limit: 3 };
@@ -44,14 +44,14 @@ describe("SearchClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.search.brands({
+        const response = await client.searchBrands({
             names: ["Nike"],
             limit: 3,
         });
         expect(response).toEqual(rawResponseBody);
     });
 
-    test("brands (2)", async () => {
+    test("searchBrands (2)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -67,11 +67,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.brands();
+            return await client.searchBrands();
         }).rejects.toThrow(spyglass.BadRequestError);
     });
 
-    test("brands (3)", async () => {
+    test("searchBrands (3)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -87,11 +87,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.brands();
+            return await client.searchBrands();
         }).rejects.toThrow(spyglass.UnauthorizedError);
     });
 
-    test("brands (4)", async () => {
+    test("searchBrands (4)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -107,11 +107,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.brands();
+            return await client.searchBrands();
         }).rejects.toThrow(spyglass.PaymentRequiredError);
     });
 
-    test("brands (5)", async () => {
+    test("searchBrands (5)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -127,11 +127,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.brands();
+            return await client.searchBrands();
         }).rejects.toThrow(spyglass.ForbiddenError);
     });
 
-    test("brands (6)", async () => {
+    test("searchBrands (6)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -147,11 +147,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.brands();
+            return await client.searchBrands();
         }).rejects.toThrow(spyglass.MethodNotAllowedError);
     });
 
-    test("brands (7)", async () => {
+    test("searchBrands (7)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -167,11 +167,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.brands();
+            return await client.searchBrands();
         }).rejects.toThrow(spyglass.ContentTooLargeError);
     });
 
-    test("brands (8)", async () => {
+    test("searchBrands (8)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -187,11 +187,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.brands();
+            return await client.searchBrands();
         }).rejects.toThrow(spyglass.TooManyRequestsError);
     });
 
-    test("brands (9)", async () => {
+    test("searchBrands (9)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -207,11 +207,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.brands();
+            return await client.searchBrands();
         }).rejects.toThrow(spyglass.InternalServerError);
     });
 
-    test("creators (1)", async () => {
+    test("searchCreators (1)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = { igUsername: "charlidamelio", limit: 3, gender: "female" };
@@ -251,7 +251,7 @@ describe("SearchClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.search.creators({
+        const response = await client.searchCreators({
             igUsername: "charlidamelio",
             limit: 3,
             gender: "female",
@@ -259,7 +259,7 @@ describe("SearchClient", () => {
         expect(response).toEqual(rawResponseBody);
     });
 
-    test("creators (2)", async () => {
+    test("searchCreators (2)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -275,11 +275,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.creators();
+            return await client.searchCreators();
         }).rejects.toThrow(spyglass.BadRequestError);
     });
 
-    test("creators (3)", async () => {
+    test("searchCreators (3)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -295,11 +295,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.creators();
+            return await client.searchCreators();
         }).rejects.toThrow(spyglass.UnauthorizedError);
     });
 
-    test("creators (4)", async () => {
+    test("searchCreators (4)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -315,11 +315,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.creators();
+            return await client.searchCreators();
         }).rejects.toThrow(spyglass.PaymentRequiredError);
     });
 
-    test("creators (5)", async () => {
+    test("searchCreators (5)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -335,11 +335,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.creators();
+            return await client.searchCreators();
         }).rejects.toThrow(spyglass.ForbiddenError);
     });
 
-    test("creators (6)", async () => {
+    test("searchCreators (6)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -355,11 +355,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.creators();
+            return await client.searchCreators();
         }).rejects.toThrow(spyglass.MethodNotAllowedError);
     });
 
-    test("creators (7)", async () => {
+    test("searchCreators (7)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -375,11 +375,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.creators();
+            return await client.searchCreators();
         }).rejects.toThrow(spyglass.ContentTooLargeError);
     });
 
-    test("creators (8)", async () => {
+    test("searchCreators (8)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -395,11 +395,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.creators();
+            return await client.searchCreators();
         }).rejects.toThrow(spyglass.TooManyRequestsError);
     });
 
-    test("creators (9)", async () => {
+    test("searchCreators (9)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -415,163 +415,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.creators();
+            return await client.searchCreators();
         }).rejects.toThrow(spyglass.InternalServerError);
     });
 
-    test("getAccount (1)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = {
-            type: "BRAND",
-            id: "id",
-            facebookAdLibraryId: "facebookAdLibraryId",
-            name: "name",
-            summary: "summary",
-            category: "category",
-            location: "location",
-            language: "language",
-            verified: true,
-            facebookUsername: "facebookUsername",
-            likes: 1.1,
-            igUsername: "igUsername",
-            igFollowers: 1.1,
-            igEngagementRate: 1.1,
-            tiktokUsername: "tiktokUsername",
-            tiktokFollowers: 1.1,
-            thumbnailUrl: "thumbnailUrl",
-        };
-
-        server.mockEndpoint().get("/account/id").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
-
-        const response = await client.search.getAccount({
-            id: "id",
-        });
-        expect(response).toEqual(rawResponseBody);
-    });
-
-    test("getAccount (2)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
-
-        server.mockEndpoint().get("/account/id").respondWith().statusCode(400).jsonBody(rawResponseBody).build();
-
-        await expect(async () => {
-            return await client.search.getAccount({
-                id: "id",
-            });
-        }).rejects.toThrow(spyglass.BadRequestError);
-    });
-
-    test("getAccount (3)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
-
-        server.mockEndpoint().get("/account/id").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
-
-        await expect(async () => {
-            return await client.search.getAccount({
-                id: "id",
-            });
-        }).rejects.toThrow(spyglass.UnauthorizedError);
-    });
-
-    test("getAccount (4)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
-
-        server.mockEndpoint().get("/account/id").respondWith().statusCode(402).jsonBody(rawResponseBody).build();
-
-        await expect(async () => {
-            return await client.search.getAccount({
-                id: "id",
-            });
-        }).rejects.toThrow(spyglass.PaymentRequiredError);
-    });
-
-    test("getAccount (5)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
-
-        server.mockEndpoint().get("/account/id").respondWith().statusCode(403).jsonBody(rawResponseBody).build();
-
-        await expect(async () => {
-            return await client.search.getAccount({
-                id: "id",
-            });
-        }).rejects.toThrow(spyglass.ForbiddenError);
-    });
-
-    test("getAccount (6)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
-
-        server.mockEndpoint().get("/account/id").respondWith().statusCode(404).jsonBody(rawResponseBody).build();
-
-        await expect(async () => {
-            return await client.search.getAccount({
-                id: "id",
-            });
-        }).rejects.toThrow(spyglass.NotFoundError);
-    });
-
-    test("getAccount (7)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
-
-        server.mockEndpoint().get("/account/id").respondWith().statusCode(405).jsonBody(rawResponseBody).build();
-
-        await expect(async () => {
-            return await client.search.getAccount({
-                id: "id",
-            });
-        }).rejects.toThrow(spyglass.MethodNotAllowedError);
-    });
-
-    test("getAccount (8)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
-
-        server.mockEndpoint().get("/account/id").respondWith().statusCode(429).jsonBody(rawResponseBody).build();
-
-        await expect(async () => {
-            return await client.search.getAccount({
-                id: "id",
-            });
-        }).rejects.toThrow(spyglass.TooManyRequestsError);
-    });
-
-    test("getAccount (9)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
-
-        server.mockEndpoint().get("/account/id").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
-
-        await expect(async () => {
-            return await client.search.getAccount({
-                id: "id",
-            });
-        }).rejects.toThrow(spyglass.InternalServerError);
-    });
-
-    test("taxonomies (1)", async () => {
+    test("searchTaxonomies (1)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
@@ -579,13 +427,13 @@ describe("SearchClient", () => {
 
         server.mockEndpoint().get("/taxonomies").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
 
-        const response = await client.search.taxonomies({
+        const response = await client.searchTaxonomies({
             query: "running shoes",
         });
         expect(response).toEqual(rawResponseBody);
     });
 
-    test("taxonomies (2)", async () => {
+    test("searchTaxonomies (2)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
@@ -594,13 +442,13 @@ describe("SearchClient", () => {
         server.mockEndpoint().get("/taxonomies").respondWith().statusCode(400).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.search.taxonomies({
+            return await client.searchTaxonomies({
                 query: "x",
             });
         }).rejects.toThrow(spyglass.BadRequestError);
     });
 
-    test("taxonomies (3)", async () => {
+    test("searchTaxonomies (3)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
@@ -609,13 +457,13 @@ describe("SearchClient", () => {
         server.mockEndpoint().get("/taxonomies").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.search.taxonomies({
+            return await client.searchTaxonomies({
                 query: "x",
             });
         }).rejects.toThrow(spyglass.UnauthorizedError);
     });
 
-    test("taxonomies (4)", async () => {
+    test("searchTaxonomies (4)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
@@ -624,13 +472,13 @@ describe("SearchClient", () => {
         server.mockEndpoint().get("/taxonomies").respondWith().statusCode(402).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.search.taxonomies({
+            return await client.searchTaxonomies({
                 query: "x",
             });
         }).rejects.toThrow(spyglass.PaymentRequiredError);
     });
 
-    test("taxonomies (5)", async () => {
+    test("searchTaxonomies (5)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
@@ -639,13 +487,13 @@ describe("SearchClient", () => {
         server.mockEndpoint().get("/taxonomies").respondWith().statusCode(403).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.search.taxonomies({
+            return await client.searchTaxonomies({
                 query: "x",
             });
         }).rejects.toThrow(spyglass.ForbiddenError);
     });
 
-    test("taxonomies (6)", async () => {
+    test("searchTaxonomies (6)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
@@ -654,13 +502,13 @@ describe("SearchClient", () => {
         server.mockEndpoint().get("/taxonomies").respondWith().statusCode(405).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.search.taxonomies({
+            return await client.searchTaxonomies({
                 query: "x",
             });
         }).rejects.toThrow(spyglass.MethodNotAllowedError);
     });
 
-    test("taxonomies (7)", async () => {
+    test("searchTaxonomies (7)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
@@ -669,13 +517,13 @@ describe("SearchClient", () => {
         server.mockEndpoint().get("/taxonomies").respondWith().statusCode(429).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.search.taxonomies({
+            return await client.searchTaxonomies({
                 query: "x",
             });
         }).rejects.toThrow(spyglass.TooManyRequestsError);
     });
 
-    test("taxonomies (8)", async () => {
+    test("searchTaxonomies (8)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
@@ -684,13 +532,13 @@ describe("SearchClient", () => {
         server.mockEndpoint().get("/taxonomies").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.search.taxonomies({
+            return await client.searchTaxonomies({
                 query: "x",
             });
         }).rejects.toThrow(spyglass.InternalServerError);
     });
 
-    test("getMedia (1)", async () => {
+    test("searchMedia (1)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = { query: "comfort-focused video ads", limit: 20 };
@@ -753,14 +601,14 @@ describe("SearchClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.search.getMedia({
+        const response = await client.searchMedia({
             query: "comfort-focused video ads",
             limit: 20,
         });
         expect(response).toEqual(rawResponseBody);
     });
 
-    test("getMedia (2)", async () => {
+    test("searchMedia (2)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -776,11 +624,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.getMedia();
+            return await client.searchMedia();
         }).rejects.toThrow(spyglass.BadRequestError);
     });
 
-    test("getMedia (3)", async () => {
+    test("searchMedia (3)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -796,11 +644,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.getMedia();
+            return await client.searchMedia();
         }).rejects.toThrow(spyglass.UnauthorizedError);
     });
 
-    test("getMedia (4)", async () => {
+    test("searchMedia (4)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -816,11 +664,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.getMedia();
+            return await client.searchMedia();
         }).rejects.toThrow(spyglass.PaymentRequiredError);
     });
 
-    test("getMedia (5)", async () => {
+    test("searchMedia (5)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -836,11 +684,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.getMedia();
+            return await client.searchMedia();
         }).rejects.toThrow(spyglass.ForbiddenError);
     });
 
-    test("getMedia (6)", async () => {
+    test("searchMedia (6)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -856,11 +704,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.getMedia();
+            return await client.searchMedia();
         }).rejects.toThrow(spyglass.NotFoundError);
     });
 
-    test("getMedia (7)", async () => {
+    test("searchMedia (7)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -876,11 +724,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.getMedia();
+            return await client.searchMedia();
         }).rejects.toThrow(spyglass.MethodNotAllowedError);
     });
 
-    test("getMedia (8)", async () => {
+    test("searchMedia (8)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -896,11 +744,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.getMedia();
+            return await client.searchMedia();
         }).rejects.toThrow(spyglass.ContentTooLargeError);
     });
 
-    test("getMedia (9)", async () => {
+    test("searchMedia (9)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -916,11 +764,11 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.getMedia();
+            return await client.searchMedia();
         }).rejects.toThrow(spyglass.TooManyRequestsError);
     });
 
-    test("getMedia (10)", async () => {
+    test("searchMedia (10)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = {};
@@ -936,392 +784,115 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.getMedia();
+            return await client.searchMedia();
         }).rejects.toThrow(spyglass.InternalServerError);
     });
 
-    test("getBrandMediaInsights (1)", async () => {
+    test("getCreditUsage (1)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
-        const rawResponseBody = { type: "MEDIA_MIX", count: 1, rows: [{ type: "type", count: 1 }] };
+        const rawResponseBody = {
+            remainingCredits: 1000,
+            planCredits: 500000,
+            billingPeriodStart: "2025-01-01T00:00:00Z",
+            billingPeriodEnd: "2025-01-31T23:59:59Z",
+        };
 
-        server
-            .mockEndpoint()
-            .get("/account/id/insights")
-            .respondWith()
-            .statusCode(200)
-            .jsonBody(rawResponseBody)
-            .build();
+        server.mockEndpoint().get("/team/credit-usage").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
 
-        const response = await client.search.getBrandMediaInsights({
-            id: "id",
-            type: "HOOK",
-        });
+        const response = await client.getCreditUsage();
         expect(response).toEqual(rawResponseBody);
     });
 
-    test("getBrandMediaInsights (2)", async () => {
+    test("getCreditUsage (2)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
         const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
 
-        server
-            .mockEndpoint()
-            .get("/account/id/insights")
-            .respondWith()
-            .statusCode(400)
-            .jsonBody(rawResponseBody)
-            .build();
+        server.mockEndpoint().get("/team/credit-usage").respondWith().statusCode(400).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.search.getBrandMediaInsights({
-                id: "id",
-                type: "HOOK",
-            });
+            return await client.getCreditUsage();
         }).rejects.toThrow(spyglass.BadRequestError);
     });
 
-    test("getBrandMediaInsights (3)", async () => {
+    test("getCreditUsage (3)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
         const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
 
-        server
-            .mockEndpoint()
-            .get("/account/id/insights")
-            .respondWith()
-            .statusCode(401)
-            .jsonBody(rawResponseBody)
-            .build();
+        server.mockEndpoint().get("/team/credit-usage").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.search.getBrandMediaInsights({
-                id: "id",
-                type: "HOOK",
-            });
+            return await client.getCreditUsage();
         }).rejects.toThrow(spyglass.UnauthorizedError);
     });
 
-    test("getBrandMediaInsights (4)", async () => {
+    test("getCreditUsage (4)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
         const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
 
-        server
-            .mockEndpoint()
-            .get("/account/id/insights")
-            .respondWith()
-            .statusCode(402)
-            .jsonBody(rawResponseBody)
-            .build();
+        server.mockEndpoint().get("/team/credit-usage").respondWith().statusCode(402).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.search.getBrandMediaInsights({
-                id: "id",
-                type: "HOOK",
-            });
+            return await client.getCreditUsage();
         }).rejects.toThrow(spyglass.PaymentRequiredError);
     });
 
-    test("getBrandMediaInsights (5)", async () => {
+    test("getCreditUsage (5)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
         const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
 
-        server
-            .mockEndpoint()
-            .get("/account/id/insights")
-            .respondWith()
-            .statusCode(403)
-            .jsonBody(rawResponseBody)
-            .build();
+        server.mockEndpoint().get("/team/credit-usage").respondWith().statusCode(403).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.search.getBrandMediaInsights({
-                id: "id",
-                type: "HOOK",
-            });
+            return await client.getCreditUsage();
         }).rejects.toThrow(spyglass.ForbiddenError);
     });
 
-    test("getBrandMediaInsights (6)", async () => {
+    test("getCreditUsage (6)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
         const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
 
-        server
-            .mockEndpoint()
-            .get("/account/id/insights")
-            .respondWith()
-            .statusCode(404)
-            .jsonBody(rawResponseBody)
-            .build();
+        server.mockEndpoint().get("/team/credit-usage").respondWith().statusCode(405).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.search.getBrandMediaInsights({
-                id: "id",
-                type: "HOOK",
-            });
-        }).rejects.toThrow(spyglass.NotFoundError);
-    });
-
-    test("getBrandMediaInsights (7)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
-
-        server
-            .mockEndpoint()
-            .get("/account/id/insights")
-            .respondWith()
-            .statusCode(405)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.search.getBrandMediaInsights({
-                id: "id",
-                type: "HOOK",
-            });
+            return await client.getCreditUsage();
         }).rejects.toThrow(spyglass.MethodNotAllowedError);
     });
 
-    test("getBrandMediaInsights (8)", async () => {
+    test("getCreditUsage (7)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
         const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
 
-        server
-            .mockEndpoint()
-            .get("/account/id/insights")
-            .respondWith()
-            .statusCode(429)
-            .jsonBody(rawResponseBody)
-            .build();
+        server.mockEndpoint().get("/team/credit-usage").respondWith().statusCode(429).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.search.getBrandMediaInsights({
-                id: "id",
-                type: "HOOK",
-            });
+            return await client.getCreditUsage();
         }).rejects.toThrow(spyglass.TooManyRequestsError);
     });
 
-    test("getBrandMediaInsights (9)", async () => {
+    test("getCreditUsage (8)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
         const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
 
-        server
-            .mockEndpoint()
-            .get("/account/id/insights")
-            .respondWith()
-            .statusCode(500)
-            .jsonBody(rawResponseBody)
-            .build();
+        server.mockEndpoint().get("/team/credit-usage").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
-            return await client.search.getBrandMediaInsights({
-                id: "id",
-                type: "HOOK",
-            });
-        }).rejects.toThrow(spyglass.InternalServerError);
-    });
-
-    test("getBrandLandingPages (1)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { count: 1, landingPages: [{ url: "url", total: 1.1 }] };
-
-        server
-            .mockEndpoint()
-            .get("/account/id/landing-pages")
-            .respondWith()
-            .statusCode(200)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        const response = await client.search.getBrandLandingPages({
-            id: "id",
-        });
-        expect(response).toEqual(rawResponseBody);
-    });
-
-    test("getBrandLandingPages (2)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
-
-        server
-            .mockEndpoint()
-            .get("/account/id/landing-pages")
-            .respondWith()
-            .statusCode(400)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.search.getBrandLandingPages({
-                id: "id",
-            });
-        }).rejects.toThrow(spyglass.BadRequestError);
-    });
-
-    test("getBrandLandingPages (3)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
-
-        server
-            .mockEndpoint()
-            .get("/account/id/landing-pages")
-            .respondWith()
-            .statusCode(401)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.search.getBrandLandingPages({
-                id: "id",
-            });
-        }).rejects.toThrow(spyglass.UnauthorizedError);
-    });
-
-    test("getBrandLandingPages (4)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
-
-        server
-            .mockEndpoint()
-            .get("/account/id/landing-pages")
-            .respondWith()
-            .statusCode(402)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.search.getBrandLandingPages({
-                id: "id",
-            });
-        }).rejects.toThrow(spyglass.PaymentRequiredError);
-    });
-
-    test("getBrandLandingPages (5)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
-
-        server
-            .mockEndpoint()
-            .get("/account/id/landing-pages")
-            .respondWith()
-            .statusCode(403)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.search.getBrandLandingPages({
-                id: "id",
-            });
-        }).rejects.toThrow(spyglass.ForbiddenError);
-    });
-
-    test("getBrandLandingPages (6)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
-
-        server
-            .mockEndpoint()
-            .get("/account/id/landing-pages")
-            .respondWith()
-            .statusCode(404)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.search.getBrandLandingPages({
-                id: "id",
-            });
-        }).rejects.toThrow(spyglass.NotFoundError);
-    });
-
-    test("getBrandLandingPages (7)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
-
-        server
-            .mockEndpoint()
-            .get("/account/id/landing-pages")
-            .respondWith()
-            .statusCode(405)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.search.getBrandLandingPages({
-                id: "id",
-            });
-        }).rejects.toThrow(spyglass.MethodNotAllowedError);
-    });
-
-    test("getBrandLandingPages (8)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
-
-        server
-            .mockEndpoint()
-            .get("/account/id/landing-pages")
-            .respondWith()
-            .statusCode(429)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.search.getBrandLandingPages({
-                id: "id",
-            });
-        }).rejects.toThrow(spyglass.TooManyRequestsError);
-    });
-
-    test("getBrandLandingPages (9)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
-
-        server
-            .mockEndpoint()
-            .get("/account/id/landing-pages")
-            .respondWith()
-            .statusCode(500)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.search.getBrandLandingPages({
-                id: "id",
-            });
+            return await client.getCreditUsage();
         }).rejects.toThrow(spyglass.InternalServerError);
     });
 
@@ -1366,7 +937,7 @@ describe("SearchClient", () => {
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.search.getComments({
+        const response = await client.getComments({
             instagramIds: ["https://www.instagram.com/p/C2xY9abcD1e/"],
             tiktokIds: ["https://www.tiktok.com/@nike/video/7234567890123456789"],
             limit: 1,
@@ -1390,7 +961,7 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.getComments();
+            return await client.getComments();
         }).rejects.toThrow(spyglass.BadRequestError);
     });
 
@@ -1410,7 +981,7 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.getComments();
+            return await client.getComments();
         }).rejects.toThrow(spyglass.UnauthorizedError);
     });
 
@@ -1430,7 +1001,7 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.getComments();
+            return await client.getComments();
         }).rejects.toThrow(spyglass.PaymentRequiredError);
     });
 
@@ -1450,7 +1021,7 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.getComments();
+            return await client.getComments();
         }).rejects.toThrow(spyglass.ForbiddenError);
     });
 
@@ -1470,7 +1041,7 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.getComments();
+            return await client.getComments();
         }).rejects.toThrow(spyglass.MethodNotAllowedError);
     });
 
@@ -1490,7 +1061,7 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.getComments();
+            return await client.getComments();
         }).rejects.toThrow(spyglass.ContentTooLargeError);
     });
 
@@ -1510,7 +1081,7 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.getComments();
+            return await client.getComments();
         }).rejects.toThrow(spyglass.TooManyRequestsError);
     });
 
@@ -1530,7 +1101,7 @@ describe("SearchClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.search.getComments();
+            return await client.getComments();
         }).rejects.toThrow(spyglass.InternalServerError);
     });
 });

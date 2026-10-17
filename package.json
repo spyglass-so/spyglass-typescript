@@ -1,6 +1,6 @@
 {
     "name": "@spyglasshq/sdk",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "private": false,
     "repository": {
         "type": "git",
@@ -22,17 +22,6 @@
             },
             "default": "./dist/cjs/index.js"
         },
-        "./search": {
-            "import": {
-                "types": "./dist/esm/api/resources/search/exports.d.mts",
-                "default": "./dist/esm/api/resources/search/exports.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/api/resources/search/exports.d.ts",
-                "default": "./dist/cjs/api/resources/search/exports.js"
-            },
-            "default": "./dist/cjs/api/resources/search/exports.js"
-        },
         "./account": {
             "import": {
                 "types": "./dist/esm/api/resources/account/exports.d.mts",
@@ -43,17 +32,6 @@
                 "default": "./dist/cjs/api/resources/account/exports.js"
             },
             "default": "./dist/cjs/api/resources/account/exports.js"
-        },
-        "./indexing": {
-            "import": {
-                "types": "./dist/esm/api/resources/indexing/exports.d.mts",
-                "default": "./dist/esm/api/resources/indexing/exports.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/api/resources/indexing/exports.d.ts",
-                "default": "./dist/cjs/api/resources/indexing/exports.js"
-            },
-            "default": "./dist/cjs/api/resources/indexing/exports.js"
         },
         "./package.json": "./package.json"
     },
