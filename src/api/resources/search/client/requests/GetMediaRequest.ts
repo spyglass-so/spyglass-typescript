@@ -7,20 +7,20 @@
  *         limit: 20
  *     }
  */
-export interface GetMediaV2Request {
+export interface GetMediaRequest {
     /** Brand id given as a platform string or uuid */
-    brandId?: GetMediaV2Request.BrandId;
+    brandId?: GetMediaRequest.BrandId;
     query?: string;
-    channel?: GetMediaV2Request.Channel.Item[];
-    format?: GetMediaV2Request.Format.Item[];
-    duration?: GetMediaV2Request.Duration.Item[];
-    status?: GetMediaV2Request.Status;
-    categories?: GetMediaV2Request.Categories.Item[];
+    channel?: GetMediaRequest.Channel.Item[];
+    format?: GetMediaRequest.Format.Item[];
+    duration?: GetMediaRequest.Duration.Item[];
+    status?: GetMediaRequest.Status;
+    categories?: GetMediaRequest.Categories.Item[];
     taxonomy?: string[];
-    funnelStage?: GetMediaV2Request.FunnelStage.Item[];
-    language?: GetMediaV2Request.Language.Item[];
+    funnelStage?: GetMediaRequest.FunnelStage.Item[];
+    language?: GetMediaRequest.Language.Item[];
     location?: string[];
-    datePreset?: GetMediaV2Request.DatePreset;
+    datePreset?: GetMediaRequest.DatePreset;
     startDate?: string;
     endDate?: string;
     minDaysRun?: number;
@@ -28,16 +28,16 @@ export interface GetMediaV2Request {
     minViewCount?: number;
     maxViewCount?: number;
     landingPage?: string;
-    landingPageMatch?: GetMediaV2Request.LandingPageMatch;
+    landingPageMatch?: GetMediaRequest.LandingPageMatch;
     lowImpressions?: boolean;
     partnershipAd?: boolean;
     crossposted?: boolean;
-    sortBy?: GetMediaV2Request.SortBy;
+    sortBy?: GetMediaRequest.SortBy;
     limit?: number;
     offset?: number;
 }
 
-export namespace GetMediaV2Request {
+export namespace GetMediaRequest {
     /**
      * Brand id given as a platform string or uuid
      */

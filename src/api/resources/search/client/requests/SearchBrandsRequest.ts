@@ -7,8 +7,8 @@
  *         limit: 3
  *     }
  */
-export interface SearchBrandsV2Request {
-    brandIds?: SearchBrandsV2Request.BrandIds.Item[];
+export interface SearchBrandsRequest {
+    brandIds?: SearchBrandsRequest.BrandIds.Item[];
     names?: string[];
     igUsername?: string;
     tiktokUsername?: string;
@@ -16,13 +16,13 @@ export interface SearchBrandsV2Request {
     location?: string;
     minFollowers?: number;
     maxFollowers?: number;
-    sortBy?: SearchBrandsV2Request.SortBy;
+    sortBy?: SearchBrandsRequest.SortBy;
     offset?: number;
     limit?: number;
     taxonomy?: string[];
 }
 
-export namespace SearchBrandsV2Request {
+export namespace SearchBrandsRequest {
     export type BrandIds = BrandIds.Item[];
 
     export namespace BrandIds {

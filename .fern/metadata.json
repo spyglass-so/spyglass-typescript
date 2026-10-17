@@ -3,11 +3,31 @@
     "generatorName": "fernapi/fern-typescript-sdk",
     "generatorVersion": "3.107.3",
     "generatorConfig": {
-        "namespaceExport": "Spyglass"
+        "naming": {
+            "namespace": "spyglass",
+            "client": "Spyglass"
+        },
+        "packageJson": {
+            "description": "Official TypeScript & Node.js SDK for the Spyglass API — search brands, creators, and the ads they run.",
+            "license": "MIT",
+            "homepage": "https://docs.spyglass.so",
+            "keywords": [
+                "spyglass",
+                "ads",
+                "ad-intelligence",
+                "social-media",
+                "creators",
+                "brands",
+                "marketing",
+                "tiktok",
+                "instagram",
+                "meta-ads"
+            ]
+        }
     },
     "originGitCommit": "08206a8acc2c9b063ce9deed95ca70af1d5c6f30",
     "originGitCommitIsDirty": true,
     "invokedBy": "manual",
-    "requestedVersion": "0.1.0",
-    "sdkVersion": "0.1.0"
+    "requestedVersion": "0.1.2",
+    "sdkVersion": "0.1.2"
 }

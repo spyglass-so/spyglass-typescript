@@ -1,6 +1,6 @@
 # Reference
 ## Search
-<details><summary><code>client.search.<a href="/src/api/resources/search/client/Client.ts">searchBrandsV2</a>({ ...params }) -> Spyglass.SearchBrandsV2Response</code></summary>
+<details><summary><code>client.search.<a href="/src/api/resources/search/client/Client.ts">brands</a>({ ...params }) -> spyglass.SearchBrandsResponse</code></summary>
 <dl>
 <dd>
 
@@ -12,7 +12,10 @@
 <dl>
 <dd>
 
-Find brands (advertisers) only.
+Find brands.
+Search semantically with `query`, or look them up by name, id, or
+social handle. Either way, you can also narrow the results with
+filters such as product taxonomy, location, and follower count.
 
 Send one search field. Each field is its own mode:
 
@@ -59,7 +62,7 @@ row even when nothing matches.
 <dd>
 
 ```typescript
-await client.search.searchBrandsV2({
+await client.search.brands({
     names: ["Nike"],
     limit: 3
 });
@@ -78,7 +81,7 @@ await client.search.searchBrandsV2({
 <dl>
 <dd>
 
-**request:** `Spyglass.SearchBrandsV2Request` 
+**request:** `spyglass.SearchBrandsRequest` 
     
 </dd>
 </dl>
@@ -98,7 +101,7 @@ await client.search.searchBrandsV2({
 </dl>
 </details>
 
-<details><summary><code>client.search.<a href="/src/api/resources/search/client/Client.ts">creators</a>({ ...params }) -> Spyglass.SearchCreatorsResponse</code></summary>
+<details><summary><code>client.search.<a href="/src/api/resources/search/client/Client.ts">creators</a>({ ...params }) -> spyglass.SearchCreatorsResponse</code></summary>
 <dl>
 <dd>
 
@@ -110,9 +113,10 @@ await client.search.searchBrandsV2({
 <dl>
 <dd>
 
-Find creators only.
-
-They also accept profile filters: `gender`, `ageRange`, `ethnicity`, `location` and `language`.
+Find creators.
+Search semantically with `query`, or look them up by name, id, or
+social handle. Either way, you can also narrow the results with
+filters such as audience profile, location, and follower count.
 
 Send one search field. Each field is its own mode:
 
@@ -179,7 +183,7 @@ await client.search.creators({
 <dl>
 <dd>
 
-**request:** `Spyglass.SearchCreatorsRequest` 
+**request:** `spyglass.SearchCreatorsRequest` 
     
 </dd>
 </dl>
@@ -199,7 +203,7 @@ await client.search.creators({
 </dl>
 </details>
 
-<details><summary><code>client.search.<a href="/src/api/resources/search/client/Client.ts">getAccount</a>({ ...params }) -> Spyglass.GetAccountResponse</code></summary>
+<details><summary><code>client.search.<a href="/src/api/resources/search/client/Client.ts">getAccount</a>({ ...params }) -> spyglass.GetAccountResponse</code></summary>
 <dl>
 <dd>
 
@@ -250,7 +254,7 @@ await client.search.getAccount({
 <dl>
 <dd>
 
-**request:** `Spyglass.GetAccountRequest` 
+**request:** `spyglass.GetAccountRequest` 
     
 </dd>
 </dl>
@@ -270,7 +274,7 @@ await client.search.getAccount({
 </dl>
 </details>
 
-<details><summary><code>client.search.<a href="/src/api/resources/search/client/Client.ts">taxonomies</a>({ ...params }) -> Spyglass.SearchTaxonomiesResponse</code></summary>
+<details><summary><code>client.search.<a href="/src/api/resources/search/client/Client.ts">taxonomies</a>({ ...params }) -> spyglass.SearchTaxonomiesResponse</code></summary>
 <dl>
 <dd>
 
@@ -320,7 +324,7 @@ await client.search.taxonomies({
 <dl>
 <dd>
 
-**request:** `Spyglass.SearchTaxonomiesRequest` 
+**request:** `spyglass.SearchTaxonomiesRequest` 
     
 </dd>
 </dl>
@@ -340,7 +344,7 @@ await client.search.taxonomies({
 </dl>
 </details>
 
-<details><summary><code>client.search.<a href="/src/api/resources/search/client/Client.ts">getMediaV2</a>({ ...params }) -> Spyglass.GetMediaV2Response</code></summary>
+<details><summary><code>client.search.<a href="/src/api/resources/search/client/Client.ts">getMedia</a>({ ...params }) -> spyglass.GetMediaResponse</code></summary>
 <dl>
 <dd>
 
@@ -374,7 +378,7 @@ case `count` is 0 but you are charged for one row.
 <dd>
 
 ```typescript
-await client.search.getMediaV2({
+await client.search.getMedia({
     query: "comfort-focused video ads",
     limit: 20
 });
@@ -393,7 +397,7 @@ await client.search.getMediaV2({
 <dl>
 <dd>
 
-**request:** `Spyglass.GetMediaV2Request` 
+**request:** `spyglass.GetMediaRequest` 
     
 </dd>
 </dl>
@@ -413,7 +417,7 @@ await client.search.getMediaV2({
 </dl>
 </details>
 
-<details><summary><code>client.search.<a href="/src/api/resources/search/client/Client.ts">getBrandMediaInsights</a>({ ...params }) -> Spyglass.GetBrandMediaInsightsResponse</code></summary>
+<details><summary><code>client.search.<a href="/src/api/resources/search/client/Client.ts">getBrandMediaInsights</a>({ ...params }) -> spyglass.GetBrandMediaInsightsResponse</code></summary>
 <dl>
 <dd>
 
@@ -467,7 +471,7 @@ await client.search.getBrandMediaInsights({
 <dl>
 <dd>
 
-**request:** `Spyglass.GetBrandMediaInsightsRequest` 
+**request:** `spyglass.GetBrandMediaInsightsRequest` 
     
 </dd>
 </dl>
@@ -487,7 +491,7 @@ await client.search.getBrandMediaInsights({
 </dl>
 </details>
 
-<details><summary><code>client.search.<a href="/src/api/resources/search/client/Client.ts">getBrandLandingPages</a>({ ...params }) -> Spyglass.GetBrandLandingPagesResponse</code></summary>
+<details><summary><code>client.search.<a href="/src/api/resources/search/client/Client.ts">getBrandLandingPages</a>({ ...params }) -> spyglass.GetBrandLandingPagesResponse</code></summary>
 <dl>
 <dd>
 
@@ -536,7 +540,7 @@ await client.search.getBrandLandingPages({
 <dl>
 <dd>
 
-**request:** `Spyglass.GetBrandLandingPagesRequest` 
+**request:** `spyglass.GetBrandLandingPagesRequest` 
     
 </dd>
 </dl>
@@ -556,7 +560,7 @@ await client.search.getBrandLandingPages({
 </dl>
 </details>
 
-<details><summary><code>client.search.<a href="/src/api/resources/search/client/Client.ts">getComments</a>({ ...params }) -> Spyglass.GetCommentsResponse</code></summary>
+<details><summary><code>client.search.<a href="/src/api/resources/search/client/Client.ts">getComments</a>({ ...params }) -> spyglass.GetCommentsResponse</code></summary>
 <dl>
 <dd>
 
@@ -625,7 +629,7 @@ await client.search.getComments({
 <dl>
 <dd>
 
-**request:** `Spyglass.GetCommentsRequest` 
+**request:** `spyglass.GetCommentsRequest` 
     
 </dd>
 </dl>
@@ -646,7 +650,7 @@ await client.search.getComments({
 </details>
 
 ## Account
-<details><summary><code>client.account.<a href="/src/api/resources/account/client/Client.ts">getCreditUsage</a>() -> Spyglass.GetCreditUsageResponse</code></summary>
+<details><summary><code>client.account.<a href="/src/api/resources/account/client/Client.ts">getCreditUsage</a>() -> spyglass.GetCreditUsageResponse</code></summary>
 <dl>
 <dd>
 
@@ -708,7 +712,7 @@ await client.account.getCreditUsage();
 </details>
 
 ## Indexing
-<details><summary><code>client.indexing.<a href="/src/api/resources/indexing/client/Client.ts">indexBrand</a>({ ...params }) -> Spyglass.IndexBrandResponse</code></summary>
+<details><summary><code>client.indexing.<a href="/src/api/resources/indexing/client/Client.ts">indexBrand</a>({ ...params }) -> spyglass.IndexBrandResponse</code></summary>
 <dl>
 <dd>
 
@@ -762,7 +766,7 @@ await client.indexing.indexBrand({
 <dl>
 <dd>
 
-**request:** `Spyglass.IndexBrandRequest` 
+**request:** `spyglass.IndexBrandRequest` 
     
 </dd>
 </dl>
@@ -782,7 +786,7 @@ await client.indexing.indexBrand({
 </dl>
 </details>
 
-<details><summary><code>client.indexing.<a href="/src/api/resources/indexing/client/Client.ts">indexBrandStatus</a>({ ...params }) -> Spyglass.IndexBrandStatusResponse</code></summary>
+<details><summary><code>client.indexing.<a href="/src/api/resources/indexing/client/Client.ts">indexBrandStatus</a>({ ...params }) -> spyglass.IndexBrandStatusResponse</code></summary>
 <dl>
 <dd>
 
@@ -830,7 +834,7 @@ await client.indexing.indexBrandStatus({
 <dl>
 <dd>
 
-**request:** `Spyglass.IndexBrandStatusRequest` 
+**request:** `spyglass.IndexBrandStatusRequest` 
     
 </dd>
 </dl>

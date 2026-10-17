@@ -7,7 +7,7 @@ import * as core from "../../../../core/index.js";
 import * as environments from "../../../../environments.js";
 import { handleNonStatusCodeError } from "../../../../errors/handleNonStatusCodeError.js";
 import * as errors from "../../../../errors/index.js";
-import * as Spyglass from "../../../index.js";
+import * as spyglass from "../../../index.js";
 
 export declare namespace AccountClient {
     export type Options = BaseClientOptions;
@@ -36,13 +36,13 @@ export class AccountClient {
      *
      * @param {AccountClient.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link Spyglass.BadRequestError}
-     * @throws {@link Spyglass.UnauthorizedError}
-     * @throws {@link Spyglass.PaymentRequiredError}
-     * @throws {@link Spyglass.ForbiddenError}
-     * @throws {@link Spyglass.MethodNotAllowedError}
-     * @throws {@link Spyglass.TooManyRequestsError}
-     * @throws {@link Spyglass.InternalServerError}
+     * @throws {@link spyglass.BadRequestError}
+     * @throws {@link spyglass.UnauthorizedError}
+     * @throws {@link spyglass.PaymentRequiredError}
+     * @throws {@link spyglass.ForbiddenError}
+     * @throws {@link spyglass.MethodNotAllowedError}
+     * @throws {@link spyglass.TooManyRequestsError}
+     * @throws {@link spyglass.InternalServerError}
      * @throws {@link errors.SpyglassError}
      * @throws {@link errors.SpyglassTimeoutError}
      *
@@ -51,13 +51,13 @@ export class AccountClient {
      */
     public getCreditUsage(
         requestOptions?: AccountClient.RequestOptions,
-    ): core.HttpResponsePromise<Spyglass.GetCreditUsageResponse> {
+    ): core.HttpResponsePromise<spyglass.GetCreditUsageResponse> {
         return core.HttpResponsePromise.fromPromise(this.__getCreditUsage(requestOptions));
     }
 
     private async __getCreditUsage(
         requestOptions?: AccountClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Spyglass.GetCreditUsageResponse>> {
+    ): Promise<core.WithRawResponse<spyglass.GetCreditUsageResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -81,38 +81,38 @@ export class AccountClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Spyglass.GetCreditUsageResponse, rawResponse: _response.rawResponse };
+            return { data: _response.body as spyglass.GetCreditUsageResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Spyglass.BadRequestError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.BadRequestError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 401:
-                    throw new Spyglass.UnauthorizedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.UnauthorizedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 402:
-                    throw new Spyglass.PaymentRequiredError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.PaymentRequiredError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 403:
-                    throw new Spyglass.ForbiddenError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.ForbiddenError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 405:
-                    throw new Spyglass.MethodNotAllowedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.MethodNotAllowedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 429:
-                    throw new Spyglass.TooManyRequestsError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.TooManyRequestsError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 500:
-                    throw new Spyglass.InternalServerError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.InternalServerError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 default:
