@@ -76,12 +76,12 @@ bun add @spyglasshq/sdk
 ## Quickstart
 
 1. Create an API key in **[Settings → API](https://app.spyglass.so)**. Keys start with `sg_live_` and are shown once.
-2. Initialize `SpyglassClient` and make your first call:
+2. Initialize `Spyglass` and make your first call:
 
 ```ts
-import { SpyglassClient } from "@spyglasshq/sdk";
+import { Spyglass } from "@spyglasshq/sdk";
 
-const client = new SpyglassClient({
+const client = new Spyglass({
   token: process.env.SPYGLASS_API_KEY!,
 });
 
@@ -267,18 +267,18 @@ Full method signatures and parameter types are available in [`reference.md`](htt
 
 ## TypeScript Types
 
-All request and response types are exported under the `Spyglass` namespace:
+All request and response types are exported under the `spyglass` namespace:
 
 ```ts
-import { Spyglass } from "@spyglasshq/sdk";
+import { spyglass } from "@spyglasshq/sdk";
 
-const request: Spyglass.GetMediaV2Request = {
+const request: spyglass.GetMediaV2Request = {
   query: "summer sale",
   channel: ["META_AD"],
   limit: 25,
 };
 
-type MediaItem = Spyglass.GetMediaV2Response.Media.Item;
+type MediaItem = spyglass.GetMediaV2Response.Media.Item;
 ```
 
 ## Error Handling
@@ -349,9 +349,9 @@ import { AccountClient } from "@spyglasshq/sdk/account";
 Enable debug or info logging on the client:
 
 ```ts
-import { SpyglassClient, logging } from "@spyglasshq/sdk";
+import { Spyglass, logging } from "@spyglasshq/sdk";
 
-const client = new SpyglassClient({
+const client = new Spyglass({
   token: process.env.SPYGLASS_API_KEY!,
   logging: {
     level: logging.LogLevel.Debug,
