@@ -48,7 +48,7 @@
   - [Discover Creators](#3-discover-creators)
   - [Creative Insights & Landing Pages](#4-creative-insights--landing-pages)
   - [Post Comments](#5-post-comments)
-  - [Index a New Brand](#6-index-a-new-brand)
+  - [Index a New Account](#6-index-a-new-account)
   - [Check Team Credit Usage](#7-check-team-credit-usage)
 - [API Reference Overview](#api-reference-overview)
 - [TypeScript Types](#typescript-types)
@@ -86,7 +86,7 @@ const client = new Spyglass({
 });
 
 // 1. Resolve a brand by name
-const { brands } = await client.search.brands({
+const { brands } = await client.searchBrands({
   names: ["Nike"],
   limit: 1,
 });
@@ -95,7 +95,7 @@ const brand = brands[0];
 
 if (brand) {
   // 2. Search the creatives that brand is running
-  const { media } = await client.search.getMedia({
+  const { media } = await client.searchMedia({
     brandId: brand.id,
     query: "marathon running shoes comfort",
     limit: 10,
@@ -124,13 +124,13 @@ Search advertisers by name (`names`), social handle (`igUsername`, `tiktokUserna
 
 ```ts
 // Fuzzy name lookup
-const byName = await client.search.brands({
+const byName = await client.searchBrands({
   names: ["Athletic Greens", "AG1"],
   limit: 5,
 });
 
 // Natural-language discovery
-const byBrief = await client.search.brands({
+const byBrief = await client.searchBrands({
   query: "DTC electrolyte and hydration powder brands",
   limit: 10,
 });
@@ -142,16 +142,16 @@ Pass `brandId` to inspect a specific brand or creator's creatives, or omit `bran
 
 ```ts
 // Optional: look up valid product taxonomy paths first (free call)
-const { taxonomies } = await client.search.taxonomies({
+const { paths } = await client.searchTaxonomies({
   query: "running shoes",
 });
 
-const { media, count } = await client.search.getMedia({
+const { media, count } = await client.searchMedia({
   query: "UGC founder story explaining product benefits",
   channel: ["META_AD", "TIKTOK"],
   format: ["VIDEO"],
   status: "ACTIVE",
-  taxonomy: taxonomies.slice(0, 2),
+  taxonomy: paths.slice(0, 2),
   minDaysRun: 14,
   limit: 20,
   offset: 0,
@@ -168,23 +168,23 @@ Each item in `media` includes creative intelligence extracted by Spyglass:
 Search creators by handle, name, or natural-language brief, and filter by demographic and profile attributes (`gender`, `ageRange`, `ethnicity`, `location`, `language`):
 
 ```ts
-const { creators } = await client.search.creators({
+const { creators } = await client.searchCreators({
   query: "skincare routine and dermatology tips",
   gender: "female",
-  ageRange: ["25-34"],
-  location: ["US"],
-  language: ["en"],
+  ageRange: "25-34",
+  location: "United States",
+  language: "English",
   limit: 20,
 });
 ```
 
 ### 4. Creative Insights & Landing Pages
 
-Pull clustered creative themes (`HOOK`, `USP`, `PERSONA`, `MEDIA_MIX`) and ranked destination landing pages for any brand:
+Pull clustered creative themes (`HOOK`, `USP`, `PERSONA`, `MEDIA_MIX`) and ranked destination landing pages for any account:
 
 ```ts
 // Ranked hooks + weekly volume breakdown over the last 90 days
-const insights = await client.search.getBrandMediaInsights({
+const insights = await client.account.insights({
   id: brand.id,
   type: "HOOK",
   maxDaysBack: 90,
@@ -192,7 +192,7 @@ const insights = await client.search.getBrandMediaInsights({
 });
 
 // Top landing pages where the brand sends ad traffic
-const { landingPages } = await client.search.getBrandLandingPages({
+const { landingPages } = await client.account.landingPages({
   id: brand.id,
   showInactive: "false",
   limit: 20,
@@ -204,19 +204,19 @@ const { landingPages } = await client.search.getBrandLandingPages({
 Fetch public comments from Instagram posts/reels (by shortcode or URL) and TikTok videos (by video ID or URL):
 
 ```ts
-const { posts } = await client.search.getComments({
+const { posts } = await client.getComments({
   instagramIds: ["https://www.instagram.com/reel/C2xY9abcD1e/"],
   tiktokIds: ["https://www.tiktok.com/@nike/video/7234567890123456789"],
   limit: 1, // comment pages per post
 });
 ```
 
-### 6. Index a New Brand
+### 6. Index a New Account
 
-If Spyglass doesn't have a brand yet, submit its website or social profile URL (`POST /account/index` is free) and poll until `status` is `"ready"`:
+If Spyglass doesn't have a brand or creator yet, submit its website or social profile URL (`POST /account/index` is free) and poll until `status` is `"ready"`:
 
 ```ts
-const indexed = await client.indexing.indexBrand({
+const indexed = await client.account.index({
   websiteUrl: "https://www.on.com",
 });
 
@@ -224,12 +224,12 @@ const indexed = await client.indexing.indexBrand({
 let status = indexed.status;
 while (status === "indexing") {
   await new Promise((resolve) => setTimeout(resolve, 3000));
-  const check = await client.indexing.indexBrandStatus({ id: indexed.brandId });
+  const check = await client.account.indexStatus({ id: indexed.brandId });
   status = check.status;
 }
 
 if (status === "ready" || status === "already_exists") {
-  const account = await client.search.getAccount({ id: indexed.brandId });
+  const account = await client.account.get({ id: indexed.brandId });
   console.log("Indexed account:", account.name);
 }
 ```
@@ -239,7 +239,7 @@ if (status === "ready" || status === "already_exists") {
 Check your team's remaining monthly credits and current billing window (free call):
 
 ```ts
-const usage = await client.account.getCreditUsage();
+const usage = await client.getCreditUsage();
 console.log(`Remaining: ${usage.remainingCredits} / ${usage.planCredits}`);
 ```
 
@@ -249,17 +249,17 @@ console.log(`Remaining: ${usage.remainingCredits} / ${usage.planCredits}`);
 
 | SDK Method | HTTP Endpoint | Cost | Rate Limit |
 | --- | --- | --- | --- |
-| `client.search.brands(req)` | `POST /brands` | $0.0020 / brand returned | 120 / min |
-| `client.search.creators(req)` | `POST /creators` | $0.0020 / creator returned | 120 / min |
-| `client.search.getAccount({ id })` | `GET /account/{id}` | $0.0020 / account returned | 120 / min |
-| `client.search.getMedia(req)` | `POST /media` | $0.0010 / creative returned | 120 / min |
-| `client.search.taxonomies({ query })` | `GET /taxonomies` | Free | 120 / min |
-| `client.search.getBrandMediaInsights(req)` | `GET /account/{id}/insights` | $0.0010 / cluster returned | 120 / min |
-| `client.search.getBrandLandingPages(req)` | `GET /account/{id}/landing-pages` | $0.0050 / landing page returned | 120 / min |
-| `client.search.getComments(req)` | `POST /comments` | $0.0100 / live page fetched | 20 / min |
-| `client.indexing.indexBrand(req)` | `POST /account/index` | Free | 50 / min |
-| `client.indexing.indexBrandStatus({ id })` | `GET /account/{id}/index-status` | Free | 300 / min |
-| `client.account.getCreditUsage()` | `GET /team/credit-usage` | Free | 120 / min |
+| `client.searchBrands(req)` | `POST /brands` | $0.0020 / brand returned | 120 / min |
+| `client.searchCreators(req)` | `POST /creators` | $0.0020 / creator returned | 120 / min |
+| `client.searchMedia(req)` | `POST /media` | $0.0010 / creative returned | 120 / min |
+| `client.searchTaxonomies({ query })` | `GET /taxonomies` | Free | 120 / min |
+| `client.getComments(req)` | `POST /comments` | $0.0100 / live page fetched | 20 / min |
+| `client.account.get({ id })` | `GET /account/{id}` | $0.0020 / account returned | 120 / min |
+| `client.account.insights(req)` | `GET /account/{id}/insights` | $0.0010 / cluster returned | 120 / min |
+| `client.account.landingPages(req)` | `GET /account/{id}/landing-pages` | $0.0050 / landing page returned | 120 / min |
+| `client.account.index(req)` | `POST /account/index` | Free | 50 / min |
+| `client.account.indexStatus({ id })` | `GET /account/{id}/index-status` | Free | 300 / min |
+| `client.getCreditUsage()` | `GET /team/credit-usage` | Free | 120 / min |
 
 Full method signatures and parameter types are available in [`reference.md`](https://github.com/spyglass-so/spyglass-typescript/blob/main/reference.md) and at [docs.spyglass.so](https://docs.spyglass.so).
 
@@ -272,13 +272,13 @@ All request and response types are exported under the `spyglass` namespace:
 ```ts
 import { spyglass } from "@spyglasshq/sdk";
 
-const request: spyglass.GetMediaRequest = {
+const request: spyglass.SearchMediaRequest = {
   query: "summer sale",
   channel: ["META_AD"],
   limit: 25,
 };
 
-type MediaItem = spyglass.GetMediaResponse.Media.Item;
+type MediaItem = spyglass.SearchMediaResponse.Media.Item;
 ```
 
 ## Error Handling
@@ -289,7 +289,7 @@ When the API returns a non-2xx status code (`400`, `401`, `402` out of credits, 
 import { SpyglassError } from "@spyglasshq/sdk";
 
 try {
-  await client.search.brands({ names: ["Nike"], limit: 5 });
+  await client.searchBrands({ names: ["Nike"], limit: 5 });
 } catch (err) {
   if (err instanceof SpyglassError) {
     console.error("Status:", err.statusCode);
@@ -310,7 +310,7 @@ The SDK defaults to a **60-second timeout** and **2 automatic retries** with exp
 ```ts
 const controller = new AbortController();
 
-const response = await client.search.getMedia(
+const response = await client.searchMedia(
   { query: "protein bar", limit: 10 },
   {
     timeoutInSeconds: 30,
@@ -326,8 +326,8 @@ const response = await client.search.getMedia(
 Chain `.withRawResponse()` on any request promise to inspect HTTP status codes and headers alongside parsed data:
 
 ```ts
-const { data, rawResponse } = await client.search
-  .brands({ names: ["Nike"], limit: 1 })
+const { data, rawResponse } = await client
+  .searchBrands({ names: ["Nike"], limit: 1 })
   .withRawResponse();
 
 console.log(data.brands);
@@ -336,11 +336,9 @@ console.log(rawResponse.headers.get("retry-after"));
 
 ### Tree-Shakeable Subpackage Imports
 
-Import individual resource clients directly for minimal bundle sizes:
+Import the `account` resource client directly for minimal bundle sizes:
 
 ```ts
-import { SearchClient } from "@spyglasshq/sdk/search";
-import { IndexingClient } from "@spyglasshq/sdk/indexing";
 import { AccountClient } from "@spyglasshq/sdk/account";
 ```
 
