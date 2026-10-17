@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./assets/wordmark.svg" alt="Spyglass" width="360">
+  <img src="https://raw.githubusercontent.com/spyglass-so/spyglass-typescript/main/assets/wordmark.svg" alt="Spyglass" width="360">
 
   <h3>The API layer for the social internet</h3>
   <p>Official TypeScript & Node.js SDK for the Spyglass API — search brands, creators, and the ads they run.</p>
@@ -18,7 +18,7 @@
 <br>
 
 <div align="center">
-  <a href="./LICENSE">
+  <a href="https://github.com/spyglass-so/spyglass-typescript/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/spyglass-so/spyglass-typescript" alt="License">
   </a>
   <a href="https://github.com/spyglass-so/spyglass-typescript/stargazers">
@@ -34,7 +34,32 @@
 
 ---
 
-Official TypeScript client for the [Spyglass API](https://docs.spyglass.so). Server-side only. Looking for Python? See [`spyglass-so/spyglass-python`](https://github.com/spyglass-so/spyglass-python).
+**`@spyglasshq/sdk`** is the official TypeScript and Node.js client for the [Spyglass API](https://docs.spyglass.so). Resolve brands and creators, search across millions of Meta, Instagram, and TikTok creatives with natural-language briefs or structured filters, and extract hooks, personas, landing pages, and public comments.
+
+> Looking for Python? See [`spyglass-so/spyglass-python`](https://github.com/spyglass-so/spyglass-python) (`pip install spyglass-sdk`).
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Quickstart](#quickstart)
+- [Core Workflows](#core-workflows)
+  - [Search Brands](#1-search-brands)
+  - [Search Ad Creatives & Social Media](#2-search-ad-creatives--social-media)
+  - [Discover Creators](#3-discover-creators)
+  - [Creative Insights & Landing Pages](#4-creative-insights--landing-pages)
+  - [Post Comments](#5-post-comments)
+  - [Index a New Brand](#6-index-a-new-brand)
+  - [Check Team Credit Usage](#7-check-team-credit-usage)
+- [API Reference Overview](#api-reference-overview)
+- [TypeScript Types](#typescript-types)
+- [Error Handling](#error-handling)
+- [Advanced Configuration](#advanced-configuration)
+  - [Retries, Timeouts & Abort Signals](#retries-timeouts--abort-signals)
+  - [Raw Response & Headers](#raw-response--headers)
+  - [Tree-Shakeable Subpackage Imports](#tree-shakeable-subpackage-imports)
+  - [Logging](#logging)
+  - [Runtime Compatibility](#runtime-compatibility)
+- [Billing & Conventions](#billing--conventions)
 
 ## Installation
 
@@ -42,11 +67,16 @@ Official TypeScript client for the [Spyglass API](https://docs.spyglass.so). Ser
 npm install @spyglasshq/sdk
 # or
 pnpm add @spyglasshq/sdk
+# or
+yarn add @spyglasshq/sdk
+# or
+bun add @spyglasshq/sdk
 ```
 
 ## Quickstart
 
-Create an API key in [Settings → API](https://app.spyglass.so). Keys start with `sg_live_` and are shown once.
+1. Create an API key in **[Settings → API](https://app.spyglass.so)**. Keys start with `sg_live_` and are shown once.
+2. Initialize `SpyglassClient` and make your first call:
 
 ```ts
 import { SpyglassClient } from "@spyglasshq/sdk";
@@ -55,7 +85,7 @@ const client = new SpyglassClient({
   token: process.env.SPYGLASS_API_KEY!,
 });
 
-// 1. Resolve a brand
+// 1. Resolve a brand by name
 const { brands } = await client.search.searchBrandsV2({
   names: ["Nike"],
   limit: 1,
@@ -64,72 +94,196 @@ const { brands } = await client.search.searchBrandsV2({
 const brand = brands[0];
 
 if (brand) {
-  // 2. Pull the creatives that brand is running
+  // 2. Search the creatives that brand is running
   const { media } = await client.search.getMediaV2({
     brandId: brand.id,
-    query: "running shoes comfort",
-    limit: 20,
+    query: "marathon running shoes comfort",
+    limit: 10,
   });
 
   for (const ad of media) {
-    console.log(ad.id, ad.hook, ad.landingPageUrl);
+    console.log({
+      id: ad.id,
+      hook: ad.hook,
+      coreAngle: ad.coreAngle,
+      targetPersona: ad.targetPersona,
+      daysRun: ad.daysRun,
+      url: ad.url,
+    });
   }
 }
 ```
 
-## What You Can Query
+---
 
-| Method | Endpoint | What it answers |
-| --- | --- | --- |
-| `client.search.searchBrandsV2(...)` | `POST /brands` | Which brand is this? Who else is in this space? |
-| `client.search.creators(...)` | `POST /creators` | Which creator is this? Who matches this audience profile? |
-| `client.search.getAccount(...)` | `GET /account/{id}` | What do we know about a brand or creator ID you already have? |
-| `client.search.getMediaV2(...)` | `POST /media` | What creatives is this account running, or what's out there for this theme? |
-| `client.search.taxonomies(...)` | `GET /taxonomies` | Which product-category paths match this phrase? |
-| `client.search.getBrandMediaInsights(...)` | `GET /account/{id}/insights` | What hooks, USPs, personas, and formats does it lean on? |
-| `client.search.getBrandLandingPages(...)` | `GET /account/{id}/landing-pages` | Where does its ad traffic go? |
-| `client.search.getComments(...)` | `POST /comments` | What are people saying on this Instagram or TikTok post? |
-| `client.indexing.indexBrand(...)` | `POST /account/index` | Index a brand we don't have yet by website or social URL. |
-| `client.indexing.indexBrandStatus(...)` | `GET /account/{id}/index-status` | Has that brand finished indexing? |
-| `client.account.getCreditUsage()` | `GET /team/credit-usage` | How many monthly credits does this team have left? |
+## Core Workflows
 
-Full parameters and response schemas are documented in [`reference.md`](./reference.md) and at [docs.spyglass.so](https://docs.spyglass.so).
+### 1. Search Brands
 
-## Indexing a New Brand
+Search advertisers by name (`names`), social handle (`igUsername`, `tiktokUsername`), known IDs (`brandIds`), or a natural-language brief (`query`). You can also combine `names` + `query` to rank a specific set of brands against a brief.
 
-If Spyglass doesn't have a brand yet, queue it by website or social profile URL and poll until `status` is `"ready"`:
+```ts
+// Fuzzy name lookup
+const byName = await client.search.searchBrandsV2({
+  names: ["Athletic Greens", "AG1"],
+  limit: 5,
+});
+
+// Natural-language discovery
+const byBrief = await client.search.searchBrandsV2({
+  query: "DTC electrolyte and hydration powder brands",
+  limit: 10,
+});
+```
+
+### 2. Search Ad Creatives & Social Media
+
+Pass `brandId` to inspect a specific brand or creator's creatives, or omit `brandId` and pass `query` to search across the entire Spyglass index. Combine semantic search with structured filters:
+
+```ts
+// Optional: look up valid product taxonomy paths first (free call)
+const { taxonomies } = await client.search.taxonomies({
+  query: "running shoes",
+});
+
+const { media, count } = await client.search.getMediaV2({
+  query: "UGC founder story explaining product benefits",
+  channel: ["META_AD", "TIKTOK"],
+  format: ["VIDEO"],
+  status: "ACTIVE",
+  taxonomy: taxonomies.slice(0, 2),
+  minDaysRun: 14,
+  limit: 20,
+  offset: 0,
+});
+```
+
+Each item in `media` includes creative intelligence extracted by Spyglass:
+- **Copy & Strategy:** `hook`, `summary`, `coreAngle`, `targetPersona`, `painPoints`, `sellingPoints`
+- **Creative Metadata:** `type` (`VIDEO`, `IMAGE`, `CAROUSEL`, `DPA`, `DCO`), `durationInSeconds`, `url`, `urls`, `thumbnailUrl`, `ugcCharacter`
+- **Distribution & Performance:** `platforms`, `startAt`, `endAt`, `daysRun`, `viewCount`, `likeCount`, `commentCount`, `impressionPercentile`
+
+### 3. Discover Creators
+
+Search creators by handle, name, or natural-language brief, and filter by demographic and profile attributes (`gender`, `ageRange`, `ethnicity`, `location`, `language`):
+
+```ts
+const { creators } = await client.search.creators({
+  query: "skincare routine and dermatology tips",
+  gender: "female",
+  ageRange: ["25-34"],
+  location: ["US"],
+  language: ["en"],
+  limit: 20,
+});
+```
+
+### 4. Creative Insights & Landing Pages
+
+Pull clustered creative themes (`HOOK`, `USP`, `PERSONA`, `MEDIA_MIX`) and ranked destination landing pages for any brand:
+
+```ts
+// Ranked hooks + weekly volume breakdown over the last 90 days
+const insights = await client.search.getBrandMediaInsights({
+  id: brand.id,
+  type: "HOOK",
+  maxDaysBack: 90,
+  limit: 10,
+});
+
+// Top landing pages where the brand sends ad traffic
+const { landingPages } = await client.search.getBrandLandingPages({
+  id: brand.id,
+  showInactive: "false",
+  limit: 20,
+});
+```
+
+### 5. Post Comments
+
+Fetch public comments from Instagram posts/reels (by shortcode or URL) and TikTok videos (by video ID or URL):
+
+```ts
+const { posts } = await client.search.getComments({
+  instagramIds: ["https://www.instagram.com/reel/C2xY9abcD1e/"],
+  tiktokIds: ["https://www.tiktok.com/@nike/video/7234567890123456789"],
+  limit: 1, // comment pages per post
+});
+```
+
+### 6. Index a New Brand
+
+If Spyglass doesn't have a brand yet, submit its website or social profile URL (`POST /account/index` is free) and poll until `status` is `"ready"`:
 
 ```ts
 const indexed = await client.indexing.indexBrand({
-  websiteUrl: "https://www.nike.com",
+  websiteUrl: "https://www.on.com",
 });
 
-if (indexed.status === "indexing") {
-  let status = indexed.status;
-  while (status === "indexing") {
-    await new Promise((r) => setTimeout(r, 3000));
-    const check = await client.indexing.indexBrandStatus({ id: indexed.brandId });
-    status = check.status;
-  }
+// "already_exists" can be queried immediately; "indexing" queues a background sync
+let status = indexed.status;
+while (status === "indexing") {
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  const check = await client.indexing.indexBrandStatus({ id: indexed.brandId });
+  status = check.status;
+}
+
+if (status === "ready" || status === "already_exists") {
+  const account = await client.search.getAccount({ id: indexed.brandId });
+  console.log("Indexed account:", account.name);
 }
 ```
 
-## Request & Response Types
+### 7. Check Team Credit Usage
+
+Check your team's remaining monthly credits and current billing window (free call):
+
+```ts
+const usage = await client.account.getCreditUsage();
+console.log(`Remaining: ${usage.remainingCredits} / ${usage.planCredits}`);
+```
+
+---
+
+## API Reference Overview
+
+| SDK Method | HTTP Endpoint | Cost | Rate Limit |
+| --- | --- | --- | --- |
+| `client.search.searchBrandsV2(req)` | `POST /brands` | $0.0020 / brand returned | 120 / min |
+| `client.search.creators(req)` | `POST /creators` | $0.0020 / creator returned | 120 / min |
+| `client.search.getAccount({ id })` | `GET /account/{id}` | $0.0020 / account returned | 120 / min |
+| `client.search.getMediaV2(req)` | `POST /media` | $0.0010 / creative returned | 120 / min |
+| `client.search.taxonomies({ query })` | `GET /taxonomies` | Free | 120 / min |
+| `client.search.getBrandMediaInsights(req)` | `GET /account/{id}/insights` | $0.0010 / cluster returned | 120 / min |
+| `client.search.getBrandLandingPages(req)` | `GET /account/{id}/landing-pages` | $0.0050 / landing page returned | 120 / min |
+| `client.search.getComments(req)` | `POST /comments` | $0.0100 / live page fetched | 20 / min |
+| `client.indexing.indexBrand(req)` | `POST /account/index` | Free | 50 / min |
+| `client.indexing.indexBrandStatus({ id })` | `GET /account/{id}/index-status` | Free | 300 / min |
+| `client.account.getCreditUsage()` | `GET /team/credit-usage` | Free | 120 / min |
+
+Full method signatures and parameter types are available in [`reference.md`](https://github.com/spyglass-so/spyglass-typescript/blob/main/reference.md) and at [docs.spyglass.so](https://docs.spyglass.so).
+
+---
+
+## TypeScript Types
 
 All request and response types are exported under the `Spyglass` namespace:
 
 ```ts
 import { Spyglass } from "@spyglasshq/sdk";
 
-const request: Spyglass.SearchBrandsV2Request = {
-  names: ["Nike"],
-  limit: 5,
+const request: Spyglass.GetMediaV2Request = {
+  query: "summer sale",
+  channel: ["META_AD"],
+  limit: 25,
 };
+
+type MediaItem = Spyglass.GetMediaV2Response.Media.Item;
 ```
 
 ## Error Handling
 
-Non-2xx responses throw a `SpyglassError` with status code, parsed body, and raw response metadata:
+When the API returns a non-2xx status code (`400`, `401`, `402` out of credits, `404`, `429` rate limit, or `5xx`), the SDK throws a `SpyglassError` (or a status-specific subclass such as `PaymentRequiredError` or `TooManyRequestsError`):
 
 ```ts
 import { SpyglassError } from "@spyglasshq/sdk";
@@ -138,31 +292,38 @@ try {
   await client.search.searchBrandsV2({ names: ["Nike"], limit: 5 });
 } catch (err) {
   if (err instanceof SpyglassError) {
-    console.error(err.statusCode, err.message, err.body);
+    console.error("Status:", err.statusCode);
+    console.error("Message:", err.message);
+    console.error("Body:", err.body);
   }
 }
 ```
 
-## Advanced Options
+---
 
-### Retries & Timeouts
+## Advanced Configuration
 
-Requests default to a 60-second timeout and up to 2 automatic retries with exponential backoff on `408`, `429`, and `5xx` responses. Override per request:
+### Retries, Timeouts & Abort Signals
+
+The SDK defaults to a **60-second timeout** and **2 automatic retries** with exponential backoff on `408`, `429`, and `5xx` responses. You can configure these on the client or override them per request:
 
 ```ts
-const response = await client.search.searchBrandsV2(
-  { names: ["Nike"], limit: 5 },
+const controller = new AbortController();
+
+const response = await client.search.getMediaV2(
+  { query: "protein bar", limit: 10 },
   {
     timeoutInSeconds: 30,
     maxRetries: 3,
     abortSignal: controller.signal,
+    headers: { "X-Custom-Header": "value" },
   },
 );
 ```
 
 ### Raw Response & Headers
 
-Use `.withRawResponse()` to inspect HTTP headers (such as rate-limit or credit headers):
+Chain `.withRawResponse()` on any request promise to inspect HTTP status codes and headers alongside parsed data:
 
 ```ts
 const { data, rawResponse } = await client.search
@@ -170,36 +331,57 @@ const { data, rawResponse } = await client.search
   .withRawResponse();
 
 console.log(data.brands);
-console.log(rawResponse.headers);
+console.log(rawResponse.headers.get("retry-after"));
 ```
 
-### Subpackage Imports
+### Tree-Shakeable Subpackage Imports
 
-Import individual resource clients directly for smaller bundle sizes:
+Import individual resource clients directly for minimal bundle sizes:
 
 ```ts
 import { SearchClient } from "@spyglasshq/sdk/search";
+import { IndexingClient } from "@spyglasshq/sdk/indexing";
+import { AccountClient } from "@spyglasshq/sdk/account";
+```
+
+### Logging
+
+Enable debug or info logging on the client:
+
+```ts
+import { SpyglassClient, logging } from "@spyglasshq/sdk";
+
+const client = new SpyglassClient({
+  token: process.env.SPYGLASS_API_KEY!,
+  logging: {
+    level: logging.LogLevel.Debug,
+    logger: new logging.ConsoleLogger(),
+    silent: false,
+  },
+});
 ```
 
 ### Runtime Compatibility
 
-- Node.js 18+
-- Bun 1.0+
-- Deno v1.25+
-- Vercel / Cloudflare Workers
+Zero external runtime dependencies. Works out of the box in:
+- **Node.js** 18+
+- **Bun** 1.0+
+- **Deno** v1.25+
+- **Vercel Functions** & **Cloudflare Workers**
 
 ## Billing & Conventions
 
-- **Credits:** Most calls spend monthly credits per row returned (`count` in the response). Always bound requests with `limit`. See [Billing docs](https://docs.spyglass.so/documentation/get-started/billing).
-- **Pagination:** Page through results with `offset` and `limit`. `count` is the number of rows in the current response.
-- **Server-to-server:** The API does not enable browser CORS; call it from your backend or agent runtime.
+- **Credits per row:** Most endpoints charge against your monthly plan credits per item returned (`count` in the response). Always bound requests with `limit`. Semantic `query` searches on `/media`, `/brands`, and `/creators` run a language model and bill a minimum of 1 row even when 0 rows match. See [Billing docs](https://docs.spyglass.so/documentation/get-started/billing).
+- **Pagination:** Page through results with `offset` and `limit`. `count` is the number of rows in *this* response (not the total across all pages). Stop paging when `count < limit`.
+- **Server-side only:** The Spyglass API is designed for backend services, data pipelines, and AI agents. Do not expose your `sg_live_` key in browser client code.
 
 ## Support
 
 - **Documentation:** [docs.spyglass.so](https://docs.spyglass.so)
-- **Issues:** [GitHub Issues](https://github.com/spyglass-so/spyglass-typescript/issues)
+- **API Playground:** [app.spyglass.so/playground](https://app.spyglass.so/playground)
+- **Issues:** [github.com/spyglass-so/spyglass-typescript/issues](https://github.com/spyglass-so/spyglass-typescript/issues)
 - **Email:** [support@spyglass.so](mailto:support@spyglass.so)
 
 ## License
 
-[MIT](./LICENSE)
+[MIT](https://github.com/spyglass-so/spyglass-typescript/blob/main/LICENSE)
