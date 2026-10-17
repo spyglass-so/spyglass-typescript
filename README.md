@@ -24,8 +24,8 @@
   <a href="https://github.com/spyglass-so/spyglass-typescript/stargazers">
     <img src="https://img.shields.io/github/stars/spyglass-so/spyglass-typescript?style=social" alt="Stars">
   </a>
-  <a href="https://www.npmjs.com/package/@spyglass/sdk">
-    <img src="https://img.shields.io/npm/v/@spyglass/sdk" alt="npm">
+  <a href="https://www.npmjs.com/package/@spyglasshq/sdk">
+    <img src="https://img.shields.io/npm/v/@spyglasshq/sdk" alt="npm">
   </a>
   <a href="https://github.com/spyglass-so/spyglass-python">
     <img src="https://img.shields.io/badge/Python_SDK-spyglass--sdk-3776AB?logo=python&logoColor=white" alt="Python SDK">
@@ -39,9 +39,9 @@ Official TypeScript client for the [Spyglass API](https://docs.spyglass.so). Ser
 ## Installation
 
 ```bash
-npm install @spyglass/sdk
+npm install @spyglasshq/sdk
 # or
-pnpm add @spyglass/sdk
+pnpm add @spyglasshq/sdk
 ```
 
 ## Quickstart
@@ -49,7 +49,7 @@ pnpm add @spyglass/sdk
 Create an API key in [Settings → API](https://app.spyglass.so). Keys start with `sg_live_` and are shown once.
 
 ```ts
-import { SpyglassClient } from "@spyglass/sdk";
+import { SpyglassClient } from "@spyglasshq/sdk";
 
 const client = new SpyglassClient({
   token: process.env.SPYGLASS_API_KEY!,
@@ -119,7 +119,7 @@ if (indexed.status === "indexing") {
 All request and response types are exported under the `Spyglass` namespace:
 
 ```ts
-import { Spyglass } from "@spyglass/sdk";
+import { Spyglass } from "@spyglasshq/sdk";
 
 const request: Spyglass.SearchBrandsV2Request = {
   names: ["Nike"],
@@ -132,7 +132,7 @@ const request: Spyglass.SearchBrandsV2Request = {
 Non-2xx responses throw a `SpyglassError` with status code, parsed body, and raw response metadata:
 
 ```ts
-import { SpyglassError } from "@spyglass/sdk";
+import { SpyglassError } from "@spyglasshq/sdk";
 
 try {
   await client.search.searchBrandsV2({ names: ["Nike"], limit: 5 });
@@ -178,7 +178,7 @@ console.log(rawResponse.headers);
 Import individual resource clients directly for smaller bundle sizes:
 
 ```ts
-import { SearchClient } from "@spyglass/sdk/search";
+import { SearchClient } from "@spyglasshq/sdk/search";
 ```
 
 ### Runtime Compatibility
