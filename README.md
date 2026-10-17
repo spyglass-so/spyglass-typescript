@@ -86,7 +86,7 @@ const client = new Spyglass({
 });
 
 // 1. Resolve a brand by name
-const { brands } = await client.search.searchBrandsV2({
+const { brands } = await client.search.brands({
   names: ["Nike"],
   limit: 1,
 });
@@ -95,7 +95,7 @@ const brand = brands[0];
 
 if (brand) {
   // 2. Search the creatives that brand is running
-  const { media } = await client.search.getMediaV2({
+  const { media } = await client.search.getMedia({
     brandId: brand.id,
     query: "marathon running shoes comfort",
     limit: 10,
@@ -124,13 +124,13 @@ Search advertisers by name (`names`), social handle (`igUsername`, `tiktokUserna
 
 ```ts
 // Fuzzy name lookup
-const byName = await client.search.searchBrandsV2({
+const byName = await client.search.brands({
   names: ["Athletic Greens", "AG1"],
   limit: 5,
 });
 
 // Natural-language discovery
-const byBrief = await client.search.searchBrandsV2({
+const byBrief = await client.search.brands({
   query: "DTC electrolyte and hydration powder brands",
   limit: 10,
 });
@@ -146,7 +146,7 @@ const { taxonomies } = await client.search.taxonomies({
   query: "running shoes",
 });
 
-const { media, count } = await client.search.getMediaV2({
+const { media, count } = await client.search.getMedia({
   query: "UGC founder story explaining product benefits",
   channel: ["META_AD", "TIKTOK"],
   format: ["VIDEO"],
@@ -249,10 +249,10 @@ console.log(`Remaining: ${usage.remainingCredits} / ${usage.planCredits}`);
 
 | SDK Method | HTTP Endpoint | Cost | Rate Limit |
 | --- | --- | --- | --- |
-| `client.search.searchBrandsV2(req)` | `POST /brands` | $0.0020 / brand returned | 120 / min |
+| `client.search.brands(req)` | `POST /brands` | $0.0020 / brand returned | 120 / min |
 | `client.search.creators(req)` | `POST /creators` | $0.0020 / creator returned | 120 / min |
 | `client.search.getAccount({ id })` | `GET /account/{id}` | $0.0020 / account returned | 120 / min |
-| `client.search.getMediaV2(req)` | `POST /media` | $0.0010 / creative returned | 120 / min |
+| `client.search.getMedia(req)` | `POST /media` | $0.0010 / creative returned | 120 / min |
 | `client.search.taxonomies({ query })` | `GET /taxonomies` | Free | 120 / min |
 | `client.search.getBrandMediaInsights(req)` | `GET /account/{id}/insights` | $0.0010 / cluster returned | 120 / min |
 | `client.search.getBrandLandingPages(req)` | `GET /account/{id}/landing-pages` | $0.0050 / landing page returned | 120 / min |
@@ -272,13 +272,13 @@ All request and response types are exported under the `spyglass` namespace:
 ```ts
 import { spyglass } from "@spyglasshq/sdk";
 
-const request: spyglass.GetMediaV2Request = {
+const request: spyglass.GetMediaRequest = {
   query: "summer sale",
   channel: ["META_AD"],
   limit: 25,
 };
 
-type MediaItem = spyglass.GetMediaV2Response.Media.Item;
+type MediaItem = spyglass.GetMediaResponse.Media.Item;
 ```
 
 ## Error Handling
@@ -289,7 +289,7 @@ When the API returns a non-2xx status code (`400`, `401`, `402` out of credits, 
 import { SpyglassError } from "@spyglasshq/sdk";
 
 try {
-  await client.search.searchBrandsV2({ names: ["Nike"], limit: 5 });
+  await client.search.brands({ names: ["Nike"], limit: 5 });
 } catch (err) {
   if (err instanceof SpyglassError) {
     console.error("Status:", err.statusCode);
@@ -310,7 +310,7 @@ The SDK defaults to a **60-second timeout** and **2 automatic retries** with exp
 ```ts
 const controller = new AbortController();
 
-const response = await client.search.getMediaV2(
+const response = await client.search.getMedia(
   { query: "protein bar", limit: 10 },
   {
     timeoutInSeconds: 30,
@@ -327,7 +327,7 @@ Chain `.withRawResponse()` on any request promise to inspect HTTP status codes a
 
 ```ts
 const { data, rawResponse } = await client.search
-  .searchBrandsV2({ names: ["Nike"], limit: 1 })
+  .brands({ names: ["Nike"], limit: 1 })
   .withRawResponse();
 
 console.log(data.brands);
