@@ -1,311 +1,205 @@
-# Spyglass TypeScript Library
+<div align="center">
+  <img src="./assets/wordmark.svg" alt="Spyglass" width="360">
 
-[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fspyglass-so%2Fspyglass-typescript)
-[![npm shield](https://img.shields.io/npm/v/@spyglass/sdk)](https://www.npmjs.com/package/@spyglass/sdk)
+  <h3>The API layer for the social internet</h3>
+  <p>Official TypeScript & Node.js SDK for the Spyglass API — search brands, creators, and the ads they run.</p>
 
-The Spyglass TypeScript library provides convenient access to the Spyglass APIs from TypeScript.
+  <a href="https://app.spyglass.so">
+    <img src="https://img.shields.io/badge/Get_Started-111111?style=for-the-badge" alt="Get Started">
+  </a>
+  <a href="https://docs.spyglass.so">
+    <img src="https://img.shields.io/badge/Documentation-4A4A4A?style=for-the-badge" alt="Documentation">
+  </a>
+  <a href="https://spyglass.so">
+    <img src="https://img.shields.io/badge/spyglass.so-0A0A0A?style=for-the-badge" alt="spyglass.so">
+  </a>
+</div>
 
-## Table of Contents
+<br>
 
-- [Installation](#installation)
-- [Reference](#reference)
-- [Usage](#usage)
-- [Environments](#environments)
-- [Request and Response Types](#request-and-response-types)
-- [Exception Handling](#exception-handling)
-- [Advanced](#advanced)
-  - [Subpackage Exports](#subpackage-exports)
-  - [Additional Headers](#additional-headers)
-  - [Additional Query String Parameters](#additional-query-string-parameters)
-  - [Retries](#retries)
-  - [Timeouts](#timeouts)
-  - [Aborting Requests](#aborting-requests)
-  - [Access Raw Response Data](#access-raw-response-data)
-  - [Logging](#logging)
-  - [Custom Fetch](#custom-fetch)
-  - [Runtime Compatibility](#runtime-compatibility)
-- [Contributing](#contributing)
+<div align="center">
+  <a href="./LICENSE">
+    <img src="https://img.shields.io/github/license/spyglass-so/spyglass-typescript" alt="License">
+  </a>
+  <a href="https://github.com/spyglass-so/spyglass-typescript/stargazers">
+    <img src="https://img.shields.io/github/stars/spyglass-so/spyglass-typescript?style=social" alt="Stars">
+  </a>
+  <a href="https://www.npmjs.com/package/@spyglass/sdk">
+    <img src="https://img.shields.io/npm/v/@spyglass/sdk" alt="npm">
+  </a>
+  <a href="https://github.com/spyglass-so/spyglass-python">
+    <img src="https://img.shields.io/badge/Python_SDK-spyglass--sdk-3776AB?logo=python&logoColor=white" alt="Python SDK">
+  </a>
+</div>
+
+---
+
+Official TypeScript client for the [Spyglass API](https://docs.spyglass.so). Server-side only. Looking for Python? See [`spyglass-so/spyglass-python`](https://github.com/spyglass-so/spyglass-python).
 
 ## Installation
 
-```sh
-npm i -s @spyglass/sdk
+```bash
+npm install @spyglass/sdk
+# or
+pnpm add @spyglass/sdk
 ```
 
-## Reference
+## Quickstart
 
-A full reference for this library is available [here](https://github.com/spyglass-so/spyglass-typescript/blob/HEAD/./reference.md).
+Create an API key in [Settings → API](https://app.spyglass.so). Keys start with `sg_live_` and are shown once.
 
-## Usage
-
-Instantiate and use the client with the following:
-
-```typescript
+```ts
 import { SpyglassClient } from "@spyglass/sdk";
 
-const client = new SpyglassClient({ token: "YOUR_TOKEN" });
-await client.search.searchBrandsV2({
-    names: ["Nike"],
-    limit: 3
-});
-```
-
-## Environments
-
-This SDK allows you to configure different environments for API requests.
-
-```typescript
-import { SpyglassClient, SpyglassEnvironment } from "@spyglass/sdk";
-
 const client = new SpyglassClient({
-    environment: SpyglassEnvironment.Default,
+  token: process.env.SPYGLASS_API_KEY!,
 });
-```
 
-## Request and Response Types
+// 1. Resolve a brand
+const { brands } = await client.search.searchBrandsV2({
+  names: ["Nike"],
+  limit: 1,
+});
 
-The SDK exports all request and response types as TypeScript interfaces. Simply import them with the
-following namespace:
+const brand = brands[0];
 
-```typescript
-import { Spyglass } from "@spyglass/sdk";
+if (brand) {
+  // 2. Pull the creatives that brand is running
+  const { media } = await client.search.getMediaV2({
+    brandId: brand.id,
+    query: "running shoes comfort",
+    limit: 20,
+  });
 
-const request: Spyglass.SearchBrandsV2Request = {
-    ...
-};
-```
-
-## Exception Handling
-
-When the API returns a non-success status code (4xx or 5xx response), a subclass of the following error
-will be thrown.
-
-```typescript
-import { SpyglassError } from "@spyglass/sdk";
-
-try {
-    await client.search.searchBrandsV2(...);
-} catch (err) {
-    if (err instanceof SpyglassError) {
-        console.log(err.statusCode);
-        console.log(err.message);
-        console.log(err.body);
-        console.log(err.rawResponse);
-    }
+  for (const ad of media) {
+    console.log(ad.id, ad.hook, ad.landingPageUrl);
+  }
 }
 ```
 
-## Advanced
+## What You Can Query
 
-### Subpackage Exports
+| Method | Endpoint | What it answers |
+| --- | --- | --- |
+| `client.search.searchBrandsV2(...)` | `POST /brands` | Which brand is this? Who else is in this space? |
+| `client.search.creators(...)` | `POST /creators` | Which creator is this? Who matches this audience profile? |
+| `client.search.getAccount(...)` | `GET /account/{id}` | What do we know about a brand or creator ID you already have? |
+| `client.search.getMediaV2(...)` | `POST /media` | What creatives is this account running, or what's out there for this theme? |
+| `client.search.taxonomies(...)` | `GET /taxonomies` | Which product-category paths match this phrase? |
+| `client.search.getBrandMediaInsights(...)` | `GET /account/{id}/insights` | What hooks, USPs, personas, and formats does it lean on? |
+| `client.search.getBrandLandingPages(...)` | `GET /account/{id}/landing-pages` | Where does its ad traffic go? |
+| `client.search.getComments(...)` | `POST /comments` | What are people saying on this Instagram or TikTok post? |
+| `client.indexing.indexBrand(...)` | `POST /account/index` | Index a brand we don't have yet by website or social URL. |
+| `client.indexing.indexBrandStatus(...)` | `GET /account/{id}/index-status` | Has that brand finished indexing? |
+| `client.account.getCreditUsage()` | `GET /team/credit-usage` | How many monthly credits does this team have left? |
 
-This SDK supports direct imports of subpackage clients, which allows JavaScript bundlers to tree-shake and include only the imported subpackage code. This results in much smaller bundle sizes.
+Full parameters and response schemas are documented in [`reference.md`](./reference.md) and at [docs.spyglass.so](https://docs.spyglass.so).
 
-```typescript
-import { SearchClient } from '@spyglass/sdk/search';
+## Indexing a New Brand
 
-const client = new SearchClient({...});
-```
+If Spyglass doesn't have a brand yet, queue it by website or social profile URL and poll until `status` is `"ready"`:
 
-### Additional Headers
-
-If you would like to send additional headers as part of the request, use the `headers` request option.
-
-```typescript
-import { SpyglassClient } from "@spyglass/sdk";
-
-const client = new SpyglassClient({
-    ...
-    headers: {
-        'X-Custom-Header': 'custom value'
-    }
-});
-
-const response = await client.search.searchBrandsV2(..., {
-    headers: {
-        'X-Custom-Header': 'custom value'
-    }
-});
-```
-
-### Additional Query String Parameters
-
-If you would like to send additional query string parameters as part of the request, use the `queryParams` request option.
-
-```typescript
-const response = await client.search.searchBrandsV2(..., {
-    queryParams: {
-        'customQueryParamKey': 'custom query param value'
-    }
-});
-```
-
-### Retries
-
-The SDK is instrumented with automatic retries with exponential backoff. A request will be retried as long
-as the request is deemed retryable and the number of retry attempts has not grown larger than the configured
-retry limit (default: 2).
-
-Which status codes are retried depends on the `retryStatusCodes` generator configuration:
-
-**`legacy`** (current default): retries on
-- [408](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408) (Timeout)
-- [429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) (Too Many Requests)
-- [5XX](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses) (All server errors, including 500)
-
-**`recommended`**: retries on
-- [408](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408) (Timeout)
-- [429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) (Too Many Requests)
-- [502](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502) (Bad Gateway)
-- [503](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503) (Service Unavailable)
-- [504](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504) (Gateway Timeout)
-
-Use the `maxRetries` request option to configure this behavior.
-
-```typescript
-const response = await client.search.searchBrandsV2(..., {
-    maxRetries: 0 // override maxRetries at the request level
-});
-```
-
-### Timeouts
-
-The SDK defaults to a 60 second timeout. Use the `timeoutInSeconds` option to configure this behavior.
-
-```typescript
-const response = await client.search.searchBrandsV2(..., {
-    timeoutInSeconds: 30 // override timeout to 30s
-});
-```
-
-### Aborting Requests
-
-The SDK allows users to abort requests at any point by passing in an abort signal.
-
-```typescript
-const controller = new AbortController();
-const response = await client.search.searchBrandsV2(..., {
-    abortSignal: controller.signal
-});
-controller.abort(); // aborts the request
-```
-
-### Access Raw Response Data
-
-The SDK provides access to raw response data, including headers, through the `.withRawResponse()` method.
-The `.withRawResponse()` method returns a promise that results to an object with a `data` and a `rawResponse` property.
-
-```typescript
-const { data, rawResponse } = await client.search.searchBrandsV2(...).withRawResponse();
-
-console.log(data);
-console.log(rawResponse.headers['X-My-Header']);
-```
-
-### Logging
-
-The SDK supports logging. You can configure the logger by passing in a `logging` object to the client options.
-
-```typescript
-import { SpyglassClient, logging } from "@spyglass/sdk";
-
-const client = new SpyglassClient({
-    ...
-    logging: {
-        level: logging.LogLevel.Debug, // defaults to logging.LogLevel.Info
-        logger: new logging.ConsoleLogger(), // defaults to ConsoleLogger
-        silent: false, // defaults to true, set to false to enable logging
-    }
-});
-```
-The `logging` object can have the following properties:
-- `level`: The log level to use. Defaults to `logging.LogLevel.Info`.
-- `logger`: The logger to use. Defaults to a `logging.ConsoleLogger`.
-- `silent`: Whether to silence the logger. Defaults to `true`.
-
-The `level` property can be one of the following values:
-- `logging.LogLevel.Debug`
-- `logging.LogLevel.Info`
-- `logging.LogLevel.Warn`
-- `logging.LogLevel.Error`
-
-To provide a custom logger, you can pass in an object that implements the `logging.ILogger` interface.
-
-<details>
-<summary>Custom logger examples</summary>
-
-Here's an example using the popular `winston` logging library.
 ```ts
-import winston from 'winston';
+const indexed = await client.indexing.indexBrand({
+  websiteUrl: "https://www.nike.com",
+});
 
-const winstonLogger = winston.createLogger({...});
+if (indexed.status === "indexing") {
+  let status = indexed.status;
+  while (status === "indexing") {
+    await new Promise((r) => setTimeout(r, 3000));
+    const check = await client.indexing.indexBrandStatus({ id: indexed.brandId });
+    status = check.status;
+  }
+}
+```
 
-const logger: logging.ILogger = {
-    debug: (msg, ...args) => winstonLogger.debug(msg, ...args),
-    info: (msg, ...args) => winstonLogger.info(msg, ...args),
-    warn: (msg, ...args) => winstonLogger.warn(msg, ...args),
-    error: (msg, ...args) => winstonLogger.error(msg, ...args),
+## Request & Response Types
+
+All request and response types are exported under the `Spyglass` namespace:
+
+```ts
+import { Spyglass } from "@spyglass/sdk";
+
+const request: Spyglass.SearchBrandsV2Request = {
+  names: ["Nike"],
+  limit: 5,
 };
 ```
 
-Here's an example using the popular `pino` logging library.
+## Error Handling
+
+Non-2xx responses throw a `SpyglassError` with status code, parsed body, and raw response metadata:
 
 ```ts
-import pino from 'pino';
+import { SpyglassError } from "@spyglass/sdk";
 
-const pinoLogger = pino({...});
-
-const logger: logging.ILogger = {
-  debug: (msg, ...args) => pinoLogger.debug(args, msg),
-  info: (msg, ...args) => pinoLogger.info(args, msg),
-  warn: (msg, ...args) => pinoLogger.warn(args, msg),
-  error: (msg, ...args) => pinoLogger.error(args, msg),
-};
+try {
+  await client.search.searchBrandsV2({ names: ["Nike"], limit: 5 });
+} catch (err) {
+  if (err instanceof SpyglassError) {
+    console.error(err.statusCode, err.message, err.body);
+  }
+}
 ```
-</details>
 
+## Advanced Options
 
-### Custom Fetch
+### Retries & Timeouts
 
-The SDK provides a low-level `fetch` method for making custom HTTP requests while still
-benefiting from SDK-level configuration like authentication, retries, timeouts, and logging.
-This is useful for calling API endpoints not yet supported in the SDK.
+Requests default to a 60-second timeout and up to 2 automatic retries with exponential backoff on `408`, `429`, and `5xx` responses. Override per request:
 
-```typescript
-const response = await client.fetch("/v1/custom/endpoint", {
-    method: "GET",
-}, {
+```ts
+const response = await client.search.searchBrandsV2(
+  { names: ["Nike"], limit: 5 },
+  {
     timeoutInSeconds: 30,
     maxRetries: 3,
-    headers: {
-        "X-Custom-Header": "custom-value",
-    },
-});
+    abortSignal: controller.signal,
+  },
+);
+```
 
-const data = await response.json();
+### Raw Response & Headers
+
+Use `.withRawResponse()` to inspect HTTP headers (such as rate-limit or credit headers):
+
+```ts
+const { data, rawResponse } = await client.search
+  .searchBrandsV2({ names: ["Nike"], limit: 1 })
+  .withRawResponse();
+
+console.log(data.brands);
+console.log(rawResponse.headers);
+```
+
+### Subpackage Imports
+
+Import individual resource clients directly for smaller bundle sizes:
+
+```ts
+import { SearchClient } from "@spyglass/sdk/search";
 ```
 
 ### Runtime Compatibility
 
-
-The SDK works in the following runtimes:
-
-
-
 - Node.js 18+
-- Vercel
-- Cloudflare Workers
-- Deno v1.25+
 - Bun 1.0+
-- React Native
+- Deno v1.25+
+- Vercel / Cloudflare Workers
 
+## Billing & Conventions
 
-## Contributing
+- **Credits:** Most calls spend monthly credits per row returned (`count` in the response). Always bound requests with `limit`. See [Billing docs](https://docs.spyglass.so/documentation/get-started/billing).
+- **Pagination:** Page through results with `offset` and `limit`. `count` is the number of rows in the current response.
+- **Server-to-server:** The API does not enable browser CORS; call it from your backend or agent runtime.
 
-While we value open-source contributions to this SDK, this library is generated programmatically.
-Additions made directly to this library would have to be moved over to our generation code,
-otherwise they would be overwritten upon the next generated release. Feel free to open a PR as
-a proof of concept, but know that we will not be able to merge it as-is. We suggest opening
-an issue first to discuss with us!
+## Support
 
-On the other hand, contributions to the README are always very welcome!
+- **Documentation:** [docs.spyglass.so](https://docs.spyglass.so)
+- **Issues:** [GitHub Issues](https://github.com/spyglass-so/spyglass-typescript/issues)
+- **Email:** [support@spyglass.so](mailto:support@spyglass.so)
+
+## License
+
+[MIT](./LICENSE)
