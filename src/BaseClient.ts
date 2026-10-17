@@ -64,9 +64,9 @@ export function normalizeClientOptions<T extends BaseClientOptions = BaseClientO
     const headers = mergeHeaders(
         {
             "X-Fern-Language": "JavaScript",
-            "X-Fern-SDK-Name": "@spyglass/sdk",
-            "X-Fern-SDK-Version": "0.1.0",
-            "User-Agent": "@spyglass/sdk/0.1.0",
+            "X-Fern-SDK-Name": "@spyglasshq/sdk",
+            "X-Fern-SDK-Version": "0.1.1",
+            "User-Agent": "@spyglasshq/sdk/0.1.1",
             "X-Fern-Runtime": core.RUNTIME.type,
             "X-Fern-Runtime-Version": core.RUNTIME.version,
         },

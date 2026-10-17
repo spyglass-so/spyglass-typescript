@@ -8,7 +8,7 @@ import { mergeAdditionalBodyParameters } from "../../../../core/requestBody.js";
 import * as environments from "../../../../environments.js";
 import { handleNonStatusCodeError } from "../../../../errors/handleNonStatusCodeError.js";
 import * as errors from "../../../../errors/index.js";
-import * as Spyglass from "../../../index.js";
+import * as spyglass from "../../../index.js";
 
 export declare namespace SearchClient {
     export type Options = BaseClientOptions;
@@ -61,37 +61,37 @@ export class SearchClient {
      * A `query` search runs a language model, so it bills a minimum of one
      * row even when nothing matches.
      *
-     * @param {Spyglass.SearchBrandsV2Request} request
+     * @param {spyglass.SearchBrandsRequest} request
      * @param {SearchClient.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link Spyglass.BadRequestError}
-     * @throws {@link Spyglass.UnauthorizedError}
-     * @throws {@link Spyglass.PaymentRequiredError}
-     * @throws {@link Spyglass.ForbiddenError}
-     * @throws {@link Spyglass.MethodNotAllowedError}
-     * @throws {@link Spyglass.ContentTooLargeError}
-     * @throws {@link Spyglass.TooManyRequestsError}
-     * @throws {@link Spyglass.InternalServerError}
+     * @throws {@link spyglass.BadRequestError}
+     * @throws {@link spyglass.UnauthorizedError}
+     * @throws {@link spyglass.PaymentRequiredError}
+     * @throws {@link spyglass.ForbiddenError}
+     * @throws {@link spyglass.MethodNotAllowedError}
+     * @throws {@link spyglass.ContentTooLargeError}
+     * @throws {@link spyglass.TooManyRequestsError}
+     * @throws {@link spyglass.InternalServerError}
      * @throws {@link errors.SpyglassError}
      * @throws {@link errors.SpyglassTimeoutError}
      *
      * @example
-     *     await client.search.searchBrandsV2({
+     *     await client.search.brands({
      *         names: ["Nike"],
      *         limit: 3
      *     })
      */
-    public searchBrandsV2(
-        request: Spyglass.SearchBrandsV2Request = {},
+    public brands(
+        request: spyglass.SearchBrandsRequest = {},
         requestOptions?: SearchClient.RequestOptions,
-    ): core.HttpResponsePromise<Spyglass.SearchBrandsV2Response> {
-        return core.HttpResponsePromise.fromPromise(this.__searchBrandsV2(request, requestOptions));
+    ): core.HttpResponsePromise<spyglass.SearchBrandsResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__brands(request, requestOptions));
     }
 
-    private async __searchBrandsV2(
-        request: Spyglass.SearchBrandsV2Request = {},
+    private async __brands(
+        request: spyglass.SearchBrandsRequest = {},
         requestOptions?: SearchClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Spyglass.SearchBrandsV2Response>> {
+    ): Promise<core.WithRawResponse<spyglass.SearchBrandsResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -118,43 +118,43 @@ export class SearchClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Spyglass.SearchBrandsV2Response, rawResponse: _response.rawResponse };
+            return { data: _response.body as spyglass.SearchBrandsResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Spyglass.BadRequestError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.BadRequestError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 401:
-                    throw new Spyglass.UnauthorizedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.UnauthorizedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 402:
-                    throw new Spyglass.PaymentRequiredError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.PaymentRequiredError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 403:
-                    throw new Spyglass.ForbiddenError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.ForbiddenError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 405:
-                    throw new Spyglass.MethodNotAllowedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.MethodNotAllowedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 413:
-                    throw new Spyglass.ContentTooLargeError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.ContentTooLargeError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 429:
-                    throw new Spyglass.TooManyRequestsError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.TooManyRequestsError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 500:
-                    throw new Spyglass.InternalServerError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.InternalServerError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 default:
@@ -206,17 +206,17 @@ export class SearchClient {
      * A `query` search runs a language model, so it bills a minimum of one
      * row even when nothing matches.
      *
-     * @param {Spyglass.SearchCreatorsRequest} request
+     * @param {spyglass.SearchCreatorsRequest} request
      * @param {SearchClient.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link Spyglass.BadRequestError}
-     * @throws {@link Spyglass.UnauthorizedError}
-     * @throws {@link Spyglass.PaymentRequiredError}
-     * @throws {@link Spyglass.ForbiddenError}
-     * @throws {@link Spyglass.MethodNotAllowedError}
-     * @throws {@link Spyglass.ContentTooLargeError}
-     * @throws {@link Spyglass.TooManyRequestsError}
-     * @throws {@link Spyglass.InternalServerError}
+     * @throws {@link spyglass.BadRequestError}
+     * @throws {@link spyglass.UnauthorizedError}
+     * @throws {@link spyglass.PaymentRequiredError}
+     * @throws {@link spyglass.ForbiddenError}
+     * @throws {@link spyglass.MethodNotAllowedError}
+     * @throws {@link spyglass.ContentTooLargeError}
+     * @throws {@link spyglass.TooManyRequestsError}
+     * @throws {@link spyglass.InternalServerError}
      * @throws {@link errors.SpyglassError}
      * @throws {@link errors.SpyglassTimeoutError}
      *
@@ -228,16 +228,16 @@ export class SearchClient {
      *     })
      */
     public creators(
-        request: Spyglass.SearchCreatorsRequest = {},
+        request: spyglass.SearchCreatorsRequest = {},
         requestOptions?: SearchClient.RequestOptions,
-    ): core.HttpResponsePromise<Spyglass.SearchCreatorsResponse> {
+    ): core.HttpResponsePromise<spyglass.SearchCreatorsResponse> {
         return core.HttpResponsePromise.fromPromise(this.__creators(request, requestOptions));
     }
 
     private async __creators(
-        request: Spyglass.SearchCreatorsRequest = {},
+        request: spyglass.SearchCreatorsRequest = {},
         requestOptions?: SearchClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Spyglass.SearchCreatorsResponse>> {
+    ): Promise<core.WithRawResponse<spyglass.SearchCreatorsResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -264,43 +264,43 @@ export class SearchClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Spyglass.SearchCreatorsResponse, rawResponse: _response.rawResponse };
+            return { data: _response.body as spyglass.SearchCreatorsResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Spyglass.BadRequestError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.BadRequestError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 401:
-                    throw new Spyglass.UnauthorizedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.UnauthorizedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 402:
-                    throw new Spyglass.PaymentRequiredError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.PaymentRequiredError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 403:
-                    throw new Spyglass.ForbiddenError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.ForbiddenError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 405:
-                    throw new Spyglass.MethodNotAllowedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.MethodNotAllowedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 413:
-                    throw new Spyglass.ContentTooLargeError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.ContentTooLargeError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 429:
-                    throw new Spyglass.TooManyRequestsError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.TooManyRequestsError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 500:
-                    throw new Spyglass.InternalServerError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.InternalServerError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 default:
@@ -324,17 +324,17 @@ export class SearchClient {
      * Costs 2,000 microdollars ($0.0020) per account returned, charged against your plan's monthly credits.
      * An id that matches nothing returns 404 and is free.
      *
-     * @param {Spyglass.GetAccountRequest} request
+     * @param {spyglass.GetAccountRequest} request
      * @param {SearchClient.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link Spyglass.BadRequestError}
-     * @throws {@link Spyglass.UnauthorizedError}
-     * @throws {@link Spyglass.PaymentRequiredError}
-     * @throws {@link Spyglass.ForbiddenError}
-     * @throws {@link Spyglass.NotFoundError}
-     * @throws {@link Spyglass.MethodNotAllowedError}
-     * @throws {@link Spyglass.TooManyRequestsError}
-     * @throws {@link Spyglass.InternalServerError}
+     * @throws {@link spyglass.BadRequestError}
+     * @throws {@link spyglass.UnauthorizedError}
+     * @throws {@link spyglass.PaymentRequiredError}
+     * @throws {@link spyglass.ForbiddenError}
+     * @throws {@link spyglass.NotFoundError}
+     * @throws {@link spyglass.MethodNotAllowedError}
+     * @throws {@link spyglass.TooManyRequestsError}
+     * @throws {@link spyglass.InternalServerError}
      * @throws {@link errors.SpyglassError}
      * @throws {@link errors.SpyglassTimeoutError}
      *
@@ -344,16 +344,16 @@ export class SearchClient {
      *     })
      */
     public getAccount(
-        request: Spyglass.GetAccountRequest,
+        request: spyglass.GetAccountRequest,
         requestOptions?: SearchClient.RequestOptions,
-    ): core.HttpResponsePromise<Spyglass.GetAccountResponse> {
+    ): core.HttpResponsePromise<spyglass.GetAccountResponse> {
         return core.HttpResponsePromise.fromPromise(this.__getAccount(request, requestOptions));
     }
 
     private async __getAccount(
-        request: Spyglass.GetAccountRequest,
+        request: spyglass.GetAccountRequest,
         requestOptions?: SearchClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Spyglass.GetAccountResponse>> {
+    ): Promise<core.WithRawResponse<spyglass.GetAccountResponse>> {
         const { id } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -378,40 +378,40 @@ export class SearchClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Spyglass.GetAccountResponse, rawResponse: _response.rawResponse };
+            return { data: _response.body as spyglass.GetAccountResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Spyglass.BadRequestError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.BadRequestError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 401:
-                    throw new Spyglass.UnauthorizedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.UnauthorizedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 402:
-                    throw new Spyglass.PaymentRequiredError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.PaymentRequiredError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 403:
-                    throw new Spyglass.ForbiddenError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.ForbiddenError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 404:
-                    throw new Spyglass.NotFoundError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.NotFoundError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 405:
-                    throw new Spyglass.MethodNotAllowedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.MethodNotAllowedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 429:
-                    throw new Spyglass.TooManyRequestsError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.TooManyRequestsError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 500:
-                    throw new Spyglass.InternalServerError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.InternalServerError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 default:
@@ -434,16 +434,16 @@ export class SearchClient {
      * Limited to 120 requests per minute per user.
      * This call is free and does not use credits.
      *
-     * @param {Spyglass.SearchTaxonomiesRequest} request
+     * @param {spyglass.SearchTaxonomiesRequest} request
      * @param {SearchClient.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link Spyglass.BadRequestError}
-     * @throws {@link Spyglass.UnauthorizedError}
-     * @throws {@link Spyglass.PaymentRequiredError}
-     * @throws {@link Spyglass.ForbiddenError}
-     * @throws {@link Spyglass.MethodNotAllowedError}
-     * @throws {@link Spyglass.TooManyRequestsError}
-     * @throws {@link Spyglass.InternalServerError}
+     * @throws {@link spyglass.BadRequestError}
+     * @throws {@link spyglass.UnauthorizedError}
+     * @throws {@link spyglass.PaymentRequiredError}
+     * @throws {@link spyglass.ForbiddenError}
+     * @throws {@link spyglass.MethodNotAllowedError}
+     * @throws {@link spyglass.TooManyRequestsError}
+     * @throws {@link spyglass.InternalServerError}
      * @throws {@link errors.SpyglassError}
      * @throws {@link errors.SpyglassTimeoutError}
      *
@@ -453,16 +453,16 @@ export class SearchClient {
      *     })
      */
     public taxonomies(
-        request: Spyglass.SearchTaxonomiesRequest,
+        request: spyglass.SearchTaxonomiesRequest,
         requestOptions?: SearchClient.RequestOptions,
-    ): core.HttpResponsePromise<Spyglass.SearchTaxonomiesResponse> {
+    ): core.HttpResponsePromise<spyglass.SearchTaxonomiesResponse> {
         return core.HttpResponsePromise.fromPromise(this.__taxonomies(request, requestOptions));
     }
 
     private async __taxonomies(
-        request: Spyglass.SearchTaxonomiesRequest,
+        request: spyglass.SearchTaxonomiesRequest,
         requestOptions?: SearchClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Spyglass.SearchTaxonomiesResponse>> {
+    ): Promise<core.WithRawResponse<spyglass.SearchTaxonomiesResponse>> {
         const { query, limit } = request;
         const _queryParams: Record<string, unknown> = {
             query,
@@ -495,38 +495,38 @@ export class SearchClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Spyglass.SearchTaxonomiesResponse, rawResponse: _response.rawResponse };
+            return { data: _response.body as spyglass.SearchTaxonomiesResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Spyglass.BadRequestError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.BadRequestError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 401:
-                    throw new Spyglass.UnauthorizedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.UnauthorizedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 402:
-                    throw new Spyglass.PaymentRequiredError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.PaymentRequiredError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 403:
-                    throw new Spyglass.ForbiddenError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.ForbiddenError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 405:
-                    throw new Spyglass.MethodNotAllowedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.MethodNotAllowedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 429:
-                    throw new Spyglass.TooManyRequestsError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.TooManyRequestsError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 500:
-                    throw new Spyglass.InternalServerError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.InternalServerError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 default:
@@ -551,38 +551,38 @@ export class SearchClient {
      * The call bills a minimum of one row even when nothing matches. In that
      * case `count` is 0 but you are charged for one row.
      *
-     * @param {Spyglass.GetMediaV2Request} request
+     * @param {spyglass.GetMediaRequest} request
      * @param {SearchClient.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link Spyglass.BadRequestError}
-     * @throws {@link Spyglass.UnauthorizedError}
-     * @throws {@link Spyglass.PaymentRequiredError}
-     * @throws {@link Spyglass.ForbiddenError}
-     * @throws {@link Spyglass.NotFoundError}
-     * @throws {@link Spyglass.MethodNotAllowedError}
-     * @throws {@link Spyglass.ContentTooLargeError}
-     * @throws {@link Spyglass.TooManyRequestsError}
-     * @throws {@link Spyglass.InternalServerError}
+     * @throws {@link spyglass.BadRequestError}
+     * @throws {@link spyglass.UnauthorizedError}
+     * @throws {@link spyglass.PaymentRequiredError}
+     * @throws {@link spyglass.ForbiddenError}
+     * @throws {@link spyglass.NotFoundError}
+     * @throws {@link spyglass.MethodNotAllowedError}
+     * @throws {@link spyglass.ContentTooLargeError}
+     * @throws {@link spyglass.TooManyRequestsError}
+     * @throws {@link spyglass.InternalServerError}
      * @throws {@link errors.SpyglassError}
      * @throws {@link errors.SpyglassTimeoutError}
      *
      * @example
-     *     await client.search.getMediaV2({
+     *     await client.search.getMedia({
      *         query: "comfort-focused video ads",
      *         limit: 20
      *     })
      */
-    public getMediaV2(
-        request: Spyglass.GetMediaV2Request = {},
+    public getMedia(
+        request: spyglass.GetMediaRequest = {},
         requestOptions?: SearchClient.RequestOptions,
-    ): core.HttpResponsePromise<Spyglass.GetMediaV2Response> {
-        return core.HttpResponsePromise.fromPromise(this.__getMediaV2(request, requestOptions));
+    ): core.HttpResponsePromise<spyglass.GetMediaResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getMedia(request, requestOptions));
     }
 
-    private async __getMediaV2(
-        request: Spyglass.GetMediaV2Request = {},
+    private async __getMedia(
+        request: spyglass.GetMediaRequest = {},
         requestOptions?: SearchClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Spyglass.GetMediaV2Response>> {
+    ): Promise<core.WithRawResponse<spyglass.GetMediaResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -609,45 +609,45 @@ export class SearchClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Spyglass.GetMediaV2Response, rawResponse: _response.rawResponse };
+            return { data: _response.body as spyglass.GetMediaResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Spyglass.BadRequestError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.BadRequestError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 401:
-                    throw new Spyglass.UnauthorizedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.UnauthorizedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 402:
-                    throw new Spyglass.PaymentRequiredError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.PaymentRequiredError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 403:
-                    throw new Spyglass.ForbiddenError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.ForbiddenError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 404:
-                    throw new Spyglass.NotFoundError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.NotFoundError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 405:
-                    throw new Spyglass.MethodNotAllowedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.MethodNotAllowedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 413:
-                    throw new Spyglass.ContentTooLargeError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.ContentTooLargeError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 429:
-                    throw new Spyglass.TooManyRequestsError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.TooManyRequestsError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 500:
-                    throw new Spyglass.InternalServerError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.InternalServerError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 default:
@@ -673,17 +673,17 @@ export class SearchClient {
      * Limited to 120 requests per minute per user.
      * Costs 1,000 microdollars ($0.0010) per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
      *
-     * @param {Spyglass.GetBrandMediaInsightsRequest} request
+     * @param {spyglass.GetBrandMediaInsightsRequest} request
      * @param {SearchClient.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link Spyglass.BadRequestError}
-     * @throws {@link Spyglass.UnauthorizedError}
-     * @throws {@link Spyglass.PaymentRequiredError}
-     * @throws {@link Spyglass.ForbiddenError}
-     * @throws {@link Spyglass.NotFoundError}
-     * @throws {@link Spyglass.MethodNotAllowedError}
-     * @throws {@link Spyglass.TooManyRequestsError}
-     * @throws {@link Spyglass.InternalServerError}
+     * @throws {@link spyglass.BadRequestError}
+     * @throws {@link spyglass.UnauthorizedError}
+     * @throws {@link spyglass.PaymentRequiredError}
+     * @throws {@link spyglass.ForbiddenError}
+     * @throws {@link spyglass.NotFoundError}
+     * @throws {@link spyglass.MethodNotAllowedError}
+     * @throws {@link spyglass.TooManyRequestsError}
+     * @throws {@link spyglass.InternalServerError}
      * @throws {@link errors.SpyglassError}
      * @throws {@link errors.SpyglassTimeoutError}
      *
@@ -694,16 +694,16 @@ export class SearchClient {
      *     })
      */
     public getBrandMediaInsights(
-        request: Spyglass.GetBrandMediaInsightsRequest,
+        request: spyglass.GetBrandMediaInsightsRequest,
         requestOptions?: SearchClient.RequestOptions,
-    ): core.HttpResponsePromise<Spyglass.GetBrandMediaInsightsResponse> {
+    ): core.HttpResponsePromise<spyglass.GetBrandMediaInsightsResponse> {
         return core.HttpResponsePromise.fromPromise(this.__getBrandMediaInsights(request, requestOptions));
     }
 
     private async __getBrandMediaInsights(
-        request: Spyglass.GetBrandMediaInsightsRequest,
+        request: spyglass.GetBrandMediaInsightsRequest,
         requestOptions?: SearchClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Spyglass.GetBrandMediaInsightsResponse>> {
+    ): Promise<core.WithRawResponse<spyglass.GetBrandMediaInsightsResponse>> {
         const { id, type: type_, maxDaysBack, limit } = request;
         const _queryParams: Record<string, unknown> = {
             type: type_,
@@ -738,7 +738,7 @@ export class SearchClient {
         });
         if (_response.ok) {
             return {
-                data: _response.body as Spyglass.GetBrandMediaInsightsResponse,
+                data: _response.body as spyglass.GetBrandMediaInsightsResponse,
                 rawResponse: _response.rawResponse,
             };
         }
@@ -746,34 +746,34 @@ export class SearchClient {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Spyglass.BadRequestError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.BadRequestError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 401:
-                    throw new Spyglass.UnauthorizedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.UnauthorizedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 402:
-                    throw new Spyglass.PaymentRequiredError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.PaymentRequiredError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 403:
-                    throw new Spyglass.ForbiddenError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.ForbiddenError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 404:
-                    throw new Spyglass.NotFoundError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.NotFoundError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 405:
-                    throw new Spyglass.MethodNotAllowedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.MethodNotAllowedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 429:
-                    throw new Spyglass.TooManyRequestsError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.TooManyRequestsError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 500:
-                    throw new Spyglass.InternalServerError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.InternalServerError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 default:
@@ -795,17 +795,17 @@ export class SearchClient {
      * Limited to 120 requests per minute per user.
      * Costs 5,000 microdollars ($0.0050) per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
      *
-     * @param {Spyglass.GetBrandLandingPagesRequest} request
+     * @param {spyglass.GetBrandLandingPagesRequest} request
      * @param {SearchClient.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link Spyglass.BadRequestError}
-     * @throws {@link Spyglass.UnauthorizedError}
-     * @throws {@link Spyglass.PaymentRequiredError}
-     * @throws {@link Spyglass.ForbiddenError}
-     * @throws {@link Spyglass.NotFoundError}
-     * @throws {@link Spyglass.MethodNotAllowedError}
-     * @throws {@link Spyglass.TooManyRequestsError}
-     * @throws {@link Spyglass.InternalServerError}
+     * @throws {@link spyglass.BadRequestError}
+     * @throws {@link spyglass.UnauthorizedError}
+     * @throws {@link spyglass.PaymentRequiredError}
+     * @throws {@link spyglass.ForbiddenError}
+     * @throws {@link spyglass.NotFoundError}
+     * @throws {@link spyglass.MethodNotAllowedError}
+     * @throws {@link spyglass.TooManyRequestsError}
+     * @throws {@link spyglass.InternalServerError}
      * @throws {@link errors.SpyglassError}
      * @throws {@link errors.SpyglassTimeoutError}
      *
@@ -815,16 +815,16 @@ export class SearchClient {
      *     })
      */
     public getBrandLandingPages(
-        request: Spyglass.GetBrandLandingPagesRequest,
+        request: spyglass.GetBrandLandingPagesRequest,
         requestOptions?: SearchClient.RequestOptions,
-    ): core.HttpResponsePromise<Spyglass.GetBrandLandingPagesResponse> {
+    ): core.HttpResponsePromise<spyglass.GetBrandLandingPagesResponse> {
         return core.HttpResponsePromise.fromPromise(this.__getBrandLandingPages(request, requestOptions));
     }
 
     private async __getBrandLandingPages(
-        request: Spyglass.GetBrandLandingPagesRequest,
+        request: spyglass.GetBrandLandingPagesRequest,
         requestOptions?: SearchClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Spyglass.GetBrandLandingPagesResponse>> {
+    ): Promise<core.WithRawResponse<spyglass.GetBrandLandingPagesResponse>> {
         const { id, showInactive, limit } = request;
         const _queryParams: Record<string, unknown> = {
             showInactive: showInactive != null ? showInactive : undefined,
@@ -858,7 +858,7 @@ export class SearchClient {
         });
         if (_response.ok) {
             return {
-                data: _response.body as Spyglass.GetBrandLandingPagesResponse,
+                data: _response.body as spyglass.GetBrandLandingPagesResponse,
                 rawResponse: _response.rawResponse,
             };
         }
@@ -866,34 +866,34 @@ export class SearchClient {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Spyglass.BadRequestError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.BadRequestError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 401:
-                    throw new Spyglass.UnauthorizedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.UnauthorizedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 402:
-                    throw new Spyglass.PaymentRequiredError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.PaymentRequiredError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 403:
-                    throw new Spyglass.ForbiddenError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.ForbiddenError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 404:
-                    throw new Spyglass.NotFoundError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.NotFoundError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 405:
-                    throw new Spyglass.MethodNotAllowedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.MethodNotAllowedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 429:
-                    throw new Spyglass.TooManyRequestsError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.TooManyRequestsError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 500:
-                    throw new Spyglass.InternalServerError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.InternalServerError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 default:
@@ -933,17 +933,17 @@ export class SearchClient {
      * Each comment page fetched live (`limit`, default 1) is one billed
      * unit. Cached posts do not scrape and are not billed.
      *
-     * @param {Spyglass.GetCommentsRequest} request
+     * @param {spyglass.GetCommentsRequest} request
      * @param {SearchClient.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link Spyglass.BadRequestError}
-     * @throws {@link Spyglass.UnauthorizedError}
-     * @throws {@link Spyglass.PaymentRequiredError}
-     * @throws {@link Spyglass.ForbiddenError}
-     * @throws {@link Spyglass.MethodNotAllowedError}
-     * @throws {@link Spyglass.ContentTooLargeError}
-     * @throws {@link Spyglass.TooManyRequestsError}
-     * @throws {@link Spyglass.InternalServerError}
+     * @throws {@link spyglass.BadRequestError}
+     * @throws {@link spyglass.UnauthorizedError}
+     * @throws {@link spyglass.PaymentRequiredError}
+     * @throws {@link spyglass.ForbiddenError}
+     * @throws {@link spyglass.MethodNotAllowedError}
+     * @throws {@link spyglass.ContentTooLargeError}
+     * @throws {@link spyglass.TooManyRequestsError}
+     * @throws {@link spyglass.InternalServerError}
      * @throws {@link errors.SpyglassError}
      * @throws {@link errors.SpyglassTimeoutError}
      *
@@ -955,16 +955,16 @@ export class SearchClient {
      *     })
      */
     public getComments(
-        request: Spyglass.GetCommentsRequest = {},
+        request: spyglass.GetCommentsRequest = {},
         requestOptions?: SearchClient.RequestOptions,
-    ): core.HttpResponsePromise<Spyglass.GetCommentsResponse> {
+    ): core.HttpResponsePromise<spyglass.GetCommentsResponse> {
         return core.HttpResponsePromise.fromPromise(this.__getComments(request, requestOptions));
     }
 
     private async __getComments(
-        request: Spyglass.GetCommentsRequest = {},
+        request: spyglass.GetCommentsRequest = {},
         requestOptions?: SearchClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Spyglass.GetCommentsResponse>> {
+    ): Promise<core.WithRawResponse<spyglass.GetCommentsResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -991,43 +991,43 @@ export class SearchClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Spyglass.GetCommentsResponse, rawResponse: _response.rawResponse };
+            return { data: _response.body as spyglass.GetCommentsResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Spyglass.BadRequestError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.BadRequestError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 401:
-                    throw new Spyglass.UnauthorizedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.UnauthorizedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 402:
-                    throw new Spyglass.PaymentRequiredError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.PaymentRequiredError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 403:
-                    throw new Spyglass.ForbiddenError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.ForbiddenError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 405:
-                    throw new Spyglass.MethodNotAllowedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.MethodNotAllowedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 413:
-                    throw new Spyglass.ContentTooLargeError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.ContentTooLargeError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 429:
-                    throw new Spyglass.TooManyRequestsError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.TooManyRequestsError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 500:
-                    throw new Spyglass.InternalServerError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.InternalServerError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 default:

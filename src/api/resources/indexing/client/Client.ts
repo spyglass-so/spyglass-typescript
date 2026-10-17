@@ -8,7 +8,7 @@ import { mergeAdditionalBodyParameters } from "../../../../core/requestBody.js";
 import * as environments from "../../../../environments.js";
 import { handleNonStatusCodeError } from "../../../../errors/handleNonStatusCodeError.js";
 import * as errors from "../../../../errors/index.js";
-import * as Spyglass from "../../../index.js";
+import * as spyglass from "../../../index.js";
 
 export declare namespace IndexingClient {
     export type Options = BaseClientOptions;
@@ -38,16 +38,16 @@ export class IndexingClient {
      * Limited to 50 requests per minute per user.
      * This call is free.
      *
-     * @param {Spyglass.IndexBrandRequest} request
+     * @param {spyglass.IndexBrandRequest} request
      * @param {IndexingClient.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link Spyglass.BadRequestError}
-     * @throws {@link Spyglass.UnauthorizedError}
-     * @throws {@link Spyglass.ForbiddenError}
-     * @throws {@link Spyglass.MethodNotAllowedError}
-     * @throws {@link Spyglass.ContentTooLargeError}
-     * @throws {@link Spyglass.TooManyRequestsError}
-     * @throws {@link Spyglass.InternalServerError}
+     * @throws {@link spyglass.BadRequestError}
+     * @throws {@link spyglass.UnauthorizedError}
+     * @throws {@link spyglass.ForbiddenError}
+     * @throws {@link spyglass.MethodNotAllowedError}
+     * @throws {@link spyglass.ContentTooLargeError}
+     * @throws {@link spyglass.TooManyRequestsError}
+     * @throws {@link spyglass.InternalServerError}
      * @throws {@link errors.SpyglassError}
      * @throws {@link errors.SpyglassTimeoutError}
      *
@@ -57,16 +57,16 @@ export class IndexingClient {
      *     })
      */
     public indexBrand(
-        request: Spyglass.IndexBrandRequest,
+        request: spyglass.IndexBrandRequest,
         requestOptions?: IndexingClient.RequestOptions,
-    ): core.HttpResponsePromise<Spyglass.IndexBrandResponse> {
+    ): core.HttpResponsePromise<spyglass.IndexBrandResponse> {
         return core.HttpResponsePromise.fromPromise(this.__indexBrand(request, requestOptions));
     }
 
     private async __indexBrand(
-        request: Spyglass.IndexBrandRequest,
+        request: spyglass.IndexBrandRequest,
         requestOptions?: IndexingClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Spyglass.IndexBrandResponse>> {
+    ): Promise<core.WithRawResponse<spyglass.IndexBrandResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -93,38 +93,38 @@ export class IndexingClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Spyglass.IndexBrandResponse, rawResponse: _response.rawResponse };
+            return { data: _response.body as spyglass.IndexBrandResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Spyglass.BadRequestError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.BadRequestError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 401:
-                    throw new Spyglass.UnauthorizedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.UnauthorizedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 403:
-                    throw new Spyglass.ForbiddenError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.ForbiddenError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 405:
-                    throw new Spyglass.MethodNotAllowedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.MethodNotAllowedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 413:
-                    throw new Spyglass.ContentTooLargeError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.ContentTooLargeError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 429:
-                    throw new Spyglass.TooManyRequestsError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.TooManyRequestsError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 500:
-                    throw new Spyglass.InternalServerError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.InternalServerError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 default:
@@ -145,16 +145,16 @@ export class IndexingClient {
      * Limited to 300 requests per minute per user.
      * This call is free.
      *
-     * @param {Spyglass.IndexBrandStatusRequest} request
+     * @param {spyglass.IndexBrandStatusRequest} request
      * @param {IndexingClient.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link Spyglass.BadRequestError}
-     * @throws {@link Spyglass.UnauthorizedError}
-     * @throws {@link Spyglass.ForbiddenError}
-     * @throws {@link Spyglass.NotFoundError}
-     * @throws {@link Spyglass.MethodNotAllowedError}
-     * @throws {@link Spyglass.TooManyRequestsError}
-     * @throws {@link Spyglass.InternalServerError}
+     * @throws {@link spyglass.BadRequestError}
+     * @throws {@link spyglass.UnauthorizedError}
+     * @throws {@link spyglass.ForbiddenError}
+     * @throws {@link spyglass.NotFoundError}
+     * @throws {@link spyglass.MethodNotAllowedError}
+     * @throws {@link spyglass.TooManyRequestsError}
+     * @throws {@link spyglass.InternalServerError}
      * @throws {@link errors.SpyglassError}
      * @throws {@link errors.SpyglassTimeoutError}
      *
@@ -164,16 +164,16 @@ export class IndexingClient {
      *     })
      */
     public indexBrandStatus(
-        request: Spyglass.IndexBrandStatusRequest,
+        request: spyglass.IndexBrandStatusRequest,
         requestOptions?: IndexingClient.RequestOptions,
-    ): core.HttpResponsePromise<Spyglass.IndexBrandStatusResponse> {
+    ): core.HttpResponsePromise<spyglass.IndexBrandStatusResponse> {
         return core.HttpResponsePromise.fromPromise(this.__indexBrandStatus(request, requestOptions));
     }
 
     private async __indexBrandStatus(
-        request: Spyglass.IndexBrandStatusRequest,
+        request: spyglass.IndexBrandStatusRequest,
         requestOptions?: IndexingClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Spyglass.IndexBrandStatusResponse>> {
+    ): Promise<core.WithRawResponse<spyglass.IndexBrandStatusResponse>> {
         const { id } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -198,35 +198,35 @@ export class IndexingClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Spyglass.IndexBrandStatusResponse, rawResponse: _response.rawResponse };
+            return { data: _response.body as spyglass.IndexBrandStatusResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Spyglass.BadRequestError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.BadRequestError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 401:
-                    throw new Spyglass.UnauthorizedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.UnauthorizedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 403:
-                    throw new Spyglass.ForbiddenError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.ForbiddenError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 404:
-                    throw new Spyglass.NotFoundError(_response.error.body as Spyglass.Error_, _response.rawResponse);
+                    throw new spyglass.NotFoundError(_response.error.body as spyglass.Error_, _response.rawResponse);
                 case 405:
-                    throw new Spyglass.MethodNotAllowedError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.MethodNotAllowedError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 429:
-                    throw new Spyglass.TooManyRequestsError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.TooManyRequestsError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 case 500:
-                    throw new Spyglass.InternalServerError(
-                        _response.error.body as Spyglass.Error_,
+                    throw new spyglass.InternalServerError(
+                        _response.error.body as spyglass.Error_,
                         _response.rawResponse,
                     );
                 default:

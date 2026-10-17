@@ -2,12 +2,12 @@
 
 import type * as core from "../../core/index.js";
 import * as errors from "../../errors/index.js";
-import type * as Spyglass from "../index.js";
+import type * as spyglass from "../index.js";
 
 export class ContentTooLargeError extends errors.SpyglassError {
-    public declare readonly body: Spyglass.Error_;
+    public declare readonly body: spyglass.Error_;
 
-    constructor(body: Spyglass.Error_, rawResponse?: core.RawResponse) {
+    constructor(body: spyglass.Error_, rawResponse?: core.RawResponse) {
         super({
             message: "ContentTooLargeError",
             statusCode: 413,

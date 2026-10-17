@@ -1,21 +1,6 @@
 {
     "name": "@spyglasshq/sdk",
     "version": "0.1.1",
-    "description": "Official TypeScript & Node.js SDK for the Spyglass API — search brands, creators, and the ads they run.",
-    "license": "MIT",
-    "homepage": "https://docs.spyglass.so",
-    "keywords": [
-        "spyglass",
-        "ads",
-        "ad-intelligence",
-        "social-media",
-        "creators",
-        "brands",
-        "marketing",
-        "tiktok",
-        "instagram",
-        "meta-ads"
-    ],
     "private": false,
     "repository": {
         "type": "git",
@@ -113,5 +98,20 @@
     "engines": {
         "node": ">=18.0.0"
     },
-    "sideEffects": false
+    "sideEffects": false,
+    "description": "Official TypeScript & Node.js SDK for the Spyglass API — search brands, creators, and the ads they run.",
+    "license": "MIT",
+    "homepage": "https://docs.spyglass.so",
+    "keywords": [
+        "spyglass",
+        "ads",
+        "ad-intelligence",
+        "social-media",
+        "creators",
+        "brands",
+        "marketing",
+        "tiktok",
+        "instagram",
+        "meta-ads"
+    ]
 }
