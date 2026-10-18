@@ -438,8 +438,8 @@ export class Spyglass {
     }
 
     /**
-     * Return creatives. Pass `brandId` to scope to one brand or creator,
-     * or omit it to search the whole corpus. Without `brandId`,
+     * Return creatives. Pass `accountId` to scope to one brand or creator,
+     * or omit it to search the whole corpus. Without `accountId`,
      * `query` is required.
      *
      * Limited to 120 requests per minute per user.

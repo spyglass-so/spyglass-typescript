@@ -9,7 +9,7 @@
  */
 export interface SearchMediaRequest {
     /** Brand id given as a platform string or uuid */
-    brandId?: SearchMediaRequest.BrandId;
+    accountId?: SearchMediaRequest.AccountId;
     query?: string;
     channel?: SearchMediaRequest.Channel.Item[];
     format?: SearchMediaRequest.Format.Item[];
@@ -41,7 +41,7 @@ export namespace SearchMediaRequest {
     /**
      * Brand id given as a platform string or uuid
      */
-    export type BrandId = string | number;
+    export type AccountId = string | number;
     export type Channel = Channel.Item[];
 
     export namespace Channel {
