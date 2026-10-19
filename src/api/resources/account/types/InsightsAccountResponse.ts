@@ -12,16 +12,6 @@ export type InsightsAccountResponse =
   | {
       type: 'HOOK' | 'TARGET_PERSONA' | 'AD_ANGLE';
       count: number;
-      buckets: {
-        year: number;
-        week: number;
-        clusters: {
-          id: string;
-          label: string;
-          rawDelta: number;
-          percentDelta: number | null;
-        }[];
-      }[];
       totals: {
         id: string;
         label: string;

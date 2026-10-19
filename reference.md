@@ -24,7 +24,7 @@ Send one search field. Each field is its own mode:
   when nothing matches.
 - **Name** (`names`). Fuzzy-matches account names (a case-insensitive contains
   match). Pass every name in one array.
-- **ID** (`brandIds`). Looks up known ids. Missing ids are omitted and listed
+- **ID** (`ids`). Looks up known ids. Missing ids are omitted and listed
   in `unmatchedIds`. `limit` and `offset` are ignored.
 - **Instagram** (`igUsername`). Case-insensitive contains match on the
   handle. A leading `@` is ignored.
@@ -33,7 +33,7 @@ Send one search field. Each field is its own mode:
 If a request includes more than one of these fields, only the highest
 priority field is used. The rest are ignored:
 
-1. `brandIds`
+1. `ids`
 2. `igUsername` or `tiktokUsername` (if both are set, either handle can match)
 3. `names`
 4. `query`
@@ -45,7 +45,7 @@ set, and `query` ranks inside it.
 every mode except ID.
 
 Limited to 120 requests per minute per user.
-Costs 2,000 microdollars ($0.0020) per brand returned, charged against your plan's monthly credits. The count field is what you were charged for.
+Costs $0.0010 per brand returned, charged against your plan's monthly credits. The count field is what you were charged for.
 A `query` search runs a language model, so it bills a minimum of one
 row even when nothing matches.
 
@@ -125,7 +125,7 @@ Send one search field. Each field is its own mode:
   when nothing matches.
 - **Name** (`names`). Fuzzy-matches account names (a case-insensitive contains
   match). Pass every name in one array.
-- **ID** (`brandIds`). Looks up known ids. Missing ids are omitted and listed
+- **ID** (`ids`). Looks up known ids. Missing ids are omitted and listed
   in `unmatchedIds`. `limit` and `offset` are ignored.
 - **Instagram** (`igUsername`). Case-insensitive contains match on the
   handle. A leading `@` is ignored.
@@ -134,7 +134,7 @@ Send one search field. Each field is its own mode:
 If a request includes more than one of these fields, only the highest
 priority field is used. The rest are ignored:
 
-1. `brandIds`
+1. `ids`
 2. `igUsername` or `tiktokUsername` (if both are set, either handle can match)
 3. `names`
 4. `query`
@@ -146,7 +146,7 @@ set, and `query` ranks inside it.
 every mode except ID.
 
 Limited to 120 requests per minute per user.
-Costs 2,000 microdollars ($0.0020) per creator returned, charged against your plan's monthly credits. The count field is what you were charged for.
+Costs $0.0010 per creator returned, charged against your plan's monthly credits. The count field is what you were charged for.
 A `query` search runs a language model, so it bills a minimum of one
 row even when nothing matches.
 
@@ -290,7 +290,7 @@ or omit it to search the whole corpus. Without `accountId`,
 `query` is required.
 
 Limited to 120 requests per minute per user.
-Costs 1,000 microdollars ($0.0010) per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
+Costs $0.0005 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
 The call bills a minimum of one row even when nothing matches. In that
 case `count` is 0 but you are charged for one row.
 
@@ -439,7 +439,7 @@ Recent posts may be scraped live; older posts with stored comments
 are served from cache.
 
 Limited to 20 requests per minute per user.
-Costs 10,000 microdollars ($0.0100) per successful page of comments returned, charged against your plan's monthly credits.
+Costs $0.0050 per successful page of comments returned, charged against your plan's monthly credits.
 Each comment page fetched live (`limit`, default 1) is one billed
 unit. Cached posts do not scrape and are not billed.
 
@@ -515,7 +515,7 @@ which one you got: `BRAND` or `CREATOR`, and the creator-only fields
 (`gender`, `ageRange`, ...) are present only on `CREATOR`.
 
 Limited to 120 requests per minute per user.
-Costs 2,000 microdollars ($0.0020) per account returned, charged against your plan's monthly credits.
+Costs $0.0010 per account returned, charged against your plan's monthly credits.
 An id that matches nothing returns 404 and is free.
 
 </dd>
@@ -589,7 +589,7 @@ ranked totals, highest first.
 `totals` to creatives that started within the requested window.
 
 Limited to 120 requests per minute per user.
-Costs 1,000 microdollars ($0.0010) per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
+Costs $0.0005 per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
 
 </dd>
 </dl>
@@ -643,6 +643,148 @@ await client.account.insights({
 </dl>
 </details>
 
+<details><summary><code>client.account.<a href="/src/api/resources/account/client/Client.ts">campaigns</a>({ ...params }) -> spyglass.CampaignsAccountResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Return an account’s campaigns or offers, newest start date first.
+`datePreset`, or `startDate` and `endDate`, filter by campaign
+start date. Omit both for all time.
+
+Limited to 120 requests per minute per user.
+Costs $0.0005 per campaign returned, charged against your plan's monthly credits. The count field is what you were charged for.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.account.campaigns({
+  id: 'id',
+  type: 'CAMPAIGN',
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `spyglass.CampaignsAccountRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `AccountClient.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.account.<a href="/src/api/resources/account/client/Client.ts">collabs</a>({ ...params }) -> spyglass.CollabsAccountResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Return the creators an account has collaborated with, ordered from
+most media to least. Works for both brands and creators.
+mediaCount is how many of that account’s media items tag the
+creator.
+
+Limited to 120 requests per minute per user.
+Costs $0.0005 per collab returned, charged against your plan's monthly credits. The count field is what you were charged for.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.account.collabs({
+  id: 'id',
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `spyglass.CollabsAccountRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `AccountClient.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.account.<a href="/src/api/resources/account/client/Client.ts">landingPages</a>({ ...params }) -> spyglass.LandingPagesAccountResponse</code></summary>
 <dl>
 <dd>
@@ -659,7 +801,7 @@ Return the landing-page URLs an account sends ad traffic to, ranked by
 how often they appear across its ads.
 
 Limited to 120 requests per minute per user.
-Costs 5,000 microdollars ($0.0050) per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
+Costs $0.0025 per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
 
 </dd>
 </dl>

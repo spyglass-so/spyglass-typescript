@@ -45,7 +45,7 @@ export class Spyglass {
    *   when nothing matches.
    * - **Name** (`names`). Fuzzy-matches account names (a case-insensitive contains
    *   match). Pass every name in one array.
-   * - **ID** (`brandIds`). Looks up known ids. Missing ids are omitted and listed
+   * - **ID** (`ids`). Looks up known ids. Missing ids are omitted and listed
    *   in `unmatchedIds`. `limit` and `offset` are ignored.
    * - **Instagram** (`igUsername`). Case-insensitive contains match on the
    *   handle. A leading `@` is ignored.
@@ -54,7 +54,7 @@ export class Spyglass {
    * If a request includes more than one of these fields, only the highest
    * priority field is used. The rest are ignored:
    *
-   * 1. `brandIds`
+   * 1. `ids`
    * 2. `igUsername` or `tiktokUsername` (if both are set, either handle can match)
    * 3. `names`
    * 4. `query`
@@ -66,7 +66,7 @@ export class Spyglass {
    * every mode except ID.
    *
    * Limited to 120 requests per minute per user.
-   * Costs 2,000 microdollars ($0.0020) per brand returned, charged against your plan's monthly credits. The count field is what you were charged for.
+   * Costs $0.0010 per brand returned, charged against your plan's monthly credits. The count field is what you were charged for.
    * A `query` search runs a language model, so it bills a minimum of one
    * row even when nothing matches.
    *
@@ -200,7 +200,7 @@ export class Spyglass {
    *   when nothing matches.
    * - **Name** (`names`). Fuzzy-matches account names (a case-insensitive contains
    *   match). Pass every name in one array.
-   * - **ID** (`brandIds`). Looks up known ids. Missing ids are omitted and listed
+   * - **ID** (`ids`). Looks up known ids. Missing ids are omitted and listed
    *   in `unmatchedIds`. `limit` and `offset` are ignored.
    * - **Instagram** (`igUsername`). Case-insensitive contains match on the
    *   handle. A leading `@` is ignored.
@@ -209,7 +209,7 @@ export class Spyglass {
    * If a request includes more than one of these fields, only the highest
    * priority field is used. The rest are ignored:
    *
-   * 1. `brandIds`
+   * 1. `ids`
    * 2. `igUsername` or `tiktokUsername` (if both are set, either handle can match)
    * 3. `names`
    * 4. `query`
@@ -221,7 +221,7 @@ export class Spyglass {
    * every mode except ID.
    *
    * Limited to 120 requests per minute per user.
-   * Costs 2,000 microdollars ($0.0020) per creator returned, charged against your plan's monthly credits. The count field is what you were charged for.
+   * Costs $0.0010 per creator returned, charged against your plan's monthly credits. The count field is what you were charged for.
    * A `query` search runs a language model, so it bills a minimum of one
    * row even when nothing matches.
    *
@@ -473,7 +473,7 @@ export class Spyglass {
    * `query` is required.
    *
    * Limited to 120 requests per minute per user.
-   * Costs 1,000 microdollars ($0.0010) per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
+   * Costs $0.0005 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
    * The call bills a minimum of one row even when nothing matches. In that
    * case `count` is 0 but you are charged for one row.
    *
@@ -737,7 +737,7 @@ export class Spyglass {
    * are served from cache.
    *
    * Limited to 20 requests per minute per user.
-   * Costs 10,000 microdollars ($0.0100) per successful page of comments returned, charged against your plan's monthly credits.
+   * Costs $0.0050 per successful page of comments returned, charged against your plan's monthly credits.
    * Each comment page fetched live (`limit`, default 1) is one billed
    * unit. Cached posts do not scrape and are not billed.
    *

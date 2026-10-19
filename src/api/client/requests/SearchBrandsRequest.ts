@@ -8,7 +8,7 @@
  *     }
  */
 export interface SearchBrandsRequest {
-  brandIds?: SearchBrandsRequest.BrandIds.Item[];
+  ids?: SearchBrandsRequest.Ids.Item[];
   names?: string[];
   igUsername?: string;
   tiktokUsername?: string;
@@ -23,11 +23,11 @@ export interface SearchBrandsRequest {
 }
 
 export namespace SearchBrandsRequest {
-  export type BrandIds = BrandIds.Item[];
+  export type Ids = Ids.Item[];
 
-  export namespace BrandIds {
+  export namespace Ids {
     /**
-     * Brand id given as a platform string or uuid
+     * Account id given as a platform string or uuid
      */
     export type Item = string | number;
   }

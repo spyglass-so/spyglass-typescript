@@ -32,7 +32,7 @@ export class AccountClient {
    * (`gender`, `ageRange`, ...) are present only on `CREATOR`.
    *
    * Limited to 120 requests per minute per user.
-   * Costs 2,000 microdollars ($0.0020) per account returned, charged against your plan's monthly credits.
+   * Costs $0.0010 per account returned, charged against your plan's monthly credits.
    * An id that matches nothing returns 404 and is free.
    *
    * @param {spyglass.GetAccountRequest} request
@@ -158,7 +158,7 @@ export class AccountClient {
    * `totals` to creatives that started within the requested window.
    *
    * Limited to 120 requests per minute per user.
-   * Costs 1,000 microdollars ($0.0010) per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
+   * Costs $0.0005 per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
    *
    * @param {spyglass.InsightsAccountRequest} request
    * @param {AccountClient.RequestOptions} requestOptions - Request-specific configuration.
@@ -290,11 +290,287 @@ export class AccountClient {
   }
 
   /**
+   * Return an account’s campaigns or offers, newest start date first.
+   * `datePreset`, or `startDate` and `endDate`, filter by campaign
+   * start date. Omit both for all time.
+   *
+   * Limited to 120 requests per minute per user.
+   * Costs $0.0005 per campaign returned, charged against your plan's monthly credits. The count field is what you were charged for.
+   *
+   * @param {spyglass.CampaignsAccountRequest} request
+   * @param {AccountClient.RequestOptions} requestOptions - Request-specific configuration.
+   *
+   * @throws {@link spyglass.BadRequestError}
+   * @throws {@link spyglass.UnauthorizedError}
+   * @throws {@link spyglass.PaymentRequiredError}
+   * @throws {@link spyglass.ForbiddenError}
+   * @throws {@link spyglass.NotFoundError}
+   * @throws {@link spyglass.MethodNotAllowedError}
+   * @throws {@link spyglass.TooManyRequestsError}
+   * @throws {@link spyglass.InternalServerError}
+   * @throws {@link errors.SpyglassError}
+   * @throws {@link errors.SpyglassTimeoutError}
+   *
+   * @example
+   *     await client.account.campaigns({
+   *         id: "id",
+   *         type: "CAMPAIGN"
+   *     })
+   */
+  public campaigns(
+    request: spyglass.CampaignsAccountRequest,
+    requestOptions?: AccountClient.RequestOptions,
+  ): core.HttpResponsePromise<spyglass.CampaignsAccountResponse> {
+    return core.HttpResponsePromise.fromPromise(this.__campaigns(request, requestOptions));
+  }
+
+  private async __campaigns(
+    request: spyglass.CampaignsAccountRequest,
+    requestOptions?: AccountClient.RequestOptions,
+  ): Promise<core.WithRawResponse<spyglass.CampaignsAccountResponse>> {
+    const { id, type: type_, sortBy, limit, datePreset, startDate, endDate } = request;
+    const _queryParams: Record<string, unknown> = {
+      type: type_,
+      sortBy: sortBy != null ? sortBy : undefined,
+      limit,
+      datePreset: datePreset != null ? datePreset : undefined,
+      startDate,
+      endDate,
+    };
+    const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+    const _headers: core.Fetcher.Args['headers'] = mergeHeaders(
+      _authRequest.headers,
+      this._options?.headers,
+      requestOptions?.headers,
+    );
+    const _response = await core.fetcher({
+      url: core.url.join(
+        (await core.Supplier.get(this._options.baseUrl)) ??
+          (await core.Supplier.get(this._options.environment)) ??
+          environments.SpyglassEnvironment.Default,
+        `account/${core.url.encodePathParam(id, errors.SpyglassError)}/campaigns`,
+      ),
+      method: 'GET',
+      headers: _headers,
+      queryString: core.url
+        .queryBuilder()
+        .addMany(_queryParams)
+        .mergeAdditional(requestOptions?.queryParams)
+        .build(),
+      timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+      maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+      abortSignal: requestOptions?.abortSignal,
+      fetchFn: this._options?.fetch,
+      logging: this._options.logging,
+    });
+    if (_response.ok) {
+      return {
+        data: _response.body as spyglass.CampaignsAccountResponse,
+        rawResponse: _response.rawResponse,
+      };
+    }
+
+    if (_response.error.reason === 'status-code') {
+      switch (_response.error.statusCode) {
+        case 400:
+          throw new spyglass.BadRequestError(
+            _response.error.body as spyglass.Error_,
+            _response.rawResponse,
+          );
+        case 401:
+          throw new spyglass.UnauthorizedError(
+            _response.error.body as spyglass.Error_,
+            _response.rawResponse,
+          );
+        case 402:
+          throw new spyglass.PaymentRequiredError(
+            _response.error.body as spyglass.Error_,
+            _response.rawResponse,
+          );
+        case 403:
+          throw new spyglass.ForbiddenError(
+            _response.error.body as spyglass.Error_,
+            _response.rawResponse,
+          );
+        case 404:
+          throw new spyglass.NotFoundError(
+            _response.error.body as spyglass.Error_,
+            _response.rawResponse,
+          );
+        case 405:
+          throw new spyglass.MethodNotAllowedError(
+            _response.error.body as spyglass.Error_,
+            _response.rawResponse,
+          );
+        case 429:
+          throw new spyglass.TooManyRequestsError(
+            _response.error.body as spyglass.Error_,
+            _response.rawResponse,
+          );
+        case 500:
+          throw new spyglass.InternalServerError(
+            _response.error.body as spyglass.Error_,
+            _response.rawResponse,
+          );
+        default:
+          throw new errors.SpyglassError({
+            statusCode: _response.error.statusCode,
+            body: _response.error.body,
+            rawResponse: _response.rawResponse,
+          });
+      }
+    }
+
+    return handleNonStatusCodeError(
+      _response.error,
+      _response.rawResponse,
+      'GET',
+      '/account/{id}/campaigns',
+    );
+  }
+
+  /**
+   * Return the creators an account has collaborated with, ordered from
+   * most media to least. Works for both brands and creators.
+   * mediaCount is how many of that account’s media items tag the
+   * creator.
+   *
+   * Limited to 120 requests per minute per user.
+   * Costs $0.0005 per collab returned, charged against your plan's monthly credits. The count field is what you were charged for.
+   *
+   * @param {spyglass.CollabsAccountRequest} request
+   * @param {AccountClient.RequestOptions} requestOptions - Request-specific configuration.
+   *
+   * @throws {@link spyglass.BadRequestError}
+   * @throws {@link spyglass.UnauthorizedError}
+   * @throws {@link spyglass.PaymentRequiredError}
+   * @throws {@link spyglass.ForbiddenError}
+   * @throws {@link spyglass.NotFoundError}
+   * @throws {@link spyglass.MethodNotAllowedError}
+   * @throws {@link spyglass.TooManyRequestsError}
+   * @throws {@link spyglass.InternalServerError}
+   * @throws {@link errors.SpyglassError}
+   * @throws {@link errors.SpyglassTimeoutError}
+   *
+   * @example
+   *     await client.account.collabs({
+   *         id: "id"
+   *     })
+   */
+  public collabs(
+    request: spyglass.CollabsAccountRequest,
+    requestOptions?: AccountClient.RequestOptions,
+  ): core.HttpResponsePromise<spyglass.CollabsAccountResponse> {
+    return core.HttpResponsePromise.fromPromise(this.__collabs(request, requestOptions));
+  }
+
+  private async __collabs(
+    request: spyglass.CollabsAccountRequest,
+    requestOptions?: AccountClient.RequestOptions,
+  ): Promise<core.WithRawResponse<spyglass.CollabsAccountResponse>> {
+    const { id, limit, offset } = request;
+    const _queryParams: Record<string, unknown> = {
+      limit,
+      offset,
+    };
+    const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+    const _headers: core.Fetcher.Args['headers'] = mergeHeaders(
+      _authRequest.headers,
+      this._options?.headers,
+      requestOptions?.headers,
+    );
+    const _response = await core.fetcher({
+      url: core.url.join(
+        (await core.Supplier.get(this._options.baseUrl)) ??
+          (await core.Supplier.get(this._options.environment)) ??
+          environments.SpyglassEnvironment.Default,
+        `account/${core.url.encodePathParam(id, errors.SpyglassError)}/collabs`,
+      ),
+      method: 'GET',
+      headers: _headers,
+      queryString: core.url
+        .queryBuilder()
+        .addMany(_queryParams)
+        .mergeAdditional(requestOptions?.queryParams)
+        .build(),
+      timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+      maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+      abortSignal: requestOptions?.abortSignal,
+      fetchFn: this._options?.fetch,
+      logging: this._options.logging,
+    });
+    if (_response.ok) {
+      return {
+        data: _response.body as spyglass.CollabsAccountResponse,
+        rawResponse: _response.rawResponse,
+      };
+    }
+
+    if (_response.error.reason === 'status-code') {
+      switch (_response.error.statusCode) {
+        case 400:
+          throw new spyglass.BadRequestError(
+            _response.error.body as spyglass.Error_,
+            _response.rawResponse,
+          );
+        case 401:
+          throw new spyglass.UnauthorizedError(
+            _response.error.body as spyglass.Error_,
+            _response.rawResponse,
+          );
+        case 402:
+          throw new spyglass.PaymentRequiredError(
+            _response.error.body as spyglass.Error_,
+            _response.rawResponse,
+          );
+        case 403:
+          throw new spyglass.ForbiddenError(
+            _response.error.body as spyglass.Error_,
+            _response.rawResponse,
+          );
+        case 404:
+          throw new spyglass.NotFoundError(
+            _response.error.body as spyglass.Error_,
+            _response.rawResponse,
+          );
+        case 405:
+          throw new spyglass.MethodNotAllowedError(
+            _response.error.body as spyglass.Error_,
+            _response.rawResponse,
+          );
+        case 429:
+          throw new spyglass.TooManyRequestsError(
+            _response.error.body as spyglass.Error_,
+            _response.rawResponse,
+          );
+        case 500:
+          throw new spyglass.InternalServerError(
+            _response.error.body as spyglass.Error_,
+            _response.rawResponse,
+          );
+        default:
+          throw new errors.SpyglassError({
+            statusCode: _response.error.statusCode,
+            body: _response.error.body,
+            rawResponse: _response.rawResponse,
+          });
+      }
+    }
+
+    return handleNonStatusCodeError(
+      _response.error,
+      _response.rawResponse,
+      'GET',
+      '/account/{id}/collabs',
+    );
+  }
+
+  /**
    * Return the landing-page URLs an account sends ad traffic to, ranked by
    * how often they appear across its ads.
    *
    * Limited to 120 requests per minute per user.
-   * Costs 5,000 microdollars ($0.0050) per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
+   * Costs $0.0025 per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
    *
    * @param {spyglass.LandingPagesAccountRequest} request
    * @param {AccountClient.RequestOptions} requestOptions - Request-specific configuration.
@@ -326,10 +602,11 @@ export class AccountClient {
     request: spyglass.LandingPagesAccountRequest,
     requestOptions?: AccountClient.RequestOptions,
   ): Promise<core.WithRawResponse<spyglass.LandingPagesAccountResponse>> {
-    const { id, showInactive, limit } = request;
+    const { id, showInactive, limit, offset } = request;
     const _queryParams: Record<string, unknown> = {
       showInactive: showInactive != null ? showInactive : undefined,
       limit,
+      offset,
     };
     const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
     const _headers: core.Fetcher.Args['headers'] = mergeHeaders(

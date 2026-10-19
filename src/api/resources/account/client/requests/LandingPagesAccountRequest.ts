@@ -13,4 +13,5 @@ export interface LandingPagesAccountRequest {
   id: string;
   showInactive?: spyglass.LandingPagesAccountRequestShowInactive;
   limit?: number;
+  offset?: number;
 }
