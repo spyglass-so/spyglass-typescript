@@ -35,7 +35,7 @@ jobs:
 
       - name: Set up node
         uses: actions/setup-node@v6
-                
+
       - name: Install pnpm
         uses: pnpm/action-setup@v4
 
@@ -46,12 +46,12 @@ jobs:
         run: pnpm test
 
   publish:
-    needs: [ compile, test ]
+    needs: [compile, test]
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     permissions:
-      contents: read   # Required for checkout
-      id-token: write  # Required for OIDC
+      contents: read # Required for checkout
+      id-token: write # Required for OIDC
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -59,7 +59,7 @@ jobs:
       - name: Set up node
         uses: actions/setup-node@v6
         with:
-          node-version: "lts/Krypton"
+          node-version: 'lts/Krypton'
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4

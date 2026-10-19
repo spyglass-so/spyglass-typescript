@@ -9,10 +9,10 @@
  *     }
  */
 export interface GetCommentsRequest {
-    /** Instagram post shortcodes or post URLs */
-    instagramIds?: string[];
-    /** TikTok video ids or post URLs */
-    tiktokIds?: string[];
-    /** Comment pages to fetch per post. Default 1. */
-    limit?: number;
+  /** Instagram post shortcodes or post URLs */
+  instagramIds?: string[];
+  /** TikTok video ids or post URLs */
+  tiktokIds?: string[];
+  /** Comment pages to fetch per post. Default 1. */
+  limit?: number;
 }

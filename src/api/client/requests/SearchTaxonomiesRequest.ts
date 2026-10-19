@@ -7,6 +7,6 @@
  *     }
  */
 export interface SearchTaxonomiesRequest {
-    query: string;
-    limit?: number;
+  query: string;
+  limit?: number;
 }
