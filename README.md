@@ -34,7 +34,7 @@
 
 ---
 
-**`@spyglasshq/sdk`** is the official TypeScript and Node.js client for the [Spyglass API](https://docs.spyglass.so). Resolve brands and creators, search across millions of Meta, Instagram, and TikTok creatives with natural-language briefs or structured filters, and extract hooks, personas, landing pages, and public comments.
+**`@spyglasshq/sdk`** is the official TypeScript and Node.js client for the [Spyglass API](https://docs.spyglass.so). Resolve brands and creators, search across millions of Meta, Instagram, and TikTok creatives with natural-language briefs or structured filters, and extract hooks, personas, campaigns, collaborations, landing pages, and public comments.
 
 > Looking for Python? See [`spyglass-so/spyglass-python`](https://github.com/spyglass-so/spyglass-python) (`pip install spyglass-sdk`).
 
@@ -46,7 +46,7 @@
   - [Search Brands](#1-search-brands)
   - [Search Ad Creatives & Social Media](#2-search-ad-creatives--social-media)
   - [Discover Creators](#3-discover-creators)
-  - [Creative Insights & Landing Pages](#4-creative-insights--landing-pages)
+  - [Creative Insights, Campaigns, Collabs & Landing Pages](#4-creative-insights-campaigns-collabs--landing-pages)
   - [Post Comments](#5-post-comments)
   - [Index a New Account](#6-index-a-new-account)
   - [Check Team Credit Usage](#7-check-team-credit-usage)
@@ -96,7 +96,7 @@ const brand = brands[0];
 if (brand) {
   // 2. Search the creatives that brand is running
   const { media } = await client.searchMedia({
-    brandId: brand.id,
+    accountId: brand.id,
     query: "marathon running shoes comfort",
     limit: 10,
   });
@@ -120,7 +120,7 @@ if (brand) {
 
 ### 1. Search Brands
 
-Search advertisers by name (`names`), social handle (`igUsername`, `tiktokUsername`), known IDs (`brandIds`), or a natural-language brief (`query`). You can also combine `names` + `query` to rank a specific set of brands against a brief.
+Search advertisers by name (`names`), social handle (`igUsername`, `tiktokUsername`), known IDs (`ids`), or a natural-language brief (`query`). You can also combine `names` + `query` to rank a specific set of brands against a brief.
 
 ```ts
 // Fuzzy name lookup
@@ -138,7 +138,7 @@ const byBrief = await client.searchBrands({
 
 ### 2. Search Ad Creatives & Social Media
 
-Pass `brandId` to inspect a specific brand or creator's creatives, or omit `brandId` and pass `query` to search across the entire Spyglass index. Combine semantic search with structured filters:
+Pass `accountId` to inspect a specific brand or creator's creatives, or omit `accountId` and pass `query` to search across the entire Spyglass index. Combine semantic search with structured filters:
 
 ```ts
 // Optional: look up valid product taxonomy paths first (free call)
@@ -178,9 +178,9 @@ const { creators } = await client.searchCreators({
 });
 ```
 
-### 4. Creative Insights & Landing Pages
+### 4. Creative Insights, Campaigns, Collabs & Landing Pages
 
-Pull clustered creative themes (`HOOK`, `USP`, `PERSONA`, `MEDIA_MIX`) and ranked destination landing pages for any account:
+Pull clustered creative themes (`HOOK`, `USP`, `PERSONA`, `MEDIA_MIX`), campaigns or offers, creator collaborations, and ranked destination landing pages for any account:
 
 ```ts
 // Ranked hooks + weekly volume breakdown over the last 90 days
@@ -189,6 +189,20 @@ const insights = await client.account.insights({
   type: "HOOK",
   maxDaysBack: 90,
   limit: 10,
+});
+
+// Active campaigns or promotional offers
+const { campaigns } = await client.account.campaigns({
+  id: brand.id,
+  type: "CAMPAIGN",
+  datePreset: "last-30-days",
+  limit: 10,
+});
+
+// Creators the account has collaborated with, ordered by media count
+const { collabs } = await client.account.collabs({
+  id: brand.id,
+  limit: 20,
 });
 
 // Top landing pages where the brand sends ad traffic
@@ -249,14 +263,16 @@ console.log(`Remaining: ${usage.remainingCredits} / ${usage.planCredits}`);
 
 | SDK Method | HTTP Endpoint | Cost | Rate Limit |
 | --- | --- | --- | --- |
-| `client.searchBrands(req)` | `POST /brands` | $0.0020 / brand returned | 120 / min |
-| `client.searchCreators(req)` | `POST /creators` | $0.0020 / creator returned | 120 / min |
-| `client.searchMedia(req)` | `POST /media` | $0.0010 / creative returned | 120 / min |
+| `client.searchBrands(req)` | `POST /brands` | $0.0010 / brand returned | 120 / min |
+| `client.searchCreators(req)` | `POST /creators` | $0.0010 / creator returned | 120 / min |
+| `client.searchMedia(req)` | `POST /media` | $0.0005 / creative returned | 120 / min |
 | `client.searchTaxonomies({ query })` | `GET /taxonomies` | Free | 120 / min |
-| `client.getComments(req)` | `POST /comments` | $0.0100 / live page fetched | 20 / min |
-| `client.account.get({ id })` | `GET /account/{id}` | $0.0020 / account returned | 120 / min |
-| `client.account.insights(req)` | `GET /account/{id}/insights` | $0.0010 / cluster returned | 120 / min |
-| `client.account.landingPages(req)` | `GET /account/{id}/landing-pages` | $0.0050 / landing page returned | 120 / min |
+| `client.getComments(req)` | `POST /comments` | $0.0050 / live page fetched | 20 / min |
+| `client.account.get({ id })` | `GET /account/{id}` | $0.0010 / account returned | 120 / min |
+| `client.account.insights(req)` | `GET /account/{id}/insights` | $0.0005 / cluster returned | 120 / min |
+| `client.account.campaigns(req)` | `GET /account/{id}/campaigns` | $0.0005 / campaign returned | 120 / min |
+| `client.account.collabs(req)` | `GET /account/{id}/collabs` | $0.0005 / collab returned | 120 / min |
+| `client.account.landingPages(req)` | `GET /account/{id}/landing-pages` | $0.0025 / landing page returned | 120 / min |
 | `client.account.index(req)` | `POST /account/index` | Free | 50 / min |
 | `client.account.indexStatus({ id })` | `GET /account/{id}/index-status` | Free | 300 / min |
 | `client.getCreditUsage()` | `GET /team/credit-usage` | Free | 120 / min |
