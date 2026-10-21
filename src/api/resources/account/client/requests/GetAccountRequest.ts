@@ -7,6 +7,6 @@
  *     }
  */
 export interface GetAccountRequest {
-  /** Brand or creator id returned by POST /brands or POST /creators. */
-  id: string;
+    /** Brand or creator id returned by POST /brands or POST /creators. */
+    id: string;
 }

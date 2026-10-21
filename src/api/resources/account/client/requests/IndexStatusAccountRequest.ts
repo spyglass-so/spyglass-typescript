@@ -7,6 +7,6 @@
  *     }
  */
 export interface IndexStatusAccountRequest {
-  /** Brand or creator id returned by POST /brands or POST /creators. */
-  id: string;
+    /** Brand or creator id returned by POST /brands or POST /creators. */
+    id: string;
 }

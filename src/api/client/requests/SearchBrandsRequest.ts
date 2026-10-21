@@ -8,37 +8,37 @@
  *     }
  */
 export interface SearchBrandsRequest {
-  ids?: SearchBrandsRequest.Ids.Item[];
-  names?: string[];
-  igUsername?: string;
-  tiktokUsername?: string;
-  query?: string;
-  location?: string;
-  minFollowers?: number;
-  maxFollowers?: number;
-  sortBy?: SearchBrandsRequest.SortBy;
-  offset?: number;
-  limit?: number;
-  taxonomy?: string[];
+    ids?: SearchBrandsRequest.Ids.Item[];
+    names?: string[];
+    igUsername?: string;
+    tiktokUsername?: string;
+    query?: string;
+    location?: string;
+    minFollowers?: number;
+    maxFollowers?: number;
+    sortBy?: SearchBrandsRequest.SortBy;
+    offset?: number;
+    limit?: number;
+    taxonomy?: string[];
 }
 
 export namespace SearchBrandsRequest {
-  export type Ids = Ids.Item[];
+    export type Ids = Ids.Item[];
 
-  export namespace Ids {
-    /**
-     * Account id given as a platform string or uuid
-     */
-    export type Item = string | number;
-  }
+    export namespace Ids {
+        /**
+         * Account id given as a platform string or uuid
+         */
+        export type Item = string | number;
+    }
 
-  export const SortBy = {
-    Name: 'NAME',
-    MostFollowers: 'MOST_FOLLOWERS',
-    LeastFollowers: 'LEAST_FOLLOWERS',
-    MostViews: 'MOST_VIEWS',
-    HighestEngagement: 'HIGHEST_ENGAGEMENT',
-    MostActiveAds: 'MOST_ACTIVE_ADS',
-  } as const;
-  export type SortBy = (typeof SortBy)[keyof typeof SortBy];
+    export const SortBy = {
+        Name: "NAME",
+        MostFollowers: "MOST_FOLLOWERS",
+        LeastFollowers: "LEAST_FOLLOWERS",
+        MostViews: "MOST_VIEWS",
+        HighestEngagement: "HIGHEST_ENGAGEMENT",
+        MostActiveAds: "MOST_ACTIVE_ADS",
+    } as const;
+    export type SortBy = (typeof SortBy)[keyof typeof SortBy];
 }

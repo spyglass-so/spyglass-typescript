@@ -7,5 +7,5 @@
  *     }
  */
 export interface IndexAccountRequest {
-  websiteUrl: string;
+    websiteUrl: string;
 }

@@ -1,5 +1,4 @@
 # Reference
-
 <details><summary><code>client.<a href="/src/Client.ts">searchBrands</a>({ ...params }) -> spyglass.SearchBrandsResponse</code></summary>
 <dl>
 <dd>
@@ -48,7 +47,6 @@ Limited to 120 requests per minute per user.
 Costs $0.0010 per brand returned, charged against your plan's monthly credits. The count field is what you were charged for.
 A `query` search runs a language model, so it bills a minimum of one
 row even when nothing matches.
-
 </dd>
 </dl>
 </dd>
@@ -64,11 +62,11 @@ row even when nothing matches.
 
 ```typescript
 await client.searchBrands({
-  names: ['Nike'],
-  limit: 3,
+    names: ["Nike"],
+    limit: 3
 });
-```
 
+```
 </dd>
 </dl>
 </dd>
@@ -82,20 +80,21 @@ await client.searchBrands({
 <dl>
 <dd>
 
-**request:** `spyglass.SearchBrandsRequest`
-
+**request:** `spyglass.SearchBrandsRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `Spyglass.RequestOptions`
+**requestOptions:** `Spyglass.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -149,7 +148,6 @@ Limited to 120 requests per minute per user.
 Costs $0.0010 per creator returned, charged against your plan's monthly credits. The count field is what you were charged for.
 A `query` search runs a language model, so it bills a minimum of one
 row even when nothing matches.
-
 </dd>
 </dl>
 </dd>
@@ -165,12 +163,12 @@ row even when nothing matches.
 
 ```typescript
 await client.searchCreators({
-  igUsername: 'charlidamelio',
-  limit: 3,
-  gender: 'female',
+    igUsername: "charlidamelio",
+    limit: 3,
+    gender: "female"
 });
-```
 
+```
 </dd>
 </dl>
 </dd>
@@ -184,20 +182,21 @@ await client.searchCreators({
 <dl>
 <dd>
 
-**request:** `spyglass.SearchCreatorsRequest`
-
+**request:** `spyglass.SearchCreatorsRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `Spyglass.RequestOptions`
+**requestOptions:** `Spyglass.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -221,7 +220,6 @@ such as `Apparel > Footwear > Sneakers`.
 
 Limited to 120 requests per minute per user.
 This call is free and does not use credits.
-
 </dd>
 </dl>
 </dd>
@@ -237,10 +235,10 @@ This call is free and does not use credits.
 
 ```typescript
 await client.searchTaxonomies({
-  query: 'running shoes',
+    query: "running shoes"
 });
-```
 
+```
 </dd>
 </dl>
 </dd>
@@ -254,20 +252,21 @@ await client.searchTaxonomies({
 <dl>
 <dd>
 
-**request:** `spyglass.SearchTaxonomiesRequest`
-
+**request:** `spyglass.SearchTaxonomiesRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `Spyglass.RequestOptions`
+**requestOptions:** `Spyglass.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -293,7 +292,6 @@ Limited to 120 requests per minute per user.
 Costs $0.0005 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
 The call bills a minimum of one row even when nothing matches. In that
 case `count` is 0 but you are charged for one row.
-
 </dd>
 </dl>
 </dd>
@@ -309,11 +307,11 @@ case `count` is 0 but you are charged for one row.
 
 ```typescript
 await client.searchMedia({
-  query: 'comfort-focused video ads',
-  limit: 20,
+    query: "comfort-focused video ads",
+    limit: 20
 });
-```
 
+```
 </dd>
 </dl>
 </dd>
@@ -327,20 +325,21 @@ await client.searchMedia({
 <dl>
 <dd>
 
-**request:** `spyglass.SearchMediaRequest`
-
+**request:** `spyglass.SearchMediaRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `Spyglass.RequestOptions`
+**requestOptions:** `Spyglass.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -365,7 +364,6 @@ plan, and the current billing period. Granted credits count toward
 Limited to 120 requests per minute per user.
 This call is free and does not use credits. It still responds when
 the team is out of credits.
-
 </dd>
 </dl>
 </dd>
@@ -381,8 +379,8 @@ the team is out of credits.
 
 ```typescript
 await client.getCreditUsage();
-```
 
+```
 </dd>
 </dl>
 </dd>
@@ -396,12 +394,13 @@ await client.getCreditUsage();
 <dl>
 <dd>
 
-**requestOptions:** `Spyglass.RequestOptions`
+**requestOptions:** `Spyglass.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -442,7 +441,6 @@ Limited to 20 requests per minute per user.
 Costs $0.0050 per successful page of comments returned, charged against your plan's monthly credits.
 Each comment page fetched live (`limit`, default 1) is one billed
 unit. Cached posts do not scrape and are not billed.
-
 </dd>
 </dl>
 </dd>
@@ -458,12 +456,12 @@ unit. Cached posts do not scrape and are not billed.
 
 ```typescript
 await client.getComments({
-  instagramIds: ['https://www.instagram.com/p/C2xY9abcD1e/'],
-  tiktokIds: ['https://www.tiktok.com/@nike/video/7234567890123456789'],
-  limit: 1,
+    instagramIds: ["https://www.instagram.com/p/C2xY9abcD1e/"],
+    tiktokIds: ["https://www.tiktok.com/@nike/video/7234567890123456789"],
+    limit: 1
 });
-```
 
+```
 </dd>
 </dl>
 </dd>
@@ -477,27 +475,27 @@ await client.getComments({
 <dl>
 <dd>
 
-**request:** `spyglass.GetCommentsRequest`
-
+**request:** `spyglass.GetCommentsRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `Spyglass.RequestOptions`
+**requestOptions:** `Spyglass.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Account
-
 <details><summary><code>client.account.<a href="/src/api/resources/account/client/Client.ts">get</a>({ ...params }) -> spyglass.GetAccountResponse</code></summary>
 <dl>
 <dd>
@@ -517,7 +515,6 @@ which one you got: `BRAND` or `CREATOR`, and the creator-only fields
 Limited to 120 requests per minute per user.
 Costs $0.0010 per account returned, charged against your plan's monthly credits.
 An id that matches nothing returns 404 and is free.
-
 </dd>
 </dl>
 </dd>
@@ -533,10 +530,10 @@ An id that matches nothing returns 404 and is free.
 
 ```typescript
 await client.account.get({
-  id: 'id',
+    id: "id"
 });
-```
 
+```
 </dd>
 </dl>
 </dd>
@@ -550,20 +547,21 @@ await client.account.get({
 <dl>
 <dd>
 
-**request:** `spyglass.GetAccountRequest`
-
+**request:** `spyglass.GetAccountRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `AccountClient.RequestOptions`
+**requestOptions:** `AccountClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -590,7 +588,6 @@ ranked totals, highest first.
 
 Limited to 120 requests per minute per user.
 Costs $0.0005 per cluster returned, charged against your plan's monthly credits. The count field is what you were charged for.
-
 </dd>
 </dl>
 </dd>
@@ -606,11 +603,11 @@ Costs $0.0005 per cluster returned, charged against your plan's monthly credits.
 
 ```typescript
 await client.account.insights({
-  id: 'id',
-  type: 'HOOK',
+    id: "id",
+    type: "HOOK"
 });
-```
 
+```
 </dd>
 </dl>
 </dd>
@@ -624,20 +621,21 @@ await client.account.insights({
 <dl>
 <dd>
 
-**request:** `spyglass.InsightsAccountRequest`
-
+**request:** `spyglass.InsightsAccountRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `AccountClient.RequestOptions`
+**requestOptions:** `AccountClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -661,7 +659,6 @@ start date. Omit both for all time.
 
 Limited to 120 requests per minute per user.
 Costs $0.0005 per campaign returned, charged against your plan's monthly credits. The count field is what you were charged for.
-
 </dd>
 </dl>
 </dd>
@@ -677,11 +674,11 @@ Costs $0.0005 per campaign returned, charged against your plan's monthly credits
 
 ```typescript
 await client.account.campaigns({
-  id: 'id',
-  type: 'CAMPAIGN',
+    id: "id",
+    type: "CAMPAIGN"
 });
-```
 
+```
 </dd>
 </dl>
 </dd>
@@ -695,20 +692,21 @@ await client.account.campaigns({
 <dl>
 <dd>
 
-**request:** `spyglass.CampaignsAccountRequest`
-
+**request:** `spyglass.CampaignsAccountRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `AccountClient.RequestOptions`
+**requestOptions:** `AccountClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -733,7 +731,6 @@ creator.
 
 Limited to 120 requests per minute per user.
 Costs $0.0005 per collab returned, charged against your plan's monthly credits. The count field is what you were charged for.
-
 </dd>
 </dl>
 </dd>
@@ -749,10 +746,10 @@ Costs $0.0005 per collab returned, charged against your plan's monthly credits. 
 
 ```typescript
 await client.account.collabs({
-  id: 'id',
+    id: "id"
 });
-```
 
+```
 </dd>
 </dl>
 </dd>
@@ -766,20 +763,21 @@ await client.account.collabs({
 <dl>
 <dd>
 
-**request:** `spyglass.CollabsAccountRequest`
-
+**request:** `spyglass.CollabsAccountRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `AccountClient.RequestOptions`
+**requestOptions:** `AccountClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -802,7 +800,6 @@ how often they appear across its ads.
 
 Limited to 120 requests per minute per user.
 Costs $0.0025 per landing page returned, charged against your plan's monthly credits. The count field is what you were charged for.
-
 </dd>
 </dl>
 </dd>
@@ -818,10 +815,10 @@ Costs $0.0025 per landing page returned, charged against your plan's monthly cre
 
 ```typescript
 await client.account.landingPages({
-  id: 'id',
+    id: "id"
 });
-```
 
+```
 </dd>
 </dl>
 </dd>
@@ -835,20 +832,21 @@ await client.account.landingPages({
 <dl>
 <dd>
 
-**request:** `spyglass.LandingPagesAccountRequest`
-
+**request:** `spyglass.LandingPagesAccountRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `AccountClient.RequestOptions`
+**requestOptions:** `AccountClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -876,7 +874,6 @@ queued, returning `status: "indexing"` and the new `brandId`.
 
 Limited to 50 requests per minute per user.
 This call is free.
-
 </dd>
 </dl>
 </dd>
@@ -892,10 +889,10 @@ This call is free.
 
 ```typescript
 await client.account.index({
-  websiteUrl: 'https://www.nike.com',
+    websiteUrl: "https://www.nike.com"
 });
-```
 
+```
 </dd>
 </dl>
 </dd>
@@ -909,20 +906,21 @@ await client.account.index({
 <dl>
 <dd>
 
-**request:** `spyglass.IndexAccountRequest`
-
+**request:** `spyglass.IndexAccountRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `AccountClient.RequestOptions`
+**requestOptions:** `AccountClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
@@ -944,7 +942,6 @@ Poll whether a brand finished indexing after POST /account/index.
 
 Limited to 300 requests per minute per user.
 This call is free.
-
 </dd>
 </dl>
 </dd>
@@ -960,10 +957,10 @@ This call is free.
 
 ```typescript
 await client.account.indexStatus({
-  id: 'id',
+    id: "id"
 });
-```
 
+```
 </dd>
 </dl>
 </dd>
@@ -977,21 +974,23 @@ await client.account.indexStatus({
 <dl>
 <dd>
 
-**request:** `spyglass.IndexStatusAccountRequest`
-
+**request:** `spyglass.IndexStatusAccountRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `AccountClient.RequestOptions`
+**requestOptions:** `AccountClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
 </details>
+
