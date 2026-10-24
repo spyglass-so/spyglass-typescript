@@ -443,7 +443,7 @@ export class Spyglass {
      * `query` is required.
      *
      * Limited to 120 requests per minute per user.
-     * Costs $0.0005 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
+     * Costs $0.0010 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
      * The call bills a minimum of one row even when nothing matches. In that
      * case `count` is 0 but you are charged for one row.
      *
