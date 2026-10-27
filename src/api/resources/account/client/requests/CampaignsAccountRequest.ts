@@ -10,7 +10,7 @@ import type * as spyglass from "../../../../index.js";
  *     }
  */
 export interface CampaignsAccountRequest {
-    /** Brand id returned by POST /brands/search. */
+    /** Brand or creator id returned by POST /brands or POST /creators. */
     id: string;
     type: spyglass.CampaignsAccountRequestType;
     sortBy?: spyglass.CampaignsAccountRequestSortBy;

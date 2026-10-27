@@ -7,7 +7,7 @@
  *     }
  */
 export interface CollabsAccountRequest {
-    /** Brand id returned by POST /brands/search. */
+    /** Brand or creator id returned by POST /brands or POST /creators. */
     id: string;
     limit?: number;
     offset?: number;

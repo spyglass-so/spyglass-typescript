@@ -361,7 +361,7 @@ Credits left on the API key's team, the credits included in the
 plan, and the current billing period. Granted credits count toward
 `remainingCredits` and not `planCredits`.
 
-Limited to 120 requests per minute per user.
+Limited to 60 requests per minute per user.
 This call is free and does not use credits. It still responds when
 the team is out of credits.
 </dd>

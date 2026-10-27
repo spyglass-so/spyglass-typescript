@@ -15,6 +15,7 @@ describe("AccountClient", () => {
             facebookAdLibraryId: "facebookAdLibraryId",
             name: "name",
             summary: "summary",
+            bio: "bio",
             category: "category",
             location: "location",
             language: "language",

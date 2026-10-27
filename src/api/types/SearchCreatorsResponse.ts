@@ -16,6 +16,7 @@ export namespace SearchCreatorsResponse {
             facebookAdLibraryId: string | null;
             name: string;
             summary: string | null;
+            bio: string | null;
             verified: boolean;
             igUsername: string | null;
             igFollowers: number | null;

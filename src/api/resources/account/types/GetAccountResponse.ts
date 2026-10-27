@@ -11,6 +11,7 @@ export namespace GetAccountResponse {
         facebookAdLibraryId: string | null;
         name: string;
         summary: string | null;
+        bio: string | null;
         category: string | null;
         location: string | null;
         language: string | null;
@@ -31,6 +32,7 @@ export namespace GetAccountResponse {
         facebookAdLibraryId: string | null;
         name: string;
         summary: string | null;
+        bio: string | null;
         verified: boolean;
         igUsername: string | null;
         igFollowers: number | null;
