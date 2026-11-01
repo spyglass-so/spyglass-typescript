@@ -795,6 +795,338 @@ export class Spyglass {
     }
 
     /**
+     * Lists runs for this team, newest first.
+     * Pass `after` from the previous response `pagination.next` to get the next page.
+     * Pass `before` from `pagination.previous` to go back.
+     * Do not send `after` and `before` together.
+     *
+     * Limited to 120 requests per minute per user.
+     * This call is free and does not use credits.
+     *
+     * @param {spyglass.ListAgentRunsRequest} request
+     * @param {Spyglass.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link spyglass.BadRequestError}
+     * @throws {@link spyglass.UnauthorizedError}
+     * @throws {@link spyglass.PaymentRequiredError}
+     * @throws {@link spyglass.ForbiddenError}
+     * @throws {@link spyglass.MethodNotAllowedError}
+     * @throws {@link spyglass.TooManyRequestsError}
+     * @throws {@link spyglass.InternalServerError}
+     * @throws {@link errors.SpyglassError}
+     * @throws {@link errors.SpyglassTimeoutError}
+     *
+     * @example
+     *     await client.listAgentRuns()
+     */
+    public listAgentRuns(
+        request: spyglass.ListAgentRunsRequest = {},
+        requestOptions?: Spyglass.RequestOptions,
+    ): core.HttpResponsePromise<spyglass.ListAgentRunsResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__listAgentRuns(request, requestOptions));
+    }
+
+    private async __listAgentRuns(
+        request: spyglass.ListAgentRunsRequest = {},
+        requestOptions?: Spyglass.RequestOptions,
+    ): Promise<core.WithRawResponse<spyglass.ListAgentRunsResponse>> {
+        const { limit, after, before } = request;
+        const _queryParams: Record<string, unknown> = {
+            limit,
+            after,
+            before,
+        };
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.SpyglassEnvironment.Default,
+                "agent/runs",
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url
+                .queryBuilder()
+                .addMany(_queryParams)
+                .mergeAdditional(requestOptions?.queryParams)
+                .build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as spyglass.ListAgentRunsResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new spyglass.BadRequestError(_response.error.body as spyglass.Error_, _response.rawResponse);
+                case 401:
+                    throw new spyglass.UnauthorizedError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 402:
+                    throw new spyglass.PaymentRequiredError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 403:
+                    throw new spyglass.ForbiddenError(_response.error.body as spyglass.Error_, _response.rawResponse);
+                case 405:
+                    throw new spyglass.MethodNotAllowedError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 429:
+                    throw new spyglass.TooManyRequestsError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 500:
+                    throw new spyglass.InternalServerError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.SpyglassError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/agent/runs");
+    }
+
+    /**
+     * Start a Spyglass agent run. The run id is the chat thread id.
+     * Pass `outputSchema` to get that JSON on `structured` when the run completes.
+     * Poll GET /agent/runs/{id} until `status` is `completed`.
+     *
+     * Limited to 20 requests per minute per user.
+     * The create call is free. The run is billed from model usage when it finishes.
+     *
+     * @param {spyglass.CreateAgentRunRequest} request
+     * @param {Spyglass.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link spyglass.BadRequestError}
+     * @throws {@link spyglass.UnauthorizedError}
+     * @throws {@link spyglass.PaymentRequiredError}
+     * @throws {@link spyglass.ForbiddenError}
+     * @throws {@link spyglass.MethodNotAllowedError}
+     * @throws {@link spyglass.TooManyRequestsError}
+     * @throws {@link spyglass.InternalServerError}
+     * @throws {@link errors.SpyglassError}
+     * @throws {@link errors.SpyglassTimeoutError}
+     *
+     * @example
+     *     await client.createAgentRun({
+     *         query: "query"
+     *     })
+     */
+    public createAgentRun(
+        request: spyglass.CreateAgentRunRequest,
+        requestOptions?: Spyglass.RequestOptions,
+    ): core.HttpResponsePromise<spyglass.CreateAgentRunResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__createAgentRun(request, requestOptions));
+    }
+
+    private async __createAgentRun(
+        request: spyglass.CreateAgentRunRequest,
+        requestOptions?: Spyglass.RequestOptions,
+    ): Promise<core.WithRawResponse<spyglass.CreateAgentRunResponse>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.SpyglassEnvironment.Default,
+                "agent/runs",
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            requestType: "json",
+            body: mergeAdditionalBodyParameters(request, requestOptions?.additionalBodyParameters),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as spyglass.CreateAgentRunResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new spyglass.BadRequestError(_response.error.body as spyglass.Error_, _response.rawResponse);
+                case 401:
+                    throw new spyglass.UnauthorizedError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 402:
+                    throw new spyglass.PaymentRequiredError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 403:
+                    throw new spyglass.ForbiddenError(_response.error.body as spyglass.Error_, _response.rawResponse);
+                case 405:
+                    throw new spyglass.MethodNotAllowedError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 429:
+                    throw new spyglass.TooManyRequestsError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 500:
+                    throw new spyglass.InternalServerError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.SpyglassError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/agent/runs");
+    }
+
+    /**
+     * Poll a run until `status` is `completed`.
+     * Completed runs include `text` and, when you passed a schema, `structured`.
+     *
+     * Limited to 120 requests per minute per user.
+     *
+     * @param {spyglass.GetAgentRunRequest} request
+     * @param {Spyglass.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link spyglass.BadRequestError}
+     * @throws {@link spyglass.UnauthorizedError}
+     * @throws {@link spyglass.PaymentRequiredError}
+     * @throws {@link spyglass.ForbiddenError}
+     * @throws {@link spyglass.NotFoundError}
+     * @throws {@link spyglass.MethodNotAllowedError}
+     * @throws {@link spyglass.TooManyRequestsError}
+     * @throws {@link spyglass.InternalServerError}
+     * @throws {@link errors.SpyglassError}
+     * @throws {@link errors.SpyglassTimeoutError}
+     *
+     * @example
+     *     await client.getAgentRun({
+     *         id: "id"
+     *     })
+     */
+    public getAgentRun(
+        request: spyglass.GetAgentRunRequest,
+        requestOptions?: Spyglass.RequestOptions,
+    ): core.HttpResponsePromise<Record<string, unknown>> {
+        return core.HttpResponsePromise.fromPromise(this.__getAgentRun(request, requestOptions));
+    }
+
+    private async __getAgentRun(
+        request: spyglass.GetAgentRunRequest,
+        requestOptions?: Spyglass.RequestOptions,
+    ): Promise<core.WithRawResponse<Record<string, unknown>>> {
+        const { id } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.SpyglassEnvironment.Default,
+                `agent/runs/${core.url.encodePathParam(id, errors.SpyglassError)}`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Record<string, unknown>, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new spyglass.BadRequestError(_response.error.body as spyglass.Error_, _response.rawResponse);
+                case 401:
+                    throw new spyglass.UnauthorizedError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 402:
+                    throw new spyglass.PaymentRequiredError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 403:
+                    throw new spyglass.ForbiddenError(_response.error.body as spyglass.Error_, _response.rawResponse);
+                case 404:
+                    throw new spyglass.NotFoundError(_response.error.body as spyglass.Error_, _response.rawResponse);
+                case 405:
+                    throw new spyglass.MethodNotAllowedError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 429:
+                    throw new spyglass.TooManyRequestsError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 500:
+                    throw new spyglass.InternalServerError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.SpyglassError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/agent/runs/{id}");
+    }
+
+    /**
      * Make a passthrough request using the SDK's configured auth, retry, logging, etc.
      * This is useful for making requests to endpoints not yet supported in the SDK.
      * The input can be a URL string, URL object, or Request object. Relative paths are resolved against the configured base URL.

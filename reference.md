@@ -495,6 +495,213 @@ await client.getComments({
 </dl>
 </details>
 
+<details><summary><code>client.<a href="/src/Client.ts">listAgentRuns</a>({ ...params }) -> spyglass.ListAgentRunsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists runs for this team, newest first.
+Pass `after` from the previous response `pagination.next` to get the next page.
+Pass `before` from `pagination.previous` to go back.
+Do not send `after` and `before` together.
+
+Limited to 120 requests per minute per user.
+This call is free and does not use credits.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.listAgentRuns();
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `spyglass.ListAgentRunsRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Spyglass.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.<a href="/src/Client.ts">createAgentRun</a>({ ...params }) -> spyglass.CreateAgentRunResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Start a Spyglass agent run. The run id is the chat thread id.
+Pass `outputSchema` to get that JSON on `structured` when the run completes.
+Poll GET /agent/runs/{id} until `status` is `completed`.
+
+Limited to 20 requests per minute per user.
+The create call is free. The run is billed from model usage when it finishes.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.createAgentRun({
+    query: "query"
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `spyglass.CreateAgentRunRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Spyglass.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.<a href="/src/Client.ts">getAgentRun</a>({ ...params }) -> Record&lt;string, unknown&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Poll a run until `status` is `completed`.
+Completed runs include `text` and, when you passed a schema, `structured`.
+
+Limited to 120 requests per minute per user.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.getAgentRun({
+    id: "id"
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `spyglass.GetAgentRunRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Spyglass.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Account
 <details><summary><code>client.account.<a href="/src/api/resources/account/client/Client.ts">get</a>({ ...params }) -> spyglass.GetAccountResponse</code></summary>
 <dl>

@@ -1106,4 +1106,416 @@ describe("Spyglass", () => {
             return await client.getComments();
         }).rejects.toThrow(spyglass.InternalServerError);
     });
+
+    test("listAgentRuns (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { data: [{ key: "value" }], pagination: { next: "next", previous: "previous" } };
+
+        server.mockEndpoint().get("/agent/runs").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
+
+        const response = await client.listAgentRuns();
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("listAgentRuns (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/agent/runs").respondWith().statusCode(400).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.listAgentRuns();
+        }).rejects.toThrow(spyglass.BadRequestError);
+    });
+
+    test("listAgentRuns (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/agent/runs").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.listAgentRuns();
+        }).rejects.toThrow(spyglass.UnauthorizedError);
+    });
+
+    test("listAgentRuns (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/agent/runs").respondWith().statusCode(402).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.listAgentRuns();
+        }).rejects.toThrow(spyglass.PaymentRequiredError);
+    });
+
+    test("listAgentRuns (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/agent/runs").respondWith().statusCode(403).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.listAgentRuns();
+        }).rejects.toThrow(spyglass.ForbiddenError);
+    });
+
+    test("listAgentRuns (6)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/agent/runs").respondWith().statusCode(405).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.listAgentRuns();
+        }).rejects.toThrow(spyglass.MethodNotAllowedError);
+    });
+
+    test("listAgentRuns (7)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/agent/runs").respondWith().statusCode(429).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.listAgentRuns();
+        }).rejects.toThrow(spyglass.TooManyRequestsError);
+    });
+
+    test("listAgentRuns (8)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/agent/runs").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.listAgentRuns();
+        }).rejects.toThrow(spyglass.InternalServerError);
+    });
+
+    test("createAgentRun (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const rawRequestBody = { query: "query" };
+        const rawResponseBody = { id: "id", status: "queued", createdAt: "2024-01-15T09:30:00Z" };
+
+        server
+            .mockEndpoint()
+            .post("/agent/runs")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.createAgentRun({
+            query: "query",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("createAgentRun (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const rawRequestBody = { query: "x" };
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server
+            .mockEndpoint()
+            .post("/agent/runs")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.createAgentRun({
+                query: "x",
+            });
+        }).rejects.toThrow(spyglass.BadRequestError);
+    });
+
+    test("createAgentRun (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const rawRequestBody = { query: "x" };
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server
+            .mockEndpoint()
+            .post("/agent/runs")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.createAgentRun({
+                query: "x",
+            });
+        }).rejects.toThrow(spyglass.UnauthorizedError);
+    });
+
+    test("createAgentRun (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const rawRequestBody = { query: "x" };
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server
+            .mockEndpoint()
+            .post("/agent/runs")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(402)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.createAgentRun({
+                query: "x",
+            });
+        }).rejects.toThrow(spyglass.PaymentRequiredError);
+    });
+
+    test("createAgentRun (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const rawRequestBody = { query: "x" };
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server
+            .mockEndpoint()
+            .post("/agent/runs")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.createAgentRun({
+                query: "x",
+            });
+        }).rejects.toThrow(spyglass.ForbiddenError);
+    });
+
+    test("createAgentRun (6)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const rawRequestBody = { query: "x" };
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server
+            .mockEndpoint()
+            .post("/agent/runs")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(405)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.createAgentRun({
+                query: "x",
+            });
+        }).rejects.toThrow(spyglass.MethodNotAllowedError);
+    });
+
+    test("createAgentRun (7)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const rawRequestBody = { query: "x" };
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server
+            .mockEndpoint()
+            .post("/agent/runs")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(429)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.createAgentRun({
+                query: "x",
+            });
+        }).rejects.toThrow(spyglass.TooManyRequestsError);
+    });
+
+    test("createAgentRun (8)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const rawRequestBody = { query: "x" };
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server
+            .mockEndpoint()
+            .post("/agent/runs")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.createAgentRun({
+                query: "x",
+            });
+        }).rejects.toThrow(spyglass.InternalServerError);
+    });
+
+    test("getAgentRun (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { key: "value" };
+
+        server.mockEndpoint().get("/agent/runs/id").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
+
+        const response = await client.getAgentRun({
+            id: "id",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("getAgentRun (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/agent/runs/id").respondWith().statusCode(400).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.getAgentRun({
+                id: "id",
+            });
+        }).rejects.toThrow(spyglass.BadRequestError);
+    });
+
+    test("getAgentRun (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/agent/runs/id").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.getAgentRun({
+                id: "id",
+            });
+        }).rejects.toThrow(spyglass.UnauthorizedError);
+    });
+
+    test("getAgentRun (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/agent/runs/id").respondWith().statusCode(402).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.getAgentRun({
+                id: "id",
+            });
+        }).rejects.toThrow(spyglass.PaymentRequiredError);
+    });
+
+    test("getAgentRun (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/agent/runs/id").respondWith().statusCode(403).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.getAgentRun({
+                id: "id",
+            });
+        }).rejects.toThrow(spyglass.ForbiddenError);
+    });
+
+    test("getAgentRun (6)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/agent/runs/id").respondWith().statusCode(404).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.getAgentRun({
+                id: "id",
+            });
+        }).rejects.toThrow(spyglass.NotFoundError);
+    });
+
+    test("getAgentRun (7)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/agent/runs/id").respondWith().statusCode(405).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.getAgentRun({
+                id: "id",
+            });
+        }).rejects.toThrow(spyglass.MethodNotAllowedError);
+    });
+
+    test("getAgentRun (8)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/agent/runs/id").respondWith().statusCode(429).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.getAgentRun({
+                id: "id",
+            });
+        }).rejects.toThrow(spyglass.TooManyRequestsError);
+    });
+
+    test("getAgentRun (9)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/agent/runs/id").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.getAgentRun({
+                id: "id",
+            });
+        }).rejects.toThrow(spyglass.InternalServerError);
+    });
 });
