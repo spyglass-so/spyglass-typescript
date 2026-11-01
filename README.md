@@ -49,8 +49,8 @@
   - [Creative Insights, Campaigns, Collabs & Landing Pages](#4-creative-insights-campaigns-collabs--landing-pages)
   - [Post Comments](#5-post-comments)
   - [Index a New Account](#6-index-a-new-account)
-  - [Check Team Credit Usage](#7-check-team-credit-usage)
-  - [Run the Agent](#8-run-the-agent)
+  - [Run the Agent](#7-run-the-agent)
+  - [Check Team Credit Usage](#8-check-team-credit-usage)
 - [API Reference Overview](#api-reference-overview)
 - [TypeScript Types](#typescript-types)
 - [Error Handling](#error-handling)
@@ -249,16 +249,7 @@ if (status === "ready" || status === "already_exists") {
 }
 ```
 
-### 7. Check Team Credit Usage
-
-Check your team's remaining monthly credits and current billing window (free call):
-
-```ts
-const usage = await client.getCreditUsage();
-console.log(`Remaining: ${usage.remainingCredits} / ${usage.planCredits}`);
-```
-
-### 8. Run the Agent
+### 7. Run the Agent
 
 Start a Spyglass agent run, then poll until `status` is `"completed"`. Queuing the run is free. The run is billed from model usage when it finishes. `effort` is `none`, `minimal`, `low`, `medium` (default), `high`, or `xhigh`.
 
@@ -295,6 +286,15 @@ await client.agent.runs.create({
 const page = await client.agent.runs.list({ limit: 10 });
 ```
 
+### 8. Check Team Credit Usage
+
+Check your team's remaining monthly credits and current billing window (free call):
+
+```ts
+const usage = await client.getCreditUsage();
+console.log(`Remaining: ${usage.remainingCredits} / ${usage.planCredits}`);
+```
+
 ---
 
 ## API Reference Overview
@@ -313,10 +313,10 @@ const page = await client.agent.runs.list({ limit: 10 });
 | `client.account.landingPages(req)` | `GET /account/{id}/landing-pages` | $0.0025 / landing page returned | 120 / min |
 | `client.account.index(req)` | `POST /account/index` | Free | 50 / min |
 | `client.account.indexStatus({ id })` | `GET /account/{id}/index-status` | Free | 300 / min |
-| `client.getCreditUsage()` | `GET /team/credit-usage` | Free | 120 / min |
 | `client.agent.runs.create(req)` | `POST /agent/runs` | Free to queue; billed from model usage when the run finishes | 20 / min |
 | `client.agent.runs.list(req)` | `GET /agent/runs` | Free | 120 / min |
 | `client.agent.runs.get({ id })` | `GET /agent/runs/{id}` | Free | 120 / min |
+| `client.getCreditUsage()` | `GET /team/credit-usage` | Free | 120 / min |
 
 Full method signatures and parameter types are available in [`reference.md`](https://github.com/spyglass-so/spyglass-typescript/blob/main/reference.md) and at [docs.spyglass.so](https://docs.spyglass.so).
 
