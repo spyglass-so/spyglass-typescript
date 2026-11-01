@@ -8,13 +8,59 @@
  */
 export interface CreateAgentRunRequest {
     query: string;
-    outputSchema?: Record<string, unknown>;
+    /** JSON Schema for `structured`. The root `type` must be `"object"`. Each property can be a string, number, integer, boolean, array, or object. */
+    outputSchema?: CreateAgentRunRequest.OutputSchema;
     systemPrompt?: string;
     effort?: CreateAgentRunRequest.Effort;
     previousRunId?: string;
 }
 
 export namespace CreateAgentRunRequest {
+    /**
+     * JSON Schema for `structured`. The root `type` must be `"object"`. Each property can be a string, number, integer, boolean, array, or object.
+     */
+    export interface OutputSchema {
+        type: OutputSchema.Type;
+        /** Fields of the structured result. */
+        properties?: Record<string, OutputSchema.Properties.Value> | undefined;
+        /** Property names the result must include. */
+        required?: string[] | undefined;
+    }
+
+    export namespace OutputSchema {
+        export const Type = {
+            Object: "object",
+        } as const;
+        export type Type = (typeof Type)[keyof typeof Type];
+
+        export namespace Properties {
+            /**
+             * JSON Schema for one field. Nested objects and arrays use this same shape.
+             */
+            export interface Value {
+                type: Value.Type;
+                description?: string | undefined;
+                /** Item schema when `type` is `array`. */
+                items?: Record<string, unknown> | undefined;
+                /** Nested fields when `type` is `object`. */
+                properties?: Record<string, unknown> | undefined;
+                required?: string[] | undefined;
+            }
+
+            export namespace Value {
+                export const Type = {
+                    String: "string",
+                    Number: "number",
+                    Integer: "integer",
+                    Boolean: "boolean",
+                    Array: "array",
+                    Object: "object",
+                } as const;
+                export type Type = (typeof Type)[keyof typeof Type];
+            }
+        }
+    }
+
     export const Effort = {
         None: "none",
         Minimal: "minimal",
