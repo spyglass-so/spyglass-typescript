@@ -50,6 +50,7 @@
   - [Post Comments](#5-post-comments)
   - [Index a New Account](#6-index-a-new-account)
   - [Check Team Credit Usage](#7-check-team-credit-usage)
+  - [Run the Agent](#8-run-the-agent)
 - [API Reference Overview](#api-reference-overview)
 - [TypeScript Types](#typescript-types)
 - [Error Handling](#error-handling)
@@ -257,6 +258,43 @@ const usage = await client.getCreditUsage();
 console.log(`Remaining: ${usage.remainingCredits} / ${usage.planCredits}`);
 ```
 
+### 8. Run the Agent
+
+Start a Spyglass agent run, then poll until `status` is `"completed"`. Queuing the run is free. The run is billed from model usage when it finishes. `effort` is `none`, `minimal`, `low`, `medium` (default), `high`, or `xhigh`.
+
+Pass a JSON Schema `outputSchema` (`type: "object"`) to also get `structured` on the completed run. Pass `previousRunId` of a completed run to continue that thread.
+
+```ts
+const created = await client.agent.runs.create({
+  query: "What are three hooks Liquid Death uses in recent ads?",
+  effort: "low",
+  outputSchema: {
+    type: "object",
+    properties: {
+      hooks: { type: "array", items: { type: "string" } },
+    },
+    required: ["hooks"],
+  },
+});
+
+let run = await client.agent.runs.get({ id: created.id });
+while (run.status !== "completed") {
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  run = await client.agent.runs.get({ id: created.id });
+}
+
+console.log(run.text);
+console.log(run.structured);
+
+// Continue the same thread
+await client.agent.runs.create({
+  query: "Turn those hooks into 15-second ad scripts.",
+  previousRunId: run.id,
+});
+
+const page = await client.agent.runs.list({ limit: 10 });
+```
+
 ---
 
 ## API Reference Overview
@@ -276,6 +314,9 @@ console.log(`Remaining: ${usage.remainingCredits} / ${usage.planCredits}`);
 | `client.account.index(req)` | `POST /account/index` | Free | 50 / min |
 | `client.account.indexStatus({ id })` | `GET /account/{id}/index-status` | Free | 300 / min |
 | `client.getCreditUsage()` | `GET /team/credit-usage` | Free | 120 / min |
+| `client.agent.runs.create(req)` | `POST /agent/runs` | Free to queue; billed from model usage when the run finishes | 20 / min |
+| `client.agent.runs.list(req)` | `GET /agent/runs` | Free | 120 / min |
+| `client.agent.runs.get({ id })` | `GET /agent/runs/{id}` | Free | 120 / min |
 
 Full method signatures and parameter types are available in [`reference.md`](https://github.com/spyglass-so/spyglass-typescript/blob/main/reference.md) and at [docs.spyglass.so](https://docs.spyglass.so).
 
