@@ -2,12 +2,5 @@
 
 export interface ListAgentRunsResponse {
     data: Record<string, unknown>[];
-    pagination: ListAgentRunsResponse.Pagination;
-}
-
-export namespace ListAgentRunsResponse {
-    export interface Pagination {
-        next?: string | undefined;
-        previous?: string | undefined;
-    }
+    count: number;
 }

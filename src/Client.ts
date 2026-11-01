@@ -796,9 +796,8 @@ export class Spyglass {
 
     /**
      * Lists runs for this team, newest first.
-     * Pass `after` from the previous response `pagination.next` to get the next page.
-     * Pass `before` from `pagination.previous` to go back.
-     * Do not send `after` and `before` together.
+     * Page with `offset`. The next page is `offset` plus the `limit` you sent.
+     * `count` is the number of runs in this response. Stop when `count` is less than `limit`.
      *
      * Limited to 120 requests per minute per user.
      * This call is free and does not use credits.
@@ -830,11 +829,10 @@ export class Spyglass {
         request: spyglass.ListAgentRunsRequest = {},
         requestOptions?: Spyglass.RequestOptions,
     ): Promise<core.WithRawResponse<spyglass.ListAgentRunsResponse>> {
-        const { limit, after, before } = request;
+        const { limit, offset } = request;
         const _queryParams: Record<string, unknown> = {
             limit,
-            after,
-            before,
+            offset,
         };
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(

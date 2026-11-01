@@ -6,6 +6,5 @@
  */
 export interface ListAgentRunsRequest {
     limit?: number;
-    after?: string;
-    before?: string;
+    offset?: number;
 }

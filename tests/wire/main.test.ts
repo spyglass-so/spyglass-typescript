@@ -1111,7 +1111,7 @@ describe("Spyglass", () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
-        const rawResponseBody = { data: [{ key: "value" }], pagination: { next: "next", previous: "previous" } };
+        const rawResponseBody = { data: [{ key: "value" }], count: 1 };
 
         server.mockEndpoint().get("/agent/runs").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
 

@@ -508,9 +508,8 @@ await client.getComments({
 <dd>
 
 Lists runs for this team, newest first.
-Pass `after` from the previous response `pagination.next` to get the next page.
-Pass `before` from `pagination.previous` to go back.
-Do not send `after` and `before` together.
+Page with `offset`. The next page is `offset` plus the `limit` you sent.
+`count` is the number of runs in this response. Stop when `count` is less than `limit`.
 
 Limited to 120 requests per minute per user.
 This call is free and does not use credits.
