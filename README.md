@@ -253,7 +253,7 @@ if (status === "ready" || status === "already_exists") {
 
 Start a Spyglass agent run, then poll until `status` is `"completed"`. Queuing the run is free. The run is billed from model usage when it finishes. `effort` is `none`, `minimal`, `low`, `medium` (default), `high`, or `xhigh`.
 
-Pass a JSON Schema `outputSchema` (`type: "object"`) to also get `structured` on the completed run. Pass `previousRunId` of a completed run to continue that thread.
+Pass a JSON Schema `outputSchema` (`type: "object"`) to also get `structured` on the completed run. Pass `previousRunId` of a completed run to continue that thread. Page the list with `offset`. The next page is `offset` plus `limit`, and you stop when fewer than `limit` runs come back.
 
 ```ts
 const created = await client.agent.runs.create({
@@ -283,7 +283,7 @@ await client.agent.runs.create({
   previousRunId: run.id,
 });
 
-const page = await client.agent.runs.list({ limit: 10 });
+const page = await client.agent.runs.list({ limit: 10, offset: 0 });
 ```
 
 ### 8. Check Team Credit Usage
