@@ -924,6 +924,7 @@ describe("Spyglass", () => {
                             username: "username",
                             displayName: "displayName",
                             isVerified: true,
+                            avatarUrl: null,
                         },
                     ],
                 },

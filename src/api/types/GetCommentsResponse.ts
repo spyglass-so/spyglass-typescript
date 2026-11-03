@@ -30,6 +30,7 @@ export namespace GetCommentsResponse {
                     username: string;
                     displayName: string;
                     isVerified: boolean;
+                    avatarUrl: string | null;
                 }
             }
         }
