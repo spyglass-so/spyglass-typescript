@@ -12,7 +12,7 @@ export interface CreateAgentRunRequest {
     outputSchema?: CreateAgentRunRequest.OutputSchema;
     systemPrompt?: string;
     effort?: CreateAgentRunRequest.Effort;
-    previousRunId?: string;
+    model?: CreateAgentRunRequest.Model;
 }
 
 export namespace CreateAgentRunRequest {
@@ -70,4 +70,9 @@ export namespace CreateAgentRunRequest {
         Xhigh: "xhigh",
     } as const;
     export type Effort = (typeof Effort)[keyof typeof Effort];
+    export const Model = {
+        Default: "default",
+        Pro: "pro",
+    } as const;
+    export type Model = (typeof Model)[keyof typeof Model];
 }

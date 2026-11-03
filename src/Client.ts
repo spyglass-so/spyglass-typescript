@@ -911,6 +911,7 @@ export class Spyglass {
      * Start a Spyglass agent run. The run id is the chat thread id.
      * Pass `outputSchema` to get that JSON on `structured` when the run completes.
      * The root `type` must be `"object"`. Each property can be a string, number, integer, boolean, array, or object.
+     * `model` is `default` or `pro`.
      * Poll GET /agent/runs/{id} until `status` is `completed`.
      *
      * Limited to 20 requests per minute per user.
