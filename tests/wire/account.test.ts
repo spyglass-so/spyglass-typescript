@@ -571,7 +571,18 @@ describe("AccountClient", () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
-        const rawResponseBody = { count: 1, collabs: [{ name: "name", profileUrl: "profileUrl", mediaCount: 1 }] };
+        const rawResponseBody = {
+            count: 1,
+            collabs: [
+                {
+                    name: "name",
+                    profileUrl: "profileUrl",
+                    mediaCount: 1,
+                    startedAt: "startedAt",
+                    lastPostedAt: "lastPostedAt",
+                },
+            ],
+        };
 
         server
             .mockEndpoint()

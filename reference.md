@@ -935,7 +935,9 @@ await client.account.campaigns({
 Return the creators an account has collaborated with, ordered from
 most media to least. Works for both brands and creators.
 mediaCount is how many of that account’s media items tag the
-creator.
+creator. startedAt is the earliest of those media start times, and
+lastPostedAt is the latest. `datePreset`, or `startDate` and
+`endDate`, filter by startedAt. Omit both for all time.
 
 Limited to 120 requests per minute per user.
 Costs $0.0010 per collab returned, charged against your plan's monthly credits. The count field is what you were charged for.

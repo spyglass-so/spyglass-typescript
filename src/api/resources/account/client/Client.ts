@@ -384,7 +384,9 @@ export class AccountClient {
      * Return the creators an account has collaborated with, ordered from
      * most media to least. Works for both brands and creators.
      * mediaCount is how many of that account’s media items tag the
-     * creator.
+     * creator. startedAt is the earliest of those media start times, and
+     * lastPostedAt is the latest. `datePreset`, or `startDate` and
+     * `endDate`, filter by startedAt. Omit both for all time.
      *
      * Limited to 120 requests per minute per user.
      * Costs $0.0010 per collab returned, charged against your plan's monthly credits. The count field is what you were charged for.
@@ -419,10 +421,13 @@ export class AccountClient {
         request: spyglass.CollabsAccountRequest,
         requestOptions?: AccountClient.RequestOptions,
     ): Promise<core.WithRawResponse<spyglass.CollabsAccountResponse>> {
-        const { id, limit, offset } = request;
+        const { id, limit, offset, datePreset, startDate, endDate } = request;
         const _queryParams: Record<string, unknown> = {
             limit,
             offset,
+            datePreset: datePreset != null ? datePreset : undefined,
+            startDate,
+            endDate,
         };
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(

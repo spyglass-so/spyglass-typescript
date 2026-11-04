@@ -2,6 +2,7 @@ export * from "./CampaignsAccountRequestDatePreset.js";
 export * from "./CampaignsAccountRequestSortBy.js";
 export * from "./CampaignsAccountRequestType.js";
 export * from "./CampaignsAccountResponse.js";
+export * from "./CollabsAccountRequestDatePreset.js";
 export * from "./CollabsAccountResponse.js";
 export * from "./GetAccountResponse.js";
 export * from "./IndexAccountResponse.js";

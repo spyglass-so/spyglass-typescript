@@ -13,6 +13,10 @@ export namespace CollabsAccountResponse {
             name: string;
             profileUrl: string;
             mediaCount: number;
+            /** When the collab started: the earliest media start time. */
+            startedAt: string;
+            /** The latest media post time for this creator. */
+            lastPostedAt: string;
         }
     }
 }
