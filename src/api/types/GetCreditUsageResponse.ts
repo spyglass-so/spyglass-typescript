@@ -5,8 +5,8 @@ export interface GetCreditUsageResponse {
     remainingCredits: number;
     /** Credits included in the team's plan for this billing period. */
     planCredits: number;
-    /** Start of the current billing period, UTC. */
-    billingPeriodStart: string;
-    /** End of the current billing period, UTC. */
-    billingPeriodEnd: string;
+    /** Start of the current billing period, UTC. Null when no billing period exists. */
+    billingPeriodStart: string | null;
+    /** End of the current billing period, UTC. Null when no billing period exists. */
+    billingPeriodEnd: string | null;
 }
