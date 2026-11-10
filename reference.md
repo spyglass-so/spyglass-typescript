@@ -724,8 +724,9 @@ Fetch a single brand or creator. `id` is any one of:
 - an Instagram handle, such as `nike` or `@nike`
 - a TikTok handle, such as `nike` or `@nike`
 
-A website matches the account domain. A handle matches Instagram or
-TikTok. Encode `/` and `?` in a URL. The `type` field tells you which
+A website matches the account domain. A handle matches `igUsername` or
+`tiktokUsername`. When both match, the `igUsername` match is returned.
+Encode `/` and `?` in a URL. The `type` field tells you which
 one you got: `BRAND` or `CREATOR`, and the creator-only fields
 (`gender`, `ageRange`, ...) are present only on `CREATOR`.
 
