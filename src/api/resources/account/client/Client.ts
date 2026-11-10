@@ -24,8 +24,16 @@ export class AccountClient {
     }
 
     /**
-     * Fetch a single brand or creator by id. The `type` field tells you
-     * which one you got: `BRAND` or `CREATOR`, and the creator-only fields
+     * Fetch a single brand or creator. `id` is any one of:
+     *
+     * - an account id (a UUID, or the numeric id from POST /brands or POST /creators)
+     * - a website URL or bare domain, such as `https://www.nike.com` or `nike.com`
+     * - an Instagram handle, such as `nike` or `@nike`
+     * - a TikTok handle, such as `nike` or `@nike`
+     *
+     * A website matches the account domain. A handle matches Instagram or
+     * TikTok. Encode `/` and `?` in a URL. The `type` field tells you which
+     * one you got: `BRAND` or `CREATOR`, and the creator-only fields
      * (`gender`, `ageRange`, ...) are present only on `CREATOR`.
      *
      * Limited to 120 requests per minute per user.
@@ -48,7 +56,7 @@ export class AccountClient {
      *
      * @example
      *     await client.account.get({
-     *         id: "id"
+     *         id: "e9cf96ee-7455-4b00-b692-80e2f923f79d"
      *     })
      */
     public get(
@@ -161,7 +169,7 @@ export class AccountClient {
      *
      * @example
      *     await client.account.insights({
-     *         id: "id",
+     *         id: "e9cf96ee-7455-4b00-b692-80e2f923f79d",
      *         type: "HOOK"
      *     })
      */
@@ -281,7 +289,7 @@ export class AccountClient {
      *
      * @example
      *     await client.account.campaigns({
-     *         id: "id",
+     *         id: "e9cf96ee-7455-4b00-b692-80e2f923f79d",
      *         type: "CAMPAIGN"
      *     })
      */
@@ -407,7 +415,7 @@ export class AccountClient {
      *
      * @example
      *     await client.account.collabs({
-     *         id: "id"
+     *         id: "e9cf96ee-7455-4b00-b692-80e2f923f79d"
      *     })
      */
     public collabs(
@@ -527,7 +535,7 @@ export class AccountClient {
      *
      * @example
      *     await client.account.landingPages({
-     *         id: "id"
+     *         id: "e9cf96ee-7455-4b00-b692-80e2f923f79d"
      *     })
      */
     public landingPages(
@@ -756,7 +764,7 @@ export class AccountClient {
      *
      * @example
      *     await client.account.indexStatus({
-     *         id: "id"
+     *         id: "e9cf96ee-7455-4b00-b692-80e2f923f79d"
      *     })
      */
     public indexStatus(

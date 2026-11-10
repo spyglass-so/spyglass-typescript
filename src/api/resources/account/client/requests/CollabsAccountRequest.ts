@@ -5,11 +5,11 @@ import type * as spyglass from "../../../../index.js";
 /**
  * @example
  *     {
- *         id: "id"
+ *         id: "e9cf96ee-7455-4b00-b692-80e2f923f79d"
  *     }
  */
 export interface CollabsAccountRequest {
-    /** Brand or creator id returned by POST /brands or POST /creators. */
+    /** Any one of: an account id, a website, an Instagram handle, or a TikTok handle. An id is a UUID or the numeric id from POST /brands or POST /creators. A website may be a full URL or a bare domain. A handle may start with @. Encode `/` and `?` when the value is a URL. */
     id: string;
     limit?: number;
     offset?: number;

@@ -30,10 +30,16 @@ describe("AccountClient", () => {
             thumbnailUrl: "thumbnailUrl",
         };
 
-        server.mockEndpoint().get("/account/id").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
+        server
+            .mockEndpoint()
+            .get("/account/e9cf96ee-7455-4b00-b692-80e2f923f79d")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
 
         const response = await client.account.get({
-            id: "id",
+            id: "e9cf96ee-7455-4b00-b692-80e2f923f79d",
         });
         expect(response).toEqual(rawResponseBody);
     });
@@ -166,14 +172,14 @@ describe("AccountClient", () => {
 
         server
             .mockEndpoint()
-            .get("/account/id/insights")
+            .get("/account/e9cf96ee-7455-4b00-b692-80e2f923f79d/insights")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
         const response = await client.account.insights({
-            id: "id",
+            id: "e9cf96ee-7455-4b00-b692-80e2f923f79d",
             type: "HOOK",
         });
         expect(response).toEqual(rawResponseBody);
@@ -378,14 +384,14 @@ describe("AccountClient", () => {
 
         server
             .mockEndpoint()
-            .get("/account/id/campaigns")
+            .get("/account/e9cf96ee-7455-4b00-b692-80e2f923f79d/campaigns")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
         const response = await client.account.campaigns({
-            id: "id",
+            id: "e9cf96ee-7455-4b00-b692-80e2f923f79d",
             type: "CAMPAIGN",
         });
         expect(response).toEqual(rawResponseBody);
@@ -586,14 +592,14 @@ describe("AccountClient", () => {
 
         server
             .mockEndpoint()
-            .get("/account/id/collabs")
+            .get("/account/e9cf96ee-7455-4b00-b692-80e2f923f79d/collabs")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
         const response = await client.account.collabs({
-            id: "id",
+            id: "e9cf96ee-7455-4b00-b692-80e2f923f79d",
         });
         expect(response).toEqual(rawResponseBody);
     });
@@ -774,14 +780,14 @@ describe("AccountClient", () => {
 
         server
             .mockEndpoint()
-            .get("/account/id/landing-pages")
+            .get("/account/e9cf96ee-7455-4b00-b692-80e2f923f79d/landing-pages")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
         const response = await client.account.landingPages({
-            id: "id",
+            id: "e9cf96ee-7455-4b00-b692-80e2f923f79d",
         });
         expect(response).toEqual(rawResponseBody);
     });
@@ -1137,14 +1143,14 @@ describe("AccountClient", () => {
 
         server
             .mockEndpoint()
-            .get("/account/id/index-status")
+            .get("/account/e9cf96ee-7455-4b00-b692-80e2f923f79d/index-status")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
         const response = await client.account.indexStatus({
-            id: "id",
+            id: "e9cf96ee-7455-4b00-b692-80e2f923f79d",
         });
         expect(response).toEqual(rawResponseBody);
     });

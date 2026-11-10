@@ -717,8 +717,16 @@ await client.getAgentRun({
 <dl>
 <dd>
 
-Fetch a single brand or creator by id. The `type` field tells you
-which one you got: `BRAND` or `CREATOR`, and the creator-only fields
+Fetch a single brand or creator. `id` is any one of:
+
+- an account id (a UUID, or the numeric id from POST /brands or POST /creators)
+- a website URL or bare domain, such as `https://www.nike.com` or `nike.com`
+- an Instagram handle, such as `nike` or `@nike`
+- a TikTok handle, such as `nike` or `@nike`
+
+A website matches the account domain. A handle matches Instagram or
+TikTok. Encode `/` and `?` in a URL. The `type` field tells you which
+one you got: `BRAND` or `CREATOR`, and the creator-only fields
 (`gender`, `ageRange`, ...) are present only on `CREATOR`.
 
 Limited to 120 requests per minute per user.
@@ -739,7 +747,7 @@ An id that matches nothing returns 404 and is free.
 
 ```typescript
 await client.account.get({
-    id: "id"
+    id: "e9cf96ee-7455-4b00-b692-80e2f923f79d"
 });
 
 ```
@@ -812,7 +820,7 @@ Costs $0.0010 per cluster returned, charged against your plan's monthly credits.
 
 ```typescript
 await client.account.insights({
-    id: "id",
+    id: "e9cf96ee-7455-4b00-b692-80e2f923f79d",
     type: "HOOK"
 });
 
@@ -883,7 +891,7 @@ Costs $0.0010 per campaign returned, charged against your plan's monthly credits
 
 ```typescript
 await client.account.campaigns({
-    id: "id",
+    id: "e9cf96ee-7455-4b00-b692-80e2f923f79d",
     type: "CAMPAIGN"
 });
 
@@ -957,7 +965,7 @@ Costs $0.0010 per collab returned, charged against your plan's monthly credits. 
 
 ```typescript
 await client.account.collabs({
-    id: "id"
+    id: "e9cf96ee-7455-4b00-b692-80e2f923f79d"
 });
 
 ```
@@ -1026,7 +1034,7 @@ Costs $0.0010 per landing page returned, charged against your plan's monthly cre
 
 ```typescript
 await client.account.landingPages({
-    id: "id"
+    id: "e9cf96ee-7455-4b00-b692-80e2f923f79d"
 });
 
 ```
@@ -1168,7 +1176,7 @@ This call is free.
 
 ```typescript
 await client.account.indexStatus({
-    id: "id"
+    id: "e9cf96ee-7455-4b00-b692-80e2f923f79d"
 });
 
 ```
