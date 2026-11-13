@@ -47,6 +47,7 @@
   - [Search Ad Creatives & Social Media](#2-search-ad-creatives--social-media)
   - [Discover Creators](#3-discover-creators)
   - [Creative Insights, Campaigns, Collabs & Landing Pages](#4-creative-insights-campaigns-collabs--landing-pages)
+  - [Account Posts](#account-posts)
   - [Post Comments](#5-post-comments)
   - [Index a New Account](#6-index-a-new-account)
   - [Run the Agent](#7-run-the-agent)
@@ -214,6 +215,33 @@ const { landingPages } = await client.account.landingPages({
 });
 ```
 
+### Account posts
+
+Fetch an account's posts live with `GET /account/posts`. The account does not need to be indexed. Send exactly one of `igUsername`, `tiktokUsername`, or `facebookAdLibraryId`. The call usually takes 10–30 seconds and can run up to 5 minutes, so raise the timeout above the 60-second default.
+
+```ts
+const { media } = await client.account.posts(
+  {
+    igUsername: "nike",
+    postType: "reels",
+    limit: 20,
+  },
+  { timeoutInSeconds: 300 },
+);
+
+// TikTok, most recent by default. sortBy can be "popular".
+await client.account.posts(
+  { tiktokUsername: "nike", sortBy: "most_recent", limit: 20 },
+  { timeoutInSeconds: 300 },
+);
+
+// Facebook Ad Library. sortBy can be "most_impressions".
+await client.account.posts(
+  { facebookAdLibraryId: "15087023444", limit: 20 },
+  { timeoutInSeconds: 300 },
+);
+```
+
 ### 5. Post Comments
 
 Fetch public comments from Instagram posts/reels (by shortcode or URL) and TikTok videos (by video ID or URL):
@@ -311,6 +339,7 @@ console.log(`Remaining: ${usage.remainingCredits} / ${usage.planCredits}`);
 | `client.account.campaigns(req)` | `GET /account/{id}/campaigns` | $0.0005 / campaign returned | 120 / min |
 | `client.account.collabs(req)` | `GET /account/{id}/collabs` | $0.0005 / collab returned | 120 / min |
 | `client.account.landingPages(req)` | `GET /account/{id}/landing-pages` | $0.0025 / landing page returned | 120 / min |
+| `client.account.posts(req)` | `GET /account/posts` | $0.0010 / post returned | 120 / min |
 | `client.account.index(req)` | `POST /account/index` | Free | 50 / min |
 | `client.account.indexStatus({ id })` | `GET /account/{id}/index-status` | Free | 300 / min |
 | `client.agent.runs.create(req)` | `POST /agent/runs` | Free to queue; billed from model usage when the run finishes | 20 / min |
