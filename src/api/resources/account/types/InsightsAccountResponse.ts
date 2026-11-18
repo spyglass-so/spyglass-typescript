@@ -11,6 +11,7 @@ export type InsightsAccountResponse =
       }
     | {
           type: "HOOK" | "TARGET_PERSONA" | "AD_ANGLE";
+          status?: "analyzing" | undefined;
           count: number;
           totals: {
               id: string;

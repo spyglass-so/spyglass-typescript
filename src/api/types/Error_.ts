@@ -23,6 +23,7 @@ export namespace Error_ {
             NotFound: "not_found",
             MethodNotAllowed: "method_not_allowed",
             RateLimited: "rate_limited",
+            NotImplemented: "not_implemented",
             InternalError: "internal_error",
         } as const;
         export type Code = (typeof Code)[keyof typeof Code];

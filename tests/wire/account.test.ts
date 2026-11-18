@@ -960,6 +960,404 @@ describe("AccountClient", () => {
         }).rejects.toThrow(spyglass.InternalServerError);
     });
 
+    test("posts (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = {
+            count: 1,
+            media: [
+                {
+                    id: "3f9c2a51-8d4e-4b7a-9c1f-6e2d8a7b5c40",
+                    platformId: "C2xY9abcD1e",
+                    brand: {
+                        id: "e9cf96ee-7455-4b00-b692-80e2f923f79d",
+                        facebookAdLibraryId: "15087023444",
+                        name: "Nike",
+                        type: "BRAND",
+                        igUsername: "nike",
+                        igFollowers: 300000000,
+                        tiktokUsername: "nike",
+                        tiktokFollowers: 7000000,
+                        facebookUsername: "nike",
+                        thumbnailUrl: null,
+                        category: "Apparel & Accessories",
+                    },
+                    title: null,
+                    type: "VIDEO",
+                    mediaType: "VIDEO",
+                    url: "https://www.instagram.com/reel/C2xY9abcD1e/",
+                    urls: [],
+                    thumbnailUrl: null,
+                    width: 1080,
+                    height: 1920,
+                    durationInSeconds: 30,
+                    platforms: ["INSTAGRAM"],
+                    hook: "You were built for this.",
+                    summary: "A runner pushes through the last mile of a marathon.",
+                    coreAngle: "Perseverance",
+                    targetPersona: "Distance runners",
+                    ugcCharacter: null,
+                    startAt: "2026-11-01T00:00:00.000Z",
+                    endAt: null,
+                    daysRun: null,
+                    categories: [],
+                    carouselCount: null,
+                    viewCount: 1200000,
+                    likeCount: 85000,
+                    commentCount: 1200,
+                    impressionPercentile: null,
+                    impressionsText: null,
+                },
+            ],
+        };
+
+        server.mockEndpoint().get("/account/posts").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
+
+        const response = await client.account.posts({
+            igUsername: "nike",
+            limit: 20,
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("posts (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = {
+            count: 1,
+            media: [
+                {
+                    id: "3f9c2a51-8d4e-4b7a-9c1f-6e2d8a7b5c40",
+                    platformId: "C2xY9abcD1e",
+                    brand: {
+                        id: "e9cf96ee-7455-4b00-b692-80e2f923f79d",
+                        facebookAdLibraryId: "15087023444",
+                        name: "Nike",
+                        type: "BRAND",
+                        igUsername: "nike",
+                        igFollowers: 300000000,
+                        tiktokUsername: "nike",
+                        tiktokFollowers: 7000000,
+                        facebookUsername: "nike",
+                        thumbnailUrl: null,
+                        category: "Apparel & Accessories",
+                    },
+                    title: null,
+                    type: "VIDEO",
+                    mediaType: "VIDEO",
+                    url: "https://www.instagram.com/reel/C2xY9abcD1e/",
+                    urls: [],
+                    thumbnailUrl: null,
+                    width: 1080,
+                    height: 1920,
+                    durationInSeconds: 30,
+                    platforms: ["INSTAGRAM"],
+                    hook: "You were built for this.",
+                    summary: "A runner pushes through the last mile of a marathon.",
+                    coreAngle: "Perseverance",
+                    targetPersona: "Distance runners",
+                    ugcCharacter: null,
+                    startAt: "2026-11-01T00:00:00.000Z",
+                    endAt: null,
+                    daysRun: null,
+                    categories: [],
+                    carouselCount: null,
+                    viewCount: 1200000,
+                    likeCount: 85000,
+                    commentCount: 1200,
+                    impressionPercentile: null,
+                    impressionsText: null,
+                },
+            ],
+        };
+
+        server.mockEndpoint().get("/account/posts").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
+
+        const response = await client.account.posts({
+            igUsername: "nike",
+            tagged: "true",
+            limit: 20,
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("posts (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = {
+            count: 1,
+            media: [
+                {
+                    id: "3f9c2a51-8d4e-4b7a-9c1f-6e2d8a7b5c40",
+                    platformId: "C2xY9abcD1e",
+                    brand: {
+                        id: "e9cf96ee-7455-4b00-b692-80e2f923f79d",
+                        facebookAdLibraryId: "15087023444",
+                        name: "Nike",
+                        type: "BRAND",
+                        igUsername: "nike",
+                        igFollowers: 300000000,
+                        tiktokUsername: "nike",
+                        tiktokFollowers: 7000000,
+                        facebookUsername: "nike",
+                        thumbnailUrl: null,
+                        category: "Apparel & Accessories",
+                    },
+                    title: null,
+                    type: "VIDEO",
+                    mediaType: "VIDEO",
+                    url: "https://www.instagram.com/reel/C2xY9abcD1e/",
+                    urls: [],
+                    thumbnailUrl: null,
+                    width: 1080,
+                    height: 1920,
+                    durationInSeconds: 30,
+                    platforms: ["INSTAGRAM"],
+                    hook: "You were built for this.",
+                    summary: "A runner pushes through the last mile of a marathon.",
+                    coreAngle: "Perseverance",
+                    targetPersona: "Distance runners",
+                    ugcCharacter: null,
+                    startAt: "2026-11-01T00:00:00.000Z",
+                    endAt: null,
+                    daysRun: null,
+                    categories: [],
+                    carouselCount: null,
+                    viewCount: 1200000,
+                    likeCount: 85000,
+                    commentCount: 1200,
+                    impressionPercentile: null,
+                    impressionsText: null,
+                },
+            ],
+        };
+
+        server.mockEndpoint().get("/account/posts").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
+
+        const response = await client.account.posts({
+            igUsername: "nike",
+            postType: "reels",
+            limit: 20,
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("posts (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = {
+            count: 1,
+            media: [
+                {
+                    id: "3f9c2a51-8d4e-4b7a-9c1f-6e2d8a7b5c40",
+                    platformId: "C2xY9abcD1e",
+                    brand: {
+                        id: "e9cf96ee-7455-4b00-b692-80e2f923f79d",
+                        facebookAdLibraryId: "15087023444",
+                        name: "Nike",
+                        type: "BRAND",
+                        igUsername: "nike",
+                        igFollowers: 300000000,
+                        tiktokUsername: "nike",
+                        tiktokFollowers: 7000000,
+                        facebookUsername: "nike",
+                        thumbnailUrl: null,
+                        category: "Apparel & Accessories",
+                    },
+                    title: null,
+                    type: "VIDEO",
+                    mediaType: "VIDEO",
+                    url: "https://www.instagram.com/reel/C2xY9abcD1e/",
+                    urls: [],
+                    thumbnailUrl: null,
+                    width: 1080,
+                    height: 1920,
+                    durationInSeconds: 30,
+                    platforms: ["INSTAGRAM"],
+                    hook: "You were built for this.",
+                    summary: "A runner pushes through the last mile of a marathon.",
+                    coreAngle: "Perseverance",
+                    targetPersona: "Distance runners",
+                    ugcCharacter: null,
+                    startAt: "2026-11-01T00:00:00.000Z",
+                    endAt: null,
+                    daysRun: null,
+                    categories: [],
+                    carouselCount: null,
+                    viewCount: 1200000,
+                    likeCount: 85000,
+                    commentCount: 1200,
+                    impressionPercentile: null,
+                    impressionsText: null,
+                },
+            ],
+        };
+
+        server.mockEndpoint().get("/account/posts").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
+
+        const response = await client.account.posts({
+            tiktokUsername: "nike",
+            limit: 20,
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("posts (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = {
+            count: 1,
+            media: [
+                {
+                    id: "3f9c2a51-8d4e-4b7a-9c1f-6e2d8a7b5c40",
+                    platformId: "C2xY9abcD1e",
+                    brand: {
+                        id: "e9cf96ee-7455-4b00-b692-80e2f923f79d",
+                        facebookAdLibraryId: "15087023444",
+                        name: "Nike",
+                        type: "BRAND",
+                        igUsername: "nike",
+                        igFollowers: 300000000,
+                        tiktokUsername: "nike",
+                        tiktokFollowers: 7000000,
+                        facebookUsername: "nike",
+                        thumbnailUrl: null,
+                        category: "Apparel & Accessories",
+                    },
+                    title: null,
+                    type: "VIDEO",
+                    mediaType: "VIDEO",
+                    url: "https://www.instagram.com/reel/C2xY9abcD1e/",
+                    urls: [],
+                    thumbnailUrl: null,
+                    width: 1080,
+                    height: 1920,
+                    durationInSeconds: 30,
+                    platforms: ["INSTAGRAM"],
+                    hook: "You were built for this.",
+                    summary: "A runner pushes through the last mile of a marathon.",
+                    coreAngle: "Perseverance",
+                    targetPersona: "Distance runners",
+                    ugcCharacter: null,
+                    startAt: "2026-11-01T00:00:00.000Z",
+                    endAt: null,
+                    daysRun: null,
+                    categories: [],
+                    carouselCount: null,
+                    viewCount: 1200000,
+                    likeCount: 85000,
+                    commentCount: 1200,
+                    impressionPercentile: null,
+                    impressionsText: null,
+                },
+            ],
+        };
+
+        server.mockEndpoint().get("/account/posts").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
+
+        const response = await client.account.posts({
+            facebookAdLibraryId: "15087023444",
+            limit: 20,
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("posts (6)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/account/posts").respondWith().statusCode(400).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.account.posts();
+        }).rejects.toThrow(spyglass.BadRequestError);
+    });
+
+    test("posts (7)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/account/posts").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.account.posts();
+        }).rejects.toThrow(spyglass.UnauthorizedError);
+    });
+
+    test("posts (8)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/account/posts").respondWith().statusCode(402).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.account.posts();
+        }).rejects.toThrow(spyglass.PaymentRequiredError);
+    });
+
+    test("posts (9)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/account/posts").respondWith().statusCode(403).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.account.posts();
+        }).rejects.toThrow(spyglass.ForbiddenError);
+    });
+
+    test("posts (10)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/account/posts").respondWith().statusCode(405).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.account.posts();
+        }).rejects.toThrow(spyglass.MethodNotAllowedError);
+    });
+
+    test("posts (11)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/account/posts").respondWith().statusCode(429).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.account.posts();
+        }).rejects.toThrow(spyglass.TooManyRequestsError);
+    });
+
+    test("posts (12)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { error: { code: "invalid_request", message: "message" } };
+
+        server.mockEndpoint().get("/account/posts").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.account.posts();
+        }).rejects.toThrow(spyglass.InternalServerError);
+    });
+
     test("index (1)", async () => {
         const server = mockServerPool.createServer();
         const client = new Spyglass({ maxRetries: 0, token: "test", environment: server.baseUrl });

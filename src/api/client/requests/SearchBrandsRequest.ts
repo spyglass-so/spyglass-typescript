@@ -28,7 +28,7 @@ export namespace SearchBrandsRequest {
 
     export namespace Ids {
         /**
-         * Account id given as a platform string or uuid
+         * Account id given as a string, uuid, or handle
          */
         export type Item = string | number;
     }

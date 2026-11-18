@@ -8,7 +8,7 @@
  *     }
  */
 export interface SearchMediaRequest {
-    /** Account id given as a platform string or uuid */
+    /** Account id given as a string, uuid, or handle */
     accountId?: SearchMediaRequest.AccountId;
     query?: string;
     channel?: SearchMediaRequest.Channel.Item[];
@@ -33,13 +33,15 @@ export interface SearchMediaRequest {
     partnershipAd?: boolean;
     crossposted?: boolean;
     sortBy?: SearchMediaRequest.SortBy;
+    /** Include each video transcript. Does not change the credit charge. Default false. */
+    includeTranscript?: boolean;
     limit?: number;
     offset?: number;
 }
 
 export namespace SearchMediaRequest {
     /**
-     * Account id given as a platform string or uuid
+     * Account id given as a string, uuid, or handle
      */
     export type AccountId = string | number;
     export type Channel = Channel.Item[];

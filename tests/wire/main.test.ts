@@ -550,19 +550,7 @@ describe("Spyglass", () => {
                 {
                     id: "id",
                     platformId: "platformId",
-                    brand: {
-                        id: "id",
-                        facebookAdLibraryId: null,
-                        name: "name",
-                        type: null,
-                        igUsername: null,
-                        igFollowers: null,
-                        tiktokUsername: null,
-                        tiktokFollowers: null,
-                        facebookUsername: null,
-                        thumbnailUrl: null,
-                        category: null,
-                    },
+                    brand: { id: "id", name: "name", type: null, thumbnailUrl: null, category: null },
                     title: "title",
                     type: "DPA",
                     mediaType: "VIDEO",
@@ -590,6 +578,7 @@ describe("Spyglass", () => {
                     commentCount: 1.1,
                     impressionPercentile: 1.1,
                     impressionsText: "impressionsText",
+                    transcript: "transcript",
                 },
             ],
         };

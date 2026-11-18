@@ -148,6 +148,11 @@ export class AccountClient {
      * breakdown by media type; the other types return weekly buckets plus
      * ranked totals, highest first.
      *
+     * If a hook, angle, or persona clustering run is missing, older than 30
+     * days, or has no clusters, clustering starts and the response includes
+     * `status: "analyzing"` with empty totals. Retry for the finished clusters.
+     * Analyzing responses are not charged.
+     *
      * `maxDaysBack` filters both the weekly bucket series and ranked
      * `totals` to creatives that started within the requested window.
      *
@@ -629,6 +634,189 @@ export class AccountClient {
         }
 
         return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/account/{id}/landing-pages");
+    }
+
+    /**
+     * Return one account's posts, fetched live. The account does not need to be indexed.
+     * A call usually takes 10–30 seconds and starts indexing the rest of the brand's posts.
+     * Use `POST /media` first when you already have an account id. See the Finding media guide.
+     *
+     * Limited to 120 requests per minute per user.
+     * Costs $0.0010 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
+     * The call bills a minimum of one row even when nothing matches. In that
+     * case `count` is 0 but you are charged for one row.
+     *
+     * Send exactly one identifier. The fields you can send depend on which
+     * one you pick.
+     *
+     * **`igUsername`**
+     *
+     * | Field | Details |
+     * | --- | --- |
+     * | `igUsername` | Instagram handle. A leading `@` is ignored. |
+     * | `tagged` | Optional. `true` returns posts the account is tagged in. Omit it for the account's own posts. Cannot be combined with `postType=reels`. |
+     * | `postType` | Optional, Instagram only. `posts` (default) or `reels`. Cannot be combined with `tagged`. |
+     * | `includeTranscript` | Optional. `true` transcribes each video and returns `transcript`. Omit it or send `false` to skip transcription. The call takes longer. |
+     * | `limit` | Optional. Default 20, max 120. |
+     * | `sortBy` | Ignored. Posts are always most recent. |
+     *
+     * **`tiktokUsername`**
+     *
+     * | Field | Details |
+     * | --- | --- |
+     * | `tiktokUsername` | TikTok handle. A leading `@` is ignored. |
+     * | `includeTranscript` | Optional. `true` transcribes each video and returns `transcript`. Omit it or send `false` to skip transcription. The call takes longer. |
+     * | `sortBy` | Optional. `most_recent` (default) or `popular`. |
+     * | `limit` | Optional. Default 20, max 120. |
+     *
+     * **`facebookAdLibraryId`**
+     *
+     * | Field | Details |
+     * | --- | --- |
+     * | `facebookAdLibraryId` | Facebook Ad Library page id. |
+     * | `includeTranscript` | Optional. `true` transcribes each video and returns `transcript`. Omit it or send `false` to skip transcription. The call takes longer. |
+     * | `sortBy` | Optional. `most_recent` (default) or `most_impressions`. |
+     * | `limit` | Optional. Default 20, max 120. |
+     *
+     * @param {spyglass.PostsAccountRequest} request
+     * @param {AccountClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link spyglass.BadRequestError}
+     * @throws {@link spyglass.UnauthorizedError}
+     * @throws {@link spyglass.PaymentRequiredError}
+     * @throws {@link spyglass.ForbiddenError}
+     * @throws {@link spyglass.MethodNotAllowedError}
+     * @throws {@link spyglass.TooManyRequestsError}
+     * @throws {@link spyglass.InternalServerError}
+     * @throws {@link errors.SpyglassError}
+     * @throws {@link errors.SpyglassTimeoutError}
+     *
+     * @example
+     *     await client.account.posts({
+     *         igUsername: "nike",
+     *         limit: 20
+     *     })
+     *
+     * @example
+     *     await client.account.posts({
+     *         igUsername: "nike",
+     *         tagged: "true",
+     *         limit: 20
+     *     })
+     *
+     * @example
+     *     await client.account.posts({
+     *         igUsername: "nike",
+     *         postType: "reels",
+     *         limit: 20
+     *     })
+     *
+     * @example
+     *     await client.account.posts({
+     *         tiktokUsername: "nike",
+     *         limit: 20
+     *     })
+     *
+     * @example
+     *     await client.account.posts({
+     *         facebookAdLibraryId: "15087023444",
+     *         limit: 20
+     *     })
+     */
+    public posts(
+        request: spyglass.PostsAccountRequest = {},
+        requestOptions?: AccountClient.RequestOptions,
+    ): core.HttpResponsePromise<spyglass.PostsAccountResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__posts(request, requestOptions));
+    }
+
+    private async __posts(
+        request: spyglass.PostsAccountRequest = {},
+        requestOptions?: AccountClient.RequestOptions,
+    ): Promise<core.WithRawResponse<spyglass.PostsAccountResponse>> {
+        const { igUsername, tiktokUsername, facebookAdLibraryId, tagged, postType, includeTranscript, sortBy, limit } =
+            request;
+        const _queryParams: Record<string, unknown> = {
+            igUsername,
+            tiktokUsername,
+            facebookAdLibraryId,
+            tagged: tagged != null ? tagged : undefined,
+            postType: postType != null ? postType : undefined,
+            includeTranscript: includeTranscript != null ? includeTranscript : undefined,
+            sortBy: sortBy != null ? sortBy : undefined,
+            limit,
+        };
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.SpyglassEnvironment.Default,
+                "account/posts",
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url
+                .queryBuilder()
+                .addMany(_queryParams)
+                .mergeAdditional(requestOptions?.queryParams)
+                .build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as spyglass.PostsAccountResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new spyglass.BadRequestError(_response.error.body as spyglass.Error_, _response.rawResponse);
+                case 401:
+                    throw new spyglass.UnauthorizedError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 402:
+                    throw new spyglass.PaymentRequiredError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 403:
+                    throw new spyglass.ForbiddenError(_response.error.body as spyglass.Error_, _response.rawResponse);
+                case 405:
+                    throw new spyglass.MethodNotAllowedError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 429:
+                    throw new spyglass.TooManyRequestsError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                case 500:
+                    throw new spyglass.InternalServerError(
+                        _response.error.body as spyglass.Error_,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.SpyglassError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/account/posts");
     }
 
     /**

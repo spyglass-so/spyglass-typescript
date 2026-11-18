@@ -286,7 +286,9 @@ await client.searchTaxonomies({
 
 Return creatives. Pass `accountId` to scope to one brand or creator,
 or omit it to search the whole corpus. Without `accountId`,
-`query` is required.
+`query` is required. A call typically takes under 10 seconds.
+Set `includeTranscript` to true to include each video transcript.
+That does not change the credit charge. The default is false.
 
 Limited to 120 requests per minute per user.
 Costs $0.0010 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
@@ -801,6 +803,11 @@ Return clustered creative themes for an account. `MEDIA_MIX` returns a
 breakdown by media type; the other types return weekly buckets plus
 ranked totals, highest first.
 
+If a hook, angle, or persona clustering run is missing, older than 30
+days, or has no clusters, clustering starts and the response includes
+`status: "analyzing"` with empty totals. Retry for the finished clusters.
+Analyzing responses are not charged.
+
 `maxDaysBack` filters both the weekly bucket series and ranked
 `totals` to creatives that started within the requested window.
 
@@ -1053,6 +1060,111 @@ await client.account.landingPages({
 <dd>
 
 **request:** `spyglass.LandingPagesAccountRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `AccountClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.account.<a href="/src/api/resources/account/client/Client.ts">posts</a>({ ...params }) -> spyglass.PostsAccountResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Return one account's posts, fetched live. The account does not need to be indexed.
+A call usually takes 10–30 seconds and starts indexing the rest of the brand's posts.
+Use `POST /media` first when you already have an account id. See the Finding media guide.
+
+Limited to 120 requests per minute per user.
+Costs $0.0010 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
+The call bills a minimum of one row even when nothing matches. In that
+case `count` is 0 but you are charged for one row.
+
+Send exactly one identifier. The fields you can send depend on which
+one you pick.
+
+**`igUsername`**
+
+| Field | Details |
+| --- | --- |
+| `igUsername` | Instagram handle. A leading `@` is ignored. |
+| `tagged` | Optional. `true` returns posts the account is tagged in. Omit it for the account's own posts. Cannot be combined with `postType=reels`. |
+| `postType` | Optional, Instagram only. `posts` (default) or `reels`. Cannot be combined with `tagged`. |
+| `includeTranscript` | Optional. `true` transcribes each video and returns `transcript`. Omit it or send `false` to skip transcription. The call takes longer. |
+| `limit` | Optional. Default 20, max 120. |
+| `sortBy` | Ignored. Posts are always most recent. |
+
+**`tiktokUsername`**
+
+| Field | Details |
+| --- | --- |
+| `tiktokUsername` | TikTok handle. A leading `@` is ignored. |
+| `includeTranscript` | Optional. `true` transcribes each video and returns `transcript`. Omit it or send `false` to skip transcription. The call takes longer. |
+| `sortBy` | Optional. `most_recent` (default) or `popular`. |
+| `limit` | Optional. Default 20, max 120. |
+
+**`facebookAdLibraryId`**
+
+| Field | Details |
+| --- | --- |
+| `facebookAdLibraryId` | Facebook Ad Library page id. |
+| `includeTranscript` | Optional. `true` transcribes each video and returns `transcript`. Omit it or send `false` to skip transcription. The call takes longer. |
+| `sortBy` | Optional. `most_recent` (default) or `most_impressions`. |
+| `limit` | Optional. Default 20, max 120. |
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.account.posts({
+    igUsername: "nike",
+    limit: 20
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `spyglass.PostsAccountRequest` 
     
 </dd>
 </dl>

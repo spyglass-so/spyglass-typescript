@@ -40,19 +40,20 @@ export namespace SearchMediaResponse {
             commentCount: number | null;
             impressionPercentile: number | null;
             impressionsText: string | null;
+            transcript?: (string | null) | undefined;
         }
 
         export namespace Item {
             export interface Brand {
                 id: string;
-                facebookAdLibraryId: string | null;
+                facebookAdLibraryId?: (string | null) | undefined;
                 name: string;
                 type: Brand.Type | null;
-                igUsername: string | null;
-                igFollowers: number | null;
-                tiktokUsername: string | null;
-                tiktokFollowers: number | null;
-                facebookUsername: string | null;
+                igUsername?: (string | null) | undefined;
+                igFollowers?: (number | null) | undefined;
+                tiktokUsername?: (string | null) | undefined;
+                tiktokFollowers?: (number | null) | undefined;
+                facebookUsername?: (string | null) | undefined;
                 thumbnailUrl: string | null;
                 category: string | null;
             }

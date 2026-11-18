@@ -11,3 +11,8 @@ export * from "./InsightsAccountRequestType.js";
 export * from "./InsightsAccountResponse.js";
 export * from "./LandingPagesAccountRequestShowInactive.js";
 export * from "./LandingPagesAccountResponse.js";
+export * from "./PostsAccountRequestIncludeTranscript.js";
+export * from "./PostsAccountRequestPostType.js";
+export * from "./PostsAccountRequestSortBy.js";
+export * from "./PostsAccountRequestTagged.js";
+export * from "./PostsAccountResponse.js";

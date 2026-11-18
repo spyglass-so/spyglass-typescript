@@ -440,7 +440,9 @@ export class Spyglass {
     /**
      * Return creatives. Pass `accountId` to scope to one brand or creator,
      * or omit it to search the whole corpus. Without `accountId`,
-     * `query` is required.
+     * `query` is required. A call typically takes under 10 seconds.
+     * Set `includeTranscript` to true to include each video transcript.
+     * That does not change the credit charge. The default is false.
      *
      * Limited to 120 requests per minute per user.
      * Costs $0.0010 per creative returned, charged against your plan's monthly credits. The count field is what you were charged for.
