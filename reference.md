@@ -221,7 +221,7 @@ Find taxonomy paths you can pass to POST /media as `taxonomy`.
 such as `Apparel > Footwear > Sneakers`.
 
 Limited to 120 requests per minute per user.
-This call is free and does not use credits.
+This call is free and does not consume credits.
 </dd>
 </dl>
 </dd>
@@ -366,7 +366,7 @@ plan, and the current billing period. Granted credits count toward
 `remainingCredits` and not `planCredits`.
 
 Limited to 60 requests per minute per user.
-This call is free and does not use credits. It still responds when
+This call is free and does not consume credits. It still responds when
 the team is out of credits.
 </dd>
 </dl>
@@ -516,7 +516,7 @@ Page with `offset`. The next page is `offset` plus the `limit` you sent.
 `count` is the number of runs in this response. Stop when `count` is less than `limit`.
 
 Limited to 120 requests per minute per user.
-This call is free and does not use credits.
+This call is free and does not consume credits.
 </dd>
 </dl>
 </dd>
@@ -803,8 +803,8 @@ await client.account.get({
 
 Return creative insights for an account. `MEDIA_MIX` counts creatives by
 media type, `CATEGORY` by creative category, and `FUNNEL` by funnel
-stage. `HOOK`, `TARGET_PERSONA`, and `AD_ANGLE` return weekly buckets
-plus ranked totals, highest first.
+stage. `HOOK`, `TARGET_PERSONA`, and `AD_ANGLE` return ranked totals
+(`id`, `label`, `tags`, `total`), highest first.
 
 If a hook, angle, or persona clustering run is missing, older than 30
 days, or has no clusters, clustering starts and the response includes
@@ -1203,12 +1203,12 @@ Look up a brand by website URL, or start indexing it if we do not
 have it yet. Pass a single `websiteUrl`. Instagram and TikTok
 profile URLs are accepted and resolved as creators.
 
-This endpoint does not consume credits. An existing brand returns
+An existing brand returns
 `status: "already_exists"`. A new brand is created and sync is
 queued, returning `status: "indexing"` and the new `brandId`.
 
 Limited to 50 requests per minute per user.
-This call is free.
+This call is free and does not consume credits.
 </dd>
 </dl>
 </dd>
@@ -1276,7 +1276,7 @@ await client.account.index({
 Poll whether a brand finished indexing after POST /account/index.
 
 Limited to 300 requests per minute per user.
-This call is free.
+This call is free and does not consume credits.
 </dd>
 </dl>
 </dd>
