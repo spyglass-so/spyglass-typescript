@@ -5,5 +5,7 @@ export const InsightsAccountRequestType = {
     TargetPersona: "TARGET_PERSONA",
     AdAngle: "AD_ANGLE",
     MediaMix: "MEDIA_MIX",
+    Category: "CATEGORY",
+    Funnel: "FUNNEL",
 } as const;
 export type InsightsAccountRequestType = (typeof InsightsAccountRequestType)[keyof typeof InsightsAccountRequestType];

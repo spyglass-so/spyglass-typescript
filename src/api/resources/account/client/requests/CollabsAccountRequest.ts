@@ -14,6 +14,8 @@ export interface CollabsAccountRequest {
     limit?: number;
     offset?: number;
     datePreset?: spyglass.CollabsAccountRequestDatePreset;
+    /** Calendar date, YYYY-MM-DD. */
     startDate?: string;
+    /** Calendar date, YYYY-MM-DD. */
     endDate?: string;
 }

@@ -2,7 +2,7 @@
 
 export type InsightsAccountResponse =
     | {
-          type: "MEDIA_MIX";
+          type: "MEDIA_MIX" | "CATEGORY" | "FUNNEL";
           count: number;
           rows: {
               type: string;

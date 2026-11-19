@@ -21,7 +21,9 @@ export interface SearchMediaRequest {
     language?: SearchMediaRequest.Language.Item[];
     location?: string[];
     datePreset?: SearchMediaRequest.DatePreset;
+    /** Calendar date, YYYY-MM-DD. */
     startDate?: string;
+    /** Calendar date, YYYY-MM-DD. */
     endDate?: string;
     minDaysRun?: number;
     maxDaysRun?: number;

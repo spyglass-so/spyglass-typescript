@@ -13,6 +13,10 @@ export interface InsightsAccountRequest {
     /** Any one of: an account id, a website, an Instagram handle, or a TikTok handle. An id is a UUID or the numeric id from POST /brands or POST /creators. A website may be a full URL or a bare domain. A handle may start with @. Encode `/` and `?` when the value is a URL. */
     id: string;
     type: spyglass.InsightsAccountRequestType;
-    maxDaysBack?: number;
+    datePreset?: spyglass.InsightsAccountRequestDatePreset;
+    /** Calendar date, YYYY-MM-DD. */
+    startDate?: string;
+    /** Calendar date, YYYY-MM-DD. */
+    endDate?: string;
     limit?: number;
 }
