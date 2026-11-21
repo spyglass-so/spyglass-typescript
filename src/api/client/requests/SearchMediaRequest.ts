@@ -37,6 +37,8 @@ export interface SearchMediaRequest {
     sortBy?: SearchMediaRequest.SortBy;
     /** Include each video transcript. Does not change the credit charge. Default false. */
     includeTranscript?: boolean;
+    /** Include each post caption. Does not change the credit charge. Default false. */
+    includeCaption?: boolean;
     limit?: number;
     offset?: number;
 }

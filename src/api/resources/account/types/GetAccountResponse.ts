@@ -21,8 +21,11 @@ export namespace GetAccountResponse {
         igUsername: string | null;
         igFollowers: number | null;
         igEngagementRate: number | null;
+        igMedianViews: number | null;
         tiktokUsername: string | null;
         tiktokFollowers: number | null;
+        tiktokMedianViews: number | null;
+        activeAdCount: number | null;
         thumbnailUrl: string | null;
     }
 
@@ -33,6 +36,7 @@ export namespace GetAccountResponse {
         name: string;
         summary: string | null;
         bio: string | null;
+        category: string | null;
         verified: boolean;
         igUsername: string | null;
         igFollowers: number | null;

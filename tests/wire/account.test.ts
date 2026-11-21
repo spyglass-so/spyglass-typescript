@@ -25,8 +25,11 @@ describe("AccountClient", () => {
             igUsername: "igUsername",
             igFollowers: 1.1,
             igEngagementRate: 1.1,
+            igMedianViews: 1.1,
             tiktokUsername: "tiktokUsername",
             tiktokFollowers: 1.1,
+            tiktokMedianViews: 1.1,
+            activeAdCount: 1.1,
             thumbnailUrl: "thumbnailUrl",
         };
 

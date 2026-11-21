@@ -19,6 +19,12 @@ export interface SearchBrandsRequest {
     sortBy?: SearchBrandsRequest.SortBy;
     offset?: number;
     limit?: number;
+    minViews?: number;
+    maxViews?: number;
+    minEngagement?: number;
+    maxEngagement?: number;
+    minActiveAds?: number;
+    maxActiveAds?: number;
     taxonomy?: string[];
     language?: SearchBrandsRequest.Language;
 }

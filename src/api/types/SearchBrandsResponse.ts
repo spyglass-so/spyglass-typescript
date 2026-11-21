@@ -26,8 +26,11 @@ export namespace SearchBrandsResponse {
             igUsername: string | null;
             igFollowers: number | null;
             igEngagementRate: number | null;
+            igMedianViews: number | null;
             tiktokUsername: string | null;
             tiktokFollowers: number | null;
+            tiktokMedianViews: number | null;
+            activeAdCount: number | null;
             thumbnailUrl: string | null;
         }
 

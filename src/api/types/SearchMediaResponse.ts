@@ -13,7 +13,14 @@ export namespace SearchMediaResponse {
             id: string;
             platformId: string;
             brand: Item.Brand | null;
+            /** Landing page headline. For organic posts, the post title. */
             title: string | null;
+            /** Call to action, such as Shop now or Learn more. */
+            cta: string | null;
+            /** Landing page link for a Meta ad. Null for Instagram and TikTok posts. */
+            landingPageUrl: string | null;
+            /** Where a Meta ad was shown, such as FACEBOOK, INSTAGRAM, or AUDIENCE_NETWORK. Present only on Meta ads. */
+            placement?: Item.Placement.Item[] | undefined;
             type: Item.Type | null;
             mediaType: Item.MediaType | null;
             url: string | null;
@@ -41,6 +48,7 @@ export namespace SearchMediaResponse {
             impressionPercentile: number | null;
             impressionsText: string | null;
             transcript?: (string | null) | undefined;
+            caption?: (string | null) | undefined;
         }
 
         export namespace Item {
@@ -64,6 +72,19 @@ export namespace SearchMediaResponse {
                     Creator: "CREATOR",
                 } as const;
                 export type Type = (typeof Type)[keyof typeof Type];
+            }
+
+            export type Placement = Placement.Item[];
+
+            export namespace Placement {
+                export const Item = {
+                    Facebook: "FACEBOOK",
+                    Instagram: "INSTAGRAM",
+                    AudienceNetwork: "AUDIENCE_NETWORK",
+                    Messenger: "MESSENGER",
+                    Threads: "THREADS",
+                } as const;
+                export type Item = (typeof Item)[keyof typeof Item];
             }
 
             export const Type = {

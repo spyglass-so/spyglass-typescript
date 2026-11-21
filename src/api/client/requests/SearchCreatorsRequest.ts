@@ -20,6 +20,14 @@ export interface SearchCreatorsRequest {
     sortBy?: SearchCreatorsRequest.SortBy;
     offset?: number;
     limit?: number;
+    minViews?: number;
+    maxViews?: number;
+    minEngagement?: number;
+    maxEngagement?: number;
+    minActiveAds?: number;
+    maxActiveAds?: number;
+    /** Creator niche, such as Celebrity or Comedian. Matches any listed value. */
+    category?: SearchCreatorsRequest.Category.Item[];
     ethnicity?: SearchCreatorsRequest.Ethnicity;
     gender?: SearchCreatorsRequest.Gender;
     ageRange?: SearchCreatorsRequest.AgeRange;
@@ -45,6 +53,83 @@ export namespace SearchCreatorsRequest {
         MostActiveAds: "MOST_ACTIVE_ADS",
     } as const;
     export type SortBy = (typeof SortBy)[keyof typeof SortBy];
+    export type Category = Category.Item[];
+
+    export namespace Category {
+        export const Item = {
+            Doctor: "Doctor",
+            Nurse: "Nurse",
+            Dentist: "Dentist",
+            Therapist: "Therapist",
+            MentalHealthCreator: "Mental Health Creator",
+            Nutritionist: "Nutritionist",
+            WellnessCreator: "Wellness Creator",
+            FitnessCreator: "Fitness Creator",
+            Athlete: "Athlete",
+            YogaPilatesCreator: "Yoga / Pilates Creator",
+            WeightLossCreator: "Weight Loss Creator",
+            Biohacker: "Biohacker",
+            Celebrity: "Celebrity",
+            BeautyCreator: "Beauty Creator",
+            SkincareCreator: "Skincare Creator",
+            KBeautyCreator: "K-Beauty Creator",
+            MakeupCreator: "Makeup Creator",
+            HairCreator: "Hair Creator",
+            FashionCreator: "Fashion Creator",
+            FoodCreator: "Food Creator",
+            Chef: "Chef",
+            BeverageCreator: "Beverage Creator",
+            RestaurantReviewer: "Restaurant Reviewer",
+            ParentingCreator: "Parenting Creator",
+            FamilyCreator: "Family Creator",
+            PregnancyCreator: "Pregnancy Creator",
+            Lawyer: "Lawyer",
+            FinancialCreator: "Financial Creator",
+            Accountant: "Accountant",
+            RealEstateCreator: "Real Estate Creator",
+            Recruiter: "Recruiter",
+            CareerCreator: "Career Creator",
+            Entrepreneur: "Entrepreneur",
+            SalesCreator: "Sales Creator",
+            MarketingCreator: "Marketing Creator",
+            TechCreator: "Tech Creator",
+            Developer: "Developer",
+            StartupCreator: "Startup Creator",
+            Designer: "Designer",
+            HomeCreator: "Home Creator",
+            DiyCreator: "DIY Creator",
+            GardeningCreator: "Gardening Creator",
+            Teacher: "Teacher",
+            EducationalCreator: "Educational Creator",
+            ScienceCreator: "Science Creator",
+            LanguageCreator: "Language Creator",
+            Comedian: "Comedian",
+            GamingCreator: "Gaming Creator",
+            Streamer: "Streamer",
+            MusicCreator: "Music Creator",
+            Artist: "Artist",
+            PhotographerVideographer: "Photographer/Videographer",
+            Filmmaker: "Filmmaker",
+            PopCultureCreator: "Pop Culture Creator",
+            TravelCreator: "Travel Creator",
+            LifestyleCreator: "Lifestyle Creator",
+            DigitalNomad: "Digital Nomad",
+            SelfImprovementCreator: "Self Improvement Creator",
+            RelationshipCreator: "Relationship Creator",
+            FaithCreator: "Faith Creator",
+            CarCreator: "Car Creator",
+            PetCreator: "Pet Creator",
+            OutdoorCreator: "Outdoor Creator",
+            HuntingCreator: "Hunting Creator",
+            GunCreator: "Gun Creator",
+            Collector: "Collector",
+            ProductReviewer: "Product Reviewer",
+            DealCreator: "Deal Creator",
+            ShopperCreator: "Shopper Creator",
+        } as const;
+        export type Item = (typeof Item)[keyof typeof Item];
+    }
+
     export const Ethnicity = {
         White: "White",
         Black: "Black",

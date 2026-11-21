@@ -17,6 +17,7 @@ export namespace SearchCreatorsResponse {
             name: string;
             summary: string | null;
             bio: string | null;
+            category: string | null;
             verified: boolean;
             igUsername: string | null;
             igFollowers: number | null;
